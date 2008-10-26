@@ -418,7 +418,7 @@ $localstr['expert']='expert';
 	
 	$smarty->assign("bd_submit", $localstr['bd_submit']);
 
-	$smarty->assign("form_action", "install.php");
+	$smarty->assign("form_action", "install.php?step=7&mode=".$mode);
 	$smarty->display('step6.tpl');
 
 	if(isset($_POST['submit']))
@@ -440,12 +440,18 @@ if($step == 7)
 	elseif($bridge_install_mode == 1)
 	{
 		$bridge = array();
-		$dir = 'auth';
+		$dir = "auth";
 		$dh = opendir($dir);
+		$tmp_count=0;
 		while(false != ($filename = readdir($dh))) {
-			include($filename);
+			$tmp_count++;
+			if($tmp_count>=3)
+			{
+				include ($dir."/".$filename);
+			}
 		}
-		printf($bridge);
+		
+		print_r($bridge);
 	}
 	elseif($bridge_install_mode == 2)
 	{
@@ -456,7 +462,7 @@ if($step == 7)
 	if(isset($_POST['submit']))
 	{
 		$bridge_install_mode = $_POST['bridge_install_mode'];
-		header("Location: install.php?step=7&mode=$mode&bim=".$bridge_install_mode);
+		header("Location: install.php?step=7&mode=".$mode."&bim=".$bridge_install_mode);
 		exit();
 	}
 

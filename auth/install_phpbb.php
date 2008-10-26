@@ -39,6 +39,7 @@ array_push($bridge,
 		'DB_configfile_name' => "config.php",
 		'DB_host' => '$dbhost',
 		'DB_name' => '$dbname',
+		'DB_table_prefix' => '$table_prefix',
 		'DB_admin_user_name' => '$dbuser',
 		'DB_admin_user_password' => '$dbpasswd',
 	)
