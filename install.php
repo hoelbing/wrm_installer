@@ -16,32 +16,36 @@ if (!isset($_GET['bim']))
 else
 	$bridge_install_mode = $_GET['bim'];
 
-require 'include/libs/Smarty.class.php';
+require ('include/libs/Smarty.class.php');
 
 $phpversion=(int)(str_replace(".","",phpversion()));
 
 $smarty = new Smarty();
-$smarty->compile_check = true;
+$smarty->compile_check = false;//true;
 $smarty->debugging = false;
-//$smarty->caching = false;
+$smarty->caching = false;
 $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'include/libs/Smarty/templates_c';
 $smarty->config_dir = 'include/libs/Smarty/configs';
-//$smarty->cache_dir = 'include/libs/Smarty/cache';
 
 $file_config = "../config.php";
 
 include 'include/header.php';
 
-// Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
-//    will work in despite of Windows ACLs bug.
-//NOTE: use a trailing slash for folders!!!
-//see http://bugs.php.net/bug.php?id=27609
-//see http://bugs.php.net/bug.php?id=30931
+/**
+ * Check for a directory, if the passed path is a directory create a temp file as path
+ *  and try to open, otherwise just try to open that file for writing.
+ * Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
+ * will work in despite of Windows ACLs bug.
+ * NOTE: use a trailing slash for folders!!!
+ * see http://bugs.php.net/bug.php?id=27609
+ * see http://bugs.php.net/bug.php?id=30931
+ * 
+ * @param string $path
+ * @return boolean 
+*/
 function is__writeable($path)
 {
-	// Check for a directory, if the passed path is a directory create a temp file as path
-	//    and try to open, otherwise just try to open that file for writing.
 	$checkpath = $path;
 
 	if ($path{strlen($path)-1}=='/')
@@ -56,6 +60,11 @@ function is__writeable($path)
 	return true;
 }
 
+/**
+* get mysql version from phpinfo()
+* 
+* @return boolean
+*/
 function get_mysql_version_from_phpinfo()
 {
 	ob_start();
@@ -69,7 +78,11 @@ function get_mysql_version_from_phpinfo()
 	return $gd; 
 }
 
-/*************************/
+/**
+ * --------------------
+ * Step 0
+* ---------------------
+* */
 if($step == 0) {
 	if(!isset($_POST['submit']))
 	{
@@ -156,7 +169,7 @@ if($step == 0) {
 	
 	//	$smarty->assign("form_action", "install.php?step=1");
 		$smarty->assign("form_action", "install.php");
-		$smarty->display('step0.tpl');
+		$smarty->display('step0.tpl.htm');
 	}
 	if(isset($_POST['submit']))
 	{
@@ -166,6 +179,14 @@ if($step == 0) {
 	
 	}
 }
+
+/**
+ * --------------------
+ * Step 1
+ * 
+ * show/set db settings
+* ---------------------
+* */
 if($step == 1) {
 
 	if ($_GET['mode'] == 2)
@@ -212,7 +233,7 @@ if($step == 1) {
 		
 		$smarty->assign("bd_submit", $localstr['bd_submit']);
 	
-		$smarty->display('step1.tpl');
+		$smarty->display('step1.tpl.htm');
 	}
 	if(isset($_POST['submit']))
 	{
@@ -260,7 +281,9 @@ if($step == 1) {
 		{
 
 			include('../version.php');
-			// write config file (config.php)
+			/**
+			 * write config file (config.php)
+			 */
 			$output  = "<?php\n";
 			$output .= "/*\n";
 			$output .= "#**********************************************#\n";
@@ -290,6 +313,13 @@ if($step == 1) {
 	}
 }
 
+/**
+ * --------------------
+ * Step 2
+ * 
+ * test: if selected db, are wrm table include
+* ---------------------
+* */
 if($step == 2)
 {	
 /*	if($mode==1)
@@ -316,6 +346,13 @@ if($step == 2)
 	}
 }
 
+/**
+ * --------------------
+ * Step 3
+ * 
+ * insert schema(=tables), in wrm db
+* ---------------------
+* */
 if($step == 3)
 {	
 	include($file_config);
@@ -346,6 +383,13 @@ if($step == 3)
 	exit();
 }
 
+/**
+ * --------------------
+ * Step 4
+ * 
+ * insert default values, in wrm db 
+* ---------------------
+* */
 if($step == 4)
 {
 	
@@ -373,10 +417,16 @@ if($step == 4)
 
 }
 
-//install Collation on wrm MySQL
+/**
+ * --------------------
+ * Step 5
+ * 
+ * install Collation on wrm MySQL
+ * Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
+* ---------------------
+* */
 if($step == 5)
 {
-	// Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
 	$gd = get_mysql_version_from_phpinfo();
 	if ($gd >= "4.1.0")
 	{
@@ -404,6 +454,14 @@ all user , load in a array  -> set admin
 
 in wrm db eintragen und fertig
 */
+
+/**
+ * --------------------
+ * Step 6
+ * 
+ * show all bridge install mode's
+* ---------------------
+* */
 if($step == 6)
 {
 $localstr['easy']='easy';
@@ -418,8 +476,8 @@ $localstr['expert']='expert';
 	
 	$smarty->assign("bd_submit", $localstr['bd_submit']);
 
-	$smarty->assign("form_action", "install.php?step=7&mode=".$mode);
-	$smarty->display('step6.tpl');
+	$smarty->assign("form_action", "install.php?step=6&mode=".$mode);
+	$smarty->display('step6.tpl.htm');
 
 	if(isset($_POST['submit']))
 	{
@@ -429,7 +487,13 @@ $localstr['expert']='expert';
 	}
 }
 
-//find cms config file position
+/**
+ * --------------------
+ * Step 7
+ * 
+ * find cms config file position
+* ---------------------
+* */
 if($step == 7)
 {
 	//scan complet dir
@@ -439,35 +503,45 @@ if($step == 7)
 	//set root dir
 	elseif($bridge_install_mode == 1)
 	{
-		$bridge = array();
-		$dir = "auth";
-		$dh = opendir($dir);
-		$tmp_count=0;
-		while(false != ($filename = readdir($dh))) {
-			$tmp_count++;
-			if($tmp_count>=3)
-			{
-				include ($dir."/".$filename);
-			}
-		}
-		
-		print_r($bridge);
+		$smarty->assign("bd_submit", $localstr['bd_submit']);
+
+		$smarty->assign("form_action", "install.php?step=7&mode=".$mode);
+		$smarty->display('step7.tpl.htm');
 	}
 	elseif($bridge_install_mode == 2)
 	{
-		header("Location: install.php?step=8&mode=$mode&bim=".$bridge_install_mode);
+		header("Location: install.php?step=8&mode=".$mode."&bim=".$bridge_install_mode);
 		exit();
 	}
 
 	if(isset($_POST['submit']))
 	{
-		$bridge_install_mode = $_POST['bridge_install_mode'];
-		header("Location: install.php?step=7&mode=".$mode."&bim=".$bridge_install_mode);
-		exit();
+		if($bridge_install_mode == 1){
+			$bridge = array();
+			$dir = "auth";
+			$dh = opendir($dir);
+			$tmp_count=0;
+			while(false != ($filename = readdir($dh))) {
+				$tmp_count++;
+				if($tmp_count>=3)
+				{
+					include ($dir."/".$filename);
+				}
+			}
+
+			$bridge_install_mode = $_POST['bridge_install_mode'];
+			header("Location: install.php?step=7&mode=".$mode."&bim=".$bridge_install_mode);
+			exit();
+		}
 	}
 
 }
 
+/**
+ * --------------------
+ * Step 8
+* ---------------------
+* */
 if($step == 8)
 {
 

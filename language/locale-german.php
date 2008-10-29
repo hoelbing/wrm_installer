@@ -16,6 +16,7 @@ $localstr['step0_mysqlversion'] = "MySQL Version";
 $localstr['step0_active'] = "aktiviert";
 $localstr['step0_nonactive'] = "deaktiviert";
 $localstr['step0_writeable_config'] = "config.php schreibbar?";
+$localstr['step7sub1inputdir'] = 'Input the path to your CMS directory (including trailing slash!)';
 
 $localstr['yes'] = "ja";
 $localstr['no'] = "nein";
