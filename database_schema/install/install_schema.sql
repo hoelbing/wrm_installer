@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS `phpraid_announcements`;
-CREATE TABLE  `phpraid_announcements` (
+-- Announcements Table Creation
+DROP TABLE IF EXISTS `wrm_announcements`;
+CREATE TABLE  `wrm_announcements` (
   `announcements_id` int(10) NOT NULL auto_increment,
   `title` varchar(255) NOT NULL default '',
   `message` text NOT NULL,
@@ -8,8 +9,9 @@ CREATE TABLE  `phpraid_announcements` (
   PRIMARY KEY  (`announcements_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_chars`;
-CREATE TABLE  `phpraid_chars` (
+-- Character Table Creation
+DROP TABLE IF EXISTS `wrm_chars`;
+CREATE TABLE  `wrm_chars` (
   `char_id` int(10) NOT NULL auto_increment,
   `profile_id` int(10) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
@@ -27,14 +29,28 @@ CREATE TABLE  `phpraid_chars` (
   PRIMARY KEY  (`char_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_config`;
-CREATE TABLE  `phpraid_config` (
+-- Column Header Creation
+DROP TABLE IF EXISTS `wrm_column_headers`;
+CREATE TABLE `wrm_column_headers` (
+`ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`view_name` VARCHAR( 50 ) NOT NULL ,
+`column_name` VARCHAR( 50 ) NOT NULL ,
+`visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
+`position` TINYINT( 2 ) NOT NULL ,
+`img_url` VARCHAR( 100 ) DEFAULT NULL,
+INDEX ( `view_name` )
+) ;
+
+-- Config Table Creation
+DROP TABLE IF EXISTS `wrm_config`;
+CREATE TABLE  `wrm_config` (
   `config_name` varchar(255) NOT NULL default '',
   `config_value` varchar(255) NOT NULL default ''
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_guilds`;
-CREATE TABLE  `phpraid_guilds` (
+-- Guilds Table Creation
+DROP TABLE IF EXISTS `wrm_guilds`;
+CREATE TABLE  `wrm_guilds` (
   `guild_id` int(10) NOT NULL auto_increment,
   `guild_master` varchar(80) NOT NULL default '',
   `guild_name` varchar(30) NOT NULL default '',
@@ -42,13 +58,15 @@ CREATE TABLE  `phpraid_guilds` (
   PRIMARY KEY  (`guild_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_locations`;
-CREATE TABLE  `phpraid_locations` (
+-- Locations Table Creation
+DROP TABLE IF EXISTS `wrm_locations`;
+CREATE TABLE  `wrm_locations` (
   `location_id` int(10) NOT NULL auto_increment,
   `location` varchar(255) NOT NULL default '',
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
+  `dk` int(2) NOT NULL default '0',
   `dr` int(2) NOT NULL default '0',
   `hu` int(2) NOT NULL default '0',
   `ma` int(2) NOT NULL default '0',
@@ -66,11 +84,15 @@ CREATE TABLE  `phpraid_locations` (
   `role6` int(2) NOT NULL default '0',
   `max` int(2) NOT NULL default '0',
   `locked` tinyint(1) NOT NULL default '0',
+  `event_type` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`location_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_logs_create`;
-CREATE TABLE  `phpraid_logs_create` (
+-- Locations Data
+
+-- Log Create Table Creation
+DROP TABLE IF EXISTS `wrm_logs_create`;
+CREATE TABLE  `wrm_logs_create` (
   `log_id` int(11) NOT NULL auto_increment,
   `create_id` int(11) NOT NULL default '0',
   `profile_id` int(11) NOT NULL default '0',
@@ -81,8 +103,9 @@ CREATE TABLE  `phpraid_logs_create` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_logs_delete`;
-CREATE TABLE  `phpraid_logs_delete` (
+-- Log Delete Table Creation
+DROP TABLE IF EXISTS `wrm_logs_delete`;
+CREATE TABLE  `wrm_logs_delete` (
   `log_id` int(11) NOT NULL auto_increment,
   `profile_id` int(11) NOT NULL default '0',
   `ip` varchar(45) NOT NULL default '',
@@ -92,8 +115,9 @@ CREATE TABLE  `phpraid_logs_delete` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_logs_hack`;
-CREATE TABLE  `phpraid_logs_hack` (
+-- Log Hack Table Creation 
+DROP TABLE IF EXISTS `wrm_logs_hack`;
+CREATE TABLE  `wrm_logs_hack` (
   `log_id` int(10) unsigned NOT NULL auto_increment,
   `ip` varchar(45) NOT NULL default '0',
   `message` text NOT NULL,
@@ -101,8 +125,9 @@ CREATE TABLE  `phpraid_logs_hack` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_logs_raid`;
-CREATE TABLE  `phpraid_logs_raid` (
+-- Log Raid Table Creation
+DROP TABLE IF EXISTS `wrm_logs_raid`;
+CREATE TABLE  `wrm_logs_raid` (
   `log_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -113,8 +138,9 @@ CREATE TABLE  `phpraid_logs_raid` (
   PRIMARY KEY  (`log_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_permissions`;
-CREATE TABLE  `phpraid_permissions` (
+-- Permissions Table Creation
+DROP TABLE IF EXISTS `wrm_permissions`;
+CREATE TABLE  `wrm_permissions` (
   `permission_id` int(10) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -130,8 +156,9 @@ CREATE TABLE  `phpraid_permissions` (
   PRIMARY KEY  (`permission_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_profile`;
-CREATE TABLE  `phpraid_profile` (
+-- Profile Table Creation
+DROP TABLE IF EXISTS `wrm_profile`;
+CREATE TABLE  `wrm_profile` (
   `profile_id` int(10) NOT NULL auto_increment,
   `email` varchar(255) NOT NULL default '',
   `password` varchar(255) NOT NULL default '',
@@ -141,8 +168,9 @@ CREATE TABLE  `phpraid_profile` (
   PRIMARY KEY  (`profile_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_raids`;
-CREATE TABLE  `phpraid_raids` (
+-- Raid Table Creation
+DROP TABLE IF EXISTS `wrm_raids`;
+CREATE TABLE  `wrm_raids` (
   `raid_id` int(10) NOT NULL auto_increment,
   `description` text NOT NULL,
   `freeze` int(10) NOT NULL default '0',
@@ -151,6 +179,7 @@ CREATE TABLE  `phpraid_raids` (
   `officer` varchar(255) NOT NULL default '',
   `old` tinyint(1) NOT NULL default '0',
   `start_time` varchar(255) NOT NULL default '',
+  `dk_lmt` int(2) NOT NULL default '0',
   `dr_lmt` int(2) NOT NULL default '0',
   `hu_lmt` int(2) NOT NULL default '0',
   `ma_lmt` int(2) NOT NULL default '0',
@@ -169,11 +198,13 @@ CREATE TABLE  `phpraid_raids` (
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
+  `event_type` tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (`raid_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_signups`;
-CREATE TABLE  `phpraid_signups` (
+-- Signup Table Creation
+DROP TABLE IF EXISTS `wrm_signups`;
+CREATE TABLE  `wrm_signups` (
   `signup_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -185,8 +216,9 @@ CREATE TABLE  `phpraid_signups` (
   PRIMARY KEY  (`signup_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_teams`;
-CREATE TABLE  `phpraid_teams` (
+-- Team Table Creation
+DROP TABLE IF EXISTS `wrm_teams`;
+CREATE TABLE  `wrm_teams` (
   `team_id` int(10) NOT NULL auto_increment,
   `raid_id` int(10) NOT NULL default '0',
   `team_name` varchar(255) NOT NULL default '',
@@ -194,8 +226,9 @@ CREATE TABLE  `phpraid_teams` (
   PRIMARY KEY  (`team_id`)
 ) ;
 
-DROP TABLE IF EXISTS `phpraid_version`;
-CREATE TABLE `phpraid_version` (
+-- Version Table Creation
+DROP TABLE IF EXISTS `wrm_version`;
+CREATE TABLE `wrm_version` (
 `version_number` VARCHAR( 20 ) NOT NULL ,
 `version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )

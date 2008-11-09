@@ -3,6 +3,7 @@
 $wrm_tables = array (
 						"announcements",
 						"chars",
+						"column_headers",
 						"config",
 						"guilds",
 						"locations",
@@ -11,7 +12,7 @@ $wrm_tables = array (
 						"logs_hack",
 						"logs_raid",
 						"permissions",
-						"phpraid_profile",
+						"profile",
 						"raids",
 						"signups",
 						"teams",
