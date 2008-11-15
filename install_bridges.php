@@ -28,14 +28,13 @@ if ($step=0)
 
 	$smarty->assign("bd_submit", $localstr['bd_submit']);
 
-	$smarty->assign("form_action", "install.php?step=6&mode=".$mode);
+	$smarty->assign("form_action", "install.php?step=6");
 	$smarty->display('step6.tpl.html');
 
 	if(isset($_POST['submit']))
 	{
 		$bridge_install_mode = $_POST['bridge_install_mode'];
 		header("Location: install.php?step=8&mode=$mode&bim=".$bridge_install_mode);
-		exit();
 	}
 	include 'includes/page_footer.php';
 	

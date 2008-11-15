@@ -24,13 +24,6 @@ $smarty->cache_dir = 'cache/smarty_cache';
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-if (!isset($_POST['classlang_type']))
-	$lang = "english";
-else
-	$lang = $_POST['classlang_type'];
-
-include('language/locale-'.$lang.'.php');
-
 //body header stuff
 $lang_dir = 'language';
 $dh = opendir($lang_dir);

@@ -5,18 +5,13 @@ $step = 0;
 else
 $step = $_GET['step'];
 
-/*
-//mode = install type; 0 fresh , 1 upgrade
-if (!isset($_GET['mode']))
-$mode = 0;
+//set Lang. Format
+if (!isset($_POST['classlang_type']))
+	$lang = "english";
 else
-$mode = $_GET['mode'];
-*/
+	$lang = $_POST['classlang_type'];
 
-if (!isset($_GET['bim']))
-$bridge_install_mode = 0;
-else
-$bridge_install_mode = $_GET['bim'];
+include('language/locale-'.$lang.'.php');
 
 /**
  * WRM Config File
@@ -84,12 +79,11 @@ function get_mysql_version_from_phpinfo()
  * @param var $eqdkp_db_user
  * @param var $eqdkp_db_pass
  * @param var $eqdkp_db_prefix
- * @return boolean
+ * @return boolean 
  */
 function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
 {
 	global $wrm_config_file;
-	
 	include('../version.php');
 	/**
 	 * write config file (config.php)
@@ -121,7 +115,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 	$fd = fopen($wrm_config_file,'w+');
 	if (!$fd)
 	{
-		echo "can not write file: ". $wrm_config_file;
+		echo "can not write this file: ". $wrm_config_file."<br>";
 		fclose($fd);
 		return (FALSE);
 	}
@@ -129,6 +123,10 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 	{
 		fwrite($fd, $output);
 		fclose($fd);
+		
+		//
+		@chmod($wrm_config_file,0777);
+		
 		return (TRUE);
 	}
 }
@@ -142,7 +140,9 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
  * false -> install
  * ---------------------
  * */
-if($step == 0) {
+
+if($step == 0)
+{
 	if(is_file($wrm_config_file))
 	{
 		include($wrm_config_file);
@@ -166,10 +166,11 @@ if($step == 0) {
 		{
 			//upgrade now
 			header("Location: upgrade.php");
+			exit;//echo $phpraid_config['db_host'].$FOUNDERROR;
 		}
 	}
-	
-	header("Location: install.php?step=1");
+	echo $phpraid_config['db_host'].$FOUNDERROR;
+	//header("Location: install.php?step=1");
 }
 
 /**
@@ -177,10 +178,10 @@ if($step == 0) {
  * Step 1
  * ---------------------
  * */
+
 if($step == 1) {
 	if(!isset($_POST['submit']))
 	{
-		@chmod($wrm_config_file,0777);
 		@chmod("./wowarmory_tooltip/",0775);
 
 		if($phpversion<401)
@@ -221,18 +222,21 @@ if($step == 1) {
 		}
 
 		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
-		if(!is__writeable($wrm_config_file))
+		if (is_file($wrm_config_file))
 		{
-			$writeable_config_bgcolor = "red";
-			$writeable_config_value = $localstr['no'];
+			if(!is__writeable($wrm_config_file))
+			{
+				$writeable_config_bgcolor = "red";
+				$writeable_config_value = $localstr['no'];
+			}
+			else
+			{
+				$writeable_config_bgcolor = "green";
+				$writeable_config_value = $localstr['yes'];
+			}
 		}
-		else
-		{
-			$writeable_config_bgcolor = "green";
-			$writeable_config_value = $localstr['yes'];
-		}
-
-		include 'includes/page_header.php';
+		
+		include ('includes/page_header.php');
 
 		//table
 		$smarty->assign("headtitle", $localstr['headtitle']);
@@ -332,7 +336,7 @@ if($step == 2) {
 		$wrm_db_username = $_POST['wrm_db_username'];
 		$wrm_db_password = $_POST['wrm_db_password'];
 		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
-		
+		$wrm_config_writeable = FALSE;
 		include($wrm_config_file);
 
 		$FOUNDERROR = FALSE;
@@ -353,7 +357,7 @@ if($step == 2) {
 		if ($FOUNDERROR == FALSE)
 		{
 			//check: if you can write the wrm config file
-			$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
+			//$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
 			
 			//writeable 
 			if ($wrm_config_writeable == TRUE)
