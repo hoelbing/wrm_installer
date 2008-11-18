@@ -1,17 +1,20 @@
 <?php
 
-$auth_type_name = 'Joomla';
-//$JOOMLACONFIG = new JConfig();
-/*array_push($bridge,
-	array(
+
+function get_bridge_setting()
+{
+	//(short)Name from the BB/CMS
+	$auth_type_name = "joomla";
+
+	return array(
 	
 		'auth_type_name' => $auth_type_name,
 		
-*/		/*********************************************** 
+		/*********************************************** 
 		 * Table and Column Names - change per CMS.
 		 ***********************************************/
 		// Column Name for the ID field for the User.
-/*		'db_user_id' => "id",
+		'db_user_id' => "id",
 		// Column Name for the ID field for the Group the User belongs to.
 		'db_group_id' => "gid",
 		// Column Name for the UserName field.
@@ -33,17 +36,35 @@ $auth_type_name = 'Joomla';
 		'db_allgroups_id' => "id",
 		// Column Name for the Groups/Class Name field.
 		'db_allgroups_name' => "name",
-*/
-		/*********************************************** 
-		 * CMS Config values - change per CMS.
-		 ***********************************************/
-/*		'DB_configfile_name' => "configuration.php",
-		'DB_host' => $JOOMLACONFIG->dbprefix,
-		'DB_name' => $JOOMLACONFIG->host,
-		'DB_table_prefix' => $JOOMLACONFIG->dbprefix,
-		'DB_admin_user_name' => $JOOMLACONFIG->user,
-		'DB_admin_user_password' => $JOOMLACONFIG->password,
-	)
-);
-*/
+
+		//Name from the Config File
+		'DB_configfile_name' => "configuration.php",
+	);
+}
+
+/**
+ * read the config file and return array with
+ * all values
+ *
+ * @param string $filepos
+ * @return array()
+ */
+function get_bridge_config_value($filepos)
+{
+	include ($filepos);
+
+	$JOOMLACONFIG = new JConfig();
+
+	return
+	(
+		array(
+			'DB_host' => $JOOMLACONFIG->dbprefix,
+			'DB_name' =>  $JOOMLACONFIG->host,
+			'DB_table_prefix' => $JOOMLACONFIG->dbprefix,
+			'DB_admin_user_name' => $JOOMLACONFIG->user,
+			'DB_admin_user_password' => $JOOMLACONFIG->password,
+		)
+	);
+}
+
 ?>

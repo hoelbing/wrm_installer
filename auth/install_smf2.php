@@ -1,8 +1,11 @@
 <?php
 
-$auth_type_name = 'SMF2';
-array_push($bridge,
-	array(
+function get_bridge_setting()
+{
+	//(short)Name from the BB/CMS
+	$auth_type_name = "SMF2";
+
+	return array(
 	
 		'auth_type_name' => $auth_type_name,
 		
@@ -33,16 +36,32 @@ array_push($bridge,
 		// Column Name for the Groups/Class Name field.
 		'db_allgroups_name' => "group_name",
 
-		/*********************************************** 
-		 * CMS Config values - change per CMS.
-		 ***********************************************/
+		//Name from the Config File
 		'DB_configfile_name' => "Settings.php",
-		'DB_host' => '$db_server',
-		'DB_name' => '$db_name',
-		'DB_table_prefix' => '$db_prefix',
-		'DB_admin_user_name' => '$db_user',
-		'DB_admin_user_password' => '$db_passwd',
-	)
-);
+	);
+}
+
+/**
+ * read the config file and return array with
+ * all values
+ *
+ * @param string $filepos
+ * @return array()
+ */
+function get_bridge_config_value($filepos)
+{
+	include ($filepos);
+
+	return
+	(
+		array(
+			'DB_host' => $db_server,
+			'DB_name' => $db_name,
+			'DB_table_prefix' => $db_prefix,
+			'DB_admin_user_name' => $db_user,
+			'DB_admin_user_password' => $db_passwd,
+		)
+	);
+}
 
 ?>

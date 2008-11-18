@@ -1,5 +1,20 @@
 <?php
 
+/*-------------------------------*/
+//lang strg
+$localstr['step2_create_db'] = "Create Database?";
+/*-------------------------------*/
+
+/**
+ * note @ me
+ * sql: show columns from TABLE -> return a array with all columns
+ */
+
+/**
+ * todo
+ * step 3 (found table): insert link,question @ user (overwrite or other prefix)
+ * 
+ */
 if (!isset($_GET['step']))
 $step = 0;
 else
@@ -14,7 +29,7 @@ else
 include('language/locale-'.$lang.'.php');
 
 /**
- * WRM Config File
+ * This is the path to the WRM Config File
  */
 $wrm_config_file = "../config.php";
 
@@ -123,8 +138,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 	{
 		fwrite($fd, $output);
 		fclose($fd);
-		
-		//
+
 		@chmod($wrm_config_file,0777);
 		
 		return (TRUE);
@@ -169,8 +183,8 @@ if($step == 0)
 			exit;//echo $phpraid_config['db_host'].$FOUNDERROR;
 		}
 	}
-	echo $phpraid_config['db_host'].$FOUNDERROR;
-	//header("Location: install.php?step=1");
+	//echo $phpraid_config['db_host'].$FOUNDERROR;
+	header("Location: install.php?step=1");
 }
 
 /**
@@ -236,41 +250,42 @@ if($step == 1) {
 			}
 		}
 		
-		include ('includes/page_header.php');
-
-		//table
-		$smarty->assign("headtitle", $localstr['headtitle']);
-		$smarty->assign("property", $localstr['step0_property']);
-		$smarty->assign("required", $localstr['step0_required']);
-		$smarty->assign("exist", $localstr['step0_exist']);
-		$smarty->assign("system_requirements", $localstr['step0_system_requirements']);
-		$smarty->assign("phpversion_text", $localstr['step0_phpversion_text']);
-		$smarty->assign("phpversion_value", phpversion());
-		$smarty->assign("phpversion_bgcolor", $phpversion_bgcolor);
-		$smarty->assign("mysqlversion_text", $localstr['step0_mysqlversion']);
-		$smarty->assign("mysqlversion_value", $gd);
-		$smarty->assign("mysqlversion_bgcolor", $mysqlversion_bgcolor);
-		$smarty->assign("upload_max_filesize_value", get_cfg_var("upload_max_filesize"));
-		$smarty->assign("upload_max_filesize_bgcolor", $upload_max_filesize_bgcolor);
-		$smarty->assign("magic_quotes_sybase_value", $magic_quotes_sybase_value);
-		$smarty->assign("magic_quotes_sybase_bgcolor", $magic_quotes_sybase_bgcolor);
-		$smarty->assign("nonactive", $localstr['step0_nonactive']);
-
-		$smarty->assign("writeable_config_text", $localstr['step0_writeable_config']);
-		$smarty->assign("writeable_config_value", $writeable_config_value);
-		$smarty->assign("yes", $localstr['yes']);
-		$smarty->assign("writeable_config_bgcolor", $writeable_config_bgcolor);
-
-		$smarty->assign("bd_submit", $localstr['bd_submit']);
-
-		$smarty->assign("form_action", "install.php?step=1");
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+					"form_action" => "install.php?step=1",
+					//table
+					"headtitle" => $localstr['headtitle'],
+					"property" => $localstr['step0_property'],
+					"required" => $localstr['step0_required'],
+					"exist" => $localstr['step0_exist'],
+					"system_requirements" => $localstr['step0_system_requirements'],
+					"phpversion_text" => $localstr['step0_phpversion_text'],
+					"phpversion_value" => phpversion(),
+					"phpversion_bgcolor" => $phpversion_bgcolor,
+					"mysqlversion_text" => $localstr['step0_mysqlversion'],
+					"mysqlversion_value" => $gd,
+					"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
+					"upload_max_filesize_value" => get_cfg_var("upload_max_filesize"),
+					"upload_max_filesize_bgcolor" => $upload_max_filesize_bgcolor,
+					"magic_quotes_sybase_value" => $magic_quotes_sybase_value,
+					"magic_quotes_sybase_bgcolor" => $magic_quotes_sybase_bgcolor,
+					"nonactive" => $localstr['step0_nonactive'],
+			
+					"writeable_config_text" => $localstr['step0_writeable_config'],
+					"writeable_config_value" => $writeable_config_value,
+					"yes" => $localstr['yes'],
+					"writeable_config_bgcolor" => $writeable_config_bgcolor,
+			
+					"bd_submit" => $localstr['bd_submit'],
+			)
+		);
 		
-		$smarty->display('step1.tpl.html');
-		include 'includes/page_footer.php';
+		$smarty->display("step1.tpl.html");
+		include ("includes/page_footer.php");
 	}
 	if(isset($_POST['submit']))
 	{
-		//$mode = $_POST['mode'];
 		header("Location: install.php?step=2");
 	}
 }
@@ -294,7 +309,7 @@ if($step == 2) {
 		$db_password_value = "";
 		$db_tableprefix_value = "wrm_";
 
-		if(is_file($wrm_config_file))
+		if(is_file($wrm_config_file) AND (isset($phpraid_config['db_name'])))
 		{
 			include($wrm_config_file);
 
@@ -305,42 +320,44 @@ if($step == 2) {
 			$db_tableprefix_value = $phpraid_config['db_prefix'];
 		}
 		 
-		include 'includes/page_header.php';
+		include ("includes/page_header.php");
 
-		$smarty->assign("form_action", "install.php?step=2");
-		//table
-		$smarty->assign("headtitle", $localstr['headtitle']);
-		$smarty->assign("db_name_text", $localstr['step2dbname']);
-		$smarty->assign("db_name_value", $db_name_value);
-		$smarty->assign("db_server_hostname_text", $localstr['step2dbserverhostname']);
-		$smarty->assign("db_server_hostname_value", $db_server_hostname_value);
-		$smarty->assign("db_username_text", $localstr['step2dbserverusername']);
-		$smarty->assign("db_username_value", $db_username_value);
-		$smarty->assign("db_password_text", $localstr['step2dbserverpwd']);
-		$smarty->assign("db_password_value", $db_password_value);
-
-		$smarty->assign("db_tableprefix_text", $localstr['step2WRMtableprefix']);
-		$smarty->assign("db_tableprefix_value", $db_tableprefix_value);
-
-		$smarty->assign("bd_submit", $localstr['bd_submit']);
-
-		$smarty->display('step2.tpl.html');
+		$smarty->assign(
+			array(
+					"form_action" => "install.php?step=".$step,
+					"headtitle" => $localstr['headtitle'],
+					"wrm_db_name_text" => $localstr['step2dbname'],
+					"wrm_db_name_value" => $db_name_value,
+					"wrm_create_db_text" => $localstr['step2_create_db'],
+					"wrm_db_server_hostname_text" => $localstr['step2dbserverhostname'],
+					"wrm_db_server_hostname_value" => $db_server_hostname_value,
+					"wrm_db_username_text" => $localstr['step2dbserverusername'],
+					"wrm_db_username_value" => $db_username_value,
+					"wrm_db_password_text" => $localstr['step2dbserverpwd'],
+					"wrm_db_password_value" => $db_password_value,
+					"wrm_db_tableprefix_text" => $localstr['step2WRMtableprefix'],
+					"wrm_db_tableprefix_value" => $db_tableprefix_value,
+					"bd_submit" => $localstr['bd_submit'],
+			)
+		);
+	
+		$smarty->display("step2.tpl.html");
 		
-		include 'includes/page_footer.php';
+		include ("includes/page_footer.php");
 		
 	}
 	if(isset($_POST['submit']))
 	{
 		$wrm_db_name = $_POST['wrm_db_name'];
+		$wrm_create_db = $_POST['wrm_create_db'];
 		$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 		$wrm_db_username = $_POST['wrm_db_username'];
 		$wrm_db_password = $_POST['wrm_db_password'];
 		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+
 		$wrm_config_writeable = FALSE;
-		include($wrm_config_file);
 
 		$FOUNDERROR = FALSE;
-
 		// database connection
 		$link = @mysql_connect($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password);
 		if(!$link)
@@ -350,32 +367,40 @@ if($step == 2) {
 		else {
 			if(!@mysql_select_db($wrm_db_name,$link))
 			{
+				if ($wrm_create_db == true)
+				{
+					//test, creating
+					$dblist=@mysql_list_dbs($link);
+					$sql = "Create Database ".$wrm_db_name;
+				}
+				else
 				$FOUNDERROR = TRUE;
 			}
-		}
 
-		if ($FOUNDERROR == FALSE)
-		{
-			//check: if you can write the wrm config file
-			//$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
-			
-			//writeable 
-			if ($wrm_config_writeable == TRUE)
+			if ($FOUNDERROR == FALSE)
 			{
-				header("Location: install.php?step=2");
+				//check: if you can write the wrm config file
+				$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
+				
+				//writeable 
+				if ($wrm_config_writeable == TRUE)
+				{
+					//go to next step
+					header("Location: install.php?step=3");
+				}
+				//config FILE ist NOT writeable
+				else
+				{
+					header("Location: install.php?step=1");
+				}
 			}
-			//config FILE ist NOT writeable
+			//found error
 			else
 			{
-				header("Location: install.php?step=1");
+				echo "error step2";
+				//jump to step 2
+				//header("Location: install.php?step=2");
 			}
-		}
-		//found error
-		else
-		{
-//			echo "error";
-			//jump to step 2
-			header("Location: install.php?step=2");
 		}
 	}
 }
@@ -391,21 +416,25 @@ if($step == 3)
 {
 
 	include($wrm_config_file);
-	include(install_settings.php);
+	include("install_settings.php");
 
-	$foundtable=0;
+	$foundtable = FALSE;
 	$result = @mysql_list_tables($phpraid_config['db_name']);
 
-	for($i=0; $i<$db->num_rows($result); $i++) {
+	for($i=0; $i < @mysql_num_rows($result); $i++) {
 		if(in_array(@mysql_tablename($result,$i),$wrm_tables)) {
-			$foundtable=1;
+			$foundtable = TRUE;
 			break;
 		}
 	}
 
-	if($foundtable==1)
+	if($foundtable == TRUE)
 	{
+		echo "found exist table";
+		exit;
 	}
+	
+	header("Location: install.php?step=4");
 }
 
 /**
@@ -420,10 +449,11 @@ if($step == 4)
 	include($wrm_config_file);
 	include("install_settings.php");
 
+	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	@mysql_select_db($phpraid_config['db_name']);
 
 	//install schema
-	if(!$fd = fopen('database_schema/install_schema.sql', 'r'))
+	if(!$fd = fopen('database_schema/install/install_schema.sql', 'r'))
 	die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
 
 	if ($fd) {
@@ -434,7 +464,7 @@ if($step == 4)
 			if($line == ';')
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
-				@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+				@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
@@ -448,14 +478,19 @@ if($step == 4)
  * --------------------
  * Step 5
  *
- * insert default values, in wrm db
+ * fill, wrm db, with default values
  * ---------------------
  * */
 if($step == 5)
 {
+	include($wrm_config_file);
+	include("install_settings.php");
 
+	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	@mysql_select_db($phpraid_config['db_name']);
+	
 	//insert (default) values
-	if(!$fd = fopen('database_schema/insert_values.sql', 'r'))
+	if(!$fd = fopen('database_schema/install/insert_values.sql', 'r'))
 	die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
 
 	if ($fd) {
@@ -466,14 +501,14 @@ if($step == 5)
 			if($line == ';')
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
-				@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+				@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
 		fclose($fd);
 	}
 
-	header("Location: install.php?step=6&mode=".$mode);
+	header("Location: install.php?step=6");
 	exit();
 
 }
@@ -488,6 +523,12 @@ if($step == 5)
  * */
 if($step == 6)
 {
+	include($wrm_config_file);
+	include("install_settings.php");
+
+	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	@mysql_select_db($phpraid_config['db_name']);
+	
 	$gd = get_mysql_version_from_phpinfo();
 	if ($gd >= "4.1.0")
 	{
@@ -495,12 +536,12 @@ if($step == 6)
 
 		for ($i=0; $i <count($wrm_tables); $i++)
 		{
-			$sql="ALTER TABLE `".$phpraid_config['db_prefix']."_".$wrm_tables[i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
-			@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+			$sql="ALTER TABLE `".$phpraid_config['db_prefix'].$wrm_tables[$i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
+			@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 		}
 	}
 
-	header("Location: install.php?step=7&mode=".$mode);
+	header("Location: install.php?step=7");
 	exit();
 }
 
@@ -522,49 +563,10 @@ if($step == 7)
  * --------------------
  * Step 8
  *
- * find cms config file position
  * ---------------------
  * */
 if($step == 8)
 {
-	//scan complet dir
-	if($bridge_install_mode == 0)
-	{
-	}
-	//set root dir
-	elseif($bridge_install_mode == 1)
-	{
-		$smarty->assign("bd_submit", $localstr['bd_submit']);
-
-		$smarty->assign("form_action", "install.php?step=7&mode=".$mode);
-		$smarty->display('step7.tpl.html');
-	}
-	elseif($bridge_install_mode == 2)
-	{
-		header("Location: install.php?step=9&mode=".$mode."&bim=".$bridge_install_mode);
-		exit();
-	}
-
-	if(isset($_POST['submit']))
-	{
-		if($bridge_install_mode == 1){
-			$bridge = array();
-			$dir = "auth";
-			$dh = opendir($dir);
-			$tmp_count=0;
-			while(false != ($filename = readdir($dh))) {
-				$tmp_count++;
-				if($tmp_count>=3)
-				{
-					include ($dir."/".$filename);
-				}
-			}
-
-			$bridge_install_mode = $_POST['bridge_install_mode'];
-			header("Location: install.php?step=8&mode=".$mode."&bim=".$bridge_install_mode);
-			exit();
-		}
-	}
 
 }
 

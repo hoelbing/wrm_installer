@@ -1,7 +1,4 @@
-config.php
-config.*
-package
-package/*
+install_settings.php
 cache/templates_c/*
 cache/smarty_cache/*
 cache/raid_lua/*

@@ -1,8 +1,12 @@
 <?php
 
-$auth_type_name = 'Xoops';
-array_push($bridge,
-	array(
+
+function get_bridge_setting()
+{
+	//(short)Name from the BB/CMS
+	$auth_type_name = "Xoops";
+
+	return array(
 	
 		'auth_type_name' => $auth_type_name,
 		
@@ -33,16 +37,32 @@ array_push($bridge,
 		// Column Name for the Groups/Class Name field.
 		'db_allgroups_name' => "name",
 
-		/*********************************************** 
-		 * CMS Config values - change per CMS.
-		 ***********************************************/
+		//Name from the Config File
 		'DB_configfile_name' => "mainfile.php",
-		'DB_host' => 'XOOPS_DB_HOST',
-		'DB_name' => 'XOOPS_DB_NAME',
-		'DB_table_prefix' => 'XOOPS_DB_PREFIX',
-		'DB_admin_user_name' => 'XOOPS_DB_USER',
-		'DB_admin_user_password' => 'XOOPS_DB_PASS',
-	)
-);
+	);
+}
+
+/**
+ * read the config file and return array with
+ * all values
+ *
+ * @param string $filepos
+ * @return array()
+ */
+function get_bridge_config_value($filepos)
+{
+	include ($filepos);
+
+	return
+	(
+		array(
+			'DB_host' => XOOPS_DB_HOST,
+			'DB_name' => XOOPS_DB_NAME,
+			'DB_table_prefix' => XOOPS_DB_PREFIX,
+			'DB_admin_user_name' => XOOPS_DB_USER,
+			'DB_admin_user_password' => XOOPS_DB_PASS,
+		)
+	);
+}
 
 ?>

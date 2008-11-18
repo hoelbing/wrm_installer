@@ -1,8 +1,12 @@
 <?php
 
-$auth_type_name = 'e107';
-array_push($bridge,
-	array(
+
+function get_bridge_setting()
+{
+	//(short)Name from the BB/CMS
+	$auth_type_name = "e107";
+
+	return array(
 	
 		'auth_type_name' => $auth_type_name,
 		
@@ -33,16 +37,32 @@ array_push($bridge,
 		// Column Name for the Groups/Class Name field.
 		'db_allgroups_name' => "userclass_name",
 
-		/*********************************************** 
-		 * CMS Config values - change per CMS.
-		 ***********************************************/
+		//Name from the Config File
 		'DB_configfile_name' => "e107_config.php",
-		'DB_host' => '$mySQLserver',
-		'DB_name' => '$mySQLdefaultdb',
-		'DB_table_prefix' => '$mySQLprefix',
-		'DB_admin_user_name' => '$mySQLuser',
-		'DB_admin_user_password' => '$mySQLpassword',
-	)
-);
+	);
+}
+
+/**
+ * read the config file and return array with
+ * all values
+ *
+ * @param string $filepos
+ * @return array()
+ */
+function get_bridge_config_value($filepos)
+{
+	include ($filepos);
+
+	return
+	(
+		array(
+			'DB_host' => $mySQLserver,
+			'DB_name' => $mySQLdefaultdb,
+			'DB_table_prefix' => $mySQLprefix,
+			'DB_admin_user_name' => $mySQLuser,
+			'DB_admin_user_password' => $mySQLpassword,
+		)
+	);
+}
 
 ?>

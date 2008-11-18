@@ -2,8 +2,9 @@
 /*
 *
 * Upgrade file format x.x.x.sql
-* eg: 4.0.0.sql
+* eg: database_schema/upgrade/4.0.0.sql
 */
+
 
 if (!isset($_GET['step']))
 $step = 0;
@@ -16,22 +17,43 @@ if (!isset($_POST['classlang_type']))
 else
 	$lang = $_POST['classlang_type'];
 
-$wrm_config_file = "../config.php";
-$upgrade_file_name = "upgrade.php";
+include('language/locale-'.$lang.'.php');
 
 /**
- * show current version
- * and install version
+ * Name from the wrm Config File
  */
+$wrm_config_file = "../config.php";
 
+/**
+ * Name from this File
+ */
+$filename_upgrade = "upgrade.php";
+
+/**
+ *  VersionNR, from this wrm Install
+ */
+$versions_nr_install = $version;
+
+/**
+ * Version from your wrm Database
+ */
+$versions_nr_current_wrm = "";
+
+/**
+ * default wrm Table prefix
+ * used: database_schema/upgrade/x.x.x.sql
+ */
+$default_wrmtable_prefix = "wrm_";
+
+/**
+ * check version nr
+ * 
+ */
 if ($step==0)
 {
 	include($wrm_config_file);
 	include("../version.php");
 	
-	$versions_nr_install = $version;
-	$versions_nr_current_wrm = "";
-
 	$link = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	@mysql_select_db($phpraid_config['db_name'],$link);
 	
@@ -45,17 +67,17 @@ if ($step==0)
 	/*if ((str_replace(".","",$versions_nr_current_wrm)) < "400")
 	{
 		//"your wrm version is to old, for upgrade"
-		header("Location: .". $upgrade_file_name."?step=100");
+		header("Location: .". $filename_upgrade."?step=100");
 	}*/
 	if ($versions_nr_current_wrm == $versions_nr_install)
 	{
 		// "your wrm is up to date";
-		header("Location: ". $upgrade_file_name."?step=101");
+		header("Location: ". $filename_upgrade."?step=101");
 	}
 	else if ((str_replace(".","",$versions_nr_current_wrm)) > (str_replace(".","",$versions_nr_install)))
 	{
 		// "your wrm version is newer as this installation file";
-		header("Location: ". $upgrade_file_name."?step=102");
+		header("Location: ". $filename_upgrade."?step=102");
 	}
 	else
 	{
@@ -64,8 +86,8 @@ if ($step==0)
 		 */
 		//array with all filename from the upgrade dir.
 		$files = array();
-		$upgrade_dir = 'database_schema/upgrade';
-		$dh = opendir($upgrade_dir);
+		$dir_upgrade = 'database_schema/upgrade';
+		$dh = opendir($dir_upgrade);
 		while(false != ($filename = readdir($dh)))
 		{
 			$filename = str_replace('.sql','',$filename);
@@ -98,8 +120,8 @@ if ($step==0)
 		
 					if($line == ';')
 					{
-						$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
-						echo "<br>".$sql;
+						$sql = substr(str_replace('`'.$default_wrmtable_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+						//echo "<br>".$sql;
 						@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 						$sql = '';
 					}
@@ -120,8 +142,13 @@ if ($step==100)
 {
 /*
 	include ("includes/page_header.php");
-	$smarty->assign("error_msg_headtitle", " install error");
-	$smarty->assign("error_msg", "your wrm version is to old, for upgrade");
+	$smarty->assign(
+		array(
+			"form_action" => "",
+			"error_msg_headtitle" => " install error",
+			"error_msg" => "your wrm version is to old, for upgrade",
+		)
+	);
 	$smarty->display("error_msg.html");
 	include ("includes/page_footer.php");
  */
@@ -132,20 +159,30 @@ if ($step==101)
 {
 /*		
 	include ("includes/page_header.php");
-	$smarty->assign("headtitle", $localstr['headtitle']);
-	$smarty->assign("versions_nr_current_wrm", $versions_nr_current_wrm);
-	$smarty->assign("versions_nr_install", $versions_nr_install);
-	$smarty->display("update_show_vnr.tpl.html");
-	include ("includes/page_footer.php");
-*/
+	$smarty->assign(
+		array(
+			"form_action" => "",
+			"error_msg_headtitle" => $localstr['headtitle'],
+			"versions_nr_current_wrm" => $versions_nr_current_wrm,
+			"versions_nr_install" => $versions_nr_install,
+		)
+	);
+	$smarty->display("update_show_vnr.html");
+	include ("includes/page_footer.php");*/
 	echo "your wrm is up to date";
 }
 
 if ($step==102)
 {
 /*
-	$smarty->assign("error_msg_headtitle", " install error");
-	$smarty->assign("error_msg", "your installation file is to old");
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => "",
+			"error_msg_headtitle" => " install error",
+			"error_msg" => "your wrm version is newer as this installation file",
+		)
+	);
 	$smarty->display("error_msg.html");
 	include ("includes/page_footer.php");
 */		
