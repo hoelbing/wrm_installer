@@ -7,7 +7,7 @@ $localstr['step2_create_db'] = "Create Database?";
 
 /**
  * note @ me
- * sql: show columns from TABLE -> return a array with all columns
+ * sql: show columns from TABLE -> return a array with all columnsname
  */
 
 /**
@@ -149,9 +149,9 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
  * --------------------
  * Step 0
  *
- * check: /config.php file and test
- * if true -> upgrade; automatic
- * false -> install
+ * check: if config.php file available
+ * yes -> test database connection -> open upgrade.php 
+ * no -> jump to step1 (installation)
  * ---------------------
  * */
 
@@ -180,7 +180,7 @@ if($step == 0)
 		{
 			//upgrade now
 			header("Location: upgrade.php");
-			exit;//echo $phpraid_config['db_host'].$FOUNDERROR;
+			exit;
 		}
 	}
 	//echo $phpraid_config['db_host'].$FOUNDERROR;
@@ -303,46 +303,89 @@ if($step == 2) {
 	if(!isset($_POST['submit']))
 	{
 
-		$db_name_value = "";
-		$db_server_hostname_value = "localhost";
-		$db_username_value = "";
-		$db_password_value = "";
-		$db_tableprefix_value = "wrm_";
+		if (isset($_POST['wrm_db_name']))
+			$wrm_db_name_value = $_POST['wrm_db_name'];
+		else
+			$wrm_db_name_value_value = "";
+			
+		if (isset($_POST['wrm_db_server_hostname']))
+			$wrm_db_server_hostname_value = $_POST['wrm_db_server_hostname'];
+		else
+			$wrm_db_server_hostname_value = "localhost";			
 
-		if(is_file($wrm_config_file) AND (isset($phpraid_config['db_name'])))
+		if (isset($_POST['wrm_db_username']))
+			$wrm_db_username_value = $_POST['wrm_db_username'];
+		else
+			$wrm_db_username_value = "";
+				
+		if (isset($_POST['wrm_db_password']))
+			$wrm_db_password_value = $_POST['wrm_db_password'];
+		else
+			$wrm_db_password_value = "";			
+			
+		if (isset($_POST['wrm_db_tableprefix']))
+			$wrm_db_tableprefix_value = $_POST['wrm_db_tableprefix'];
+		else
+			$wrm_db_tableprefix_value = "wrm_";
+
+		if (isset($_POST['wrm_create_db']))
+			$wrm_create_db_value = $_POST['wrm_create_db'];
+		else
+			$wrm_create_db_value = false;
+
+/**
+ * show errors
+ * &erro_con=1&error_db=1
+ */
+		$error_msg = "";
+
+		if (isset($_POST['erro_con']))
+			$error_msg .= "Error connecting to Server <br/>";//. ;
+
+		if (isset($_POST['error_db']))
+			$error_msg .= $localstr['step3errordbcon'];
+
+		if ($error_msg != "")
+			$error_msg .= "<br/>".$localstr['hittingsubmit'];
+
+		if(is_file($wrm_config_file))
 		{
 			include($wrm_config_file);
-
-			$db_name_value = $phpraid_config['db_name'];
-			$db_server_hostname_value = $phpraid_config['db_host'];
-			$db_username_value = $phpraid_config['db_user'];
-			$db_password_value = $phpraid_config['db_pass'];
-			$db_tableprefix_value = $phpraid_config['db_prefix'];
+			
+			if (isset($phpraid_config['db_name']))
+			{
+				$wrm_db_name_value = $phpraid_config['db_name'];
+				$wrm_db_server_hostname_value = $phpraid_config['db_host'];
+				$wrm_db_username_value = $phpraid_config['db_user'];
+				$wrm_db_password_value = $phpraid_config['db_pass'];
+				$wrm_db_tableprefix_value = $phpraid_config['db_prefix'];				
+			}
 		}
 		 
 		include ("includes/page_header.php");
-
 		$smarty->assign(
 			array(
-					"form_action" => "install.php?step=".$step,
-					"headtitle" => $localstr['headtitle'],
-					"wrm_db_name_text" => $localstr['step2dbname'],
-					"wrm_db_name_value" => $db_name_value,
-					"wrm_create_db_text" => $localstr['step2_create_db'],
-					"wrm_db_server_hostname_text" => $localstr['step2dbserverhostname'],
-					"wrm_db_server_hostname_value" => $db_server_hostname_value,
-					"wrm_db_username_text" => $localstr['step2dbserverusername'],
-					"wrm_db_username_value" => $db_username_value,
-					"wrm_db_password_text" => $localstr['step2dbserverpwd'],
-					"wrm_db_password_value" => $db_password_value,
-					"wrm_db_tableprefix_text" => $localstr['step2WRMtableprefix'],
-					"wrm_db_tableprefix_value" => $db_tableprefix_value,
-					"bd_submit" => $localstr['bd_submit'],
+				"form_action" => "install.php?step=".$step,
+				"headtitle" => $localstr['headtitle'],
+				"wrm_db_name_text" => $localstr['step2dbname'],
+				"wrm_db_name_value" => $wrm_db_name_value,
+				"wrm_create_db_text" => $localstr['step2_create_db'],
+				"wrm_create_db_value" => $wrm_create_db_value,
+				"wrm_db_server_hostname_text" => $localstr['step2dbserverhostname'],
+				"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
+				"wrm_db_username_text" => $localstr['step2dbserverusername'],
+				"wrm_db_username_value" => $wrm_db_username_value,
+				"wrm_db_password_text" => $localstr['step2dbserverpwd'],
+				"wrm_db_password_value" => $wrm_db_password_value,
+				"wrm_db_tableprefix_text" => $localstr['step2WRMtableprefix'],
+				"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+				"error_msg" => $error_msg,
+			
+				"bd_submit" => $localstr['bd_submit'],
 			)
 		);
 	
 		$smarty->display("step2.tpl.html");
-		
 		include ("includes/page_footer.php");
 		
 	}
@@ -355,14 +398,22 @@ if($step == 2) {
 		$wrm_db_password = $_POST['wrm_db_password'];
 		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 
+		/*echo '<input type="hidden" name="wrm_db_name" value="'.$wrm_db_name.'" class="post">';
+		echo '<input type="hidden" name="wrm_create_db" value="'.$wrm_create_db.'" class="post">';
+		echo '<input type="hidden" name="wrm_db_server_hostname" value="'.$wrm_db_server_hostname.'" class="post">';
+		echo '<input type="hidden" name="wrm_db_username" value="'.$wrm_db_username.'" class="post">';
+		echo '<input type="hidden" name="wrm_db_password" value="'.$wrm_db_password.'" class="post">';
+		echo '<input type="hidden" name="wrm_db_tableprefix" value="'.$wrm_db_tableprefix.'" class="post">';
+		*/
 		$wrm_config_writeable = FALSE;
 
-		$FOUNDERROR = FALSE;
+		$FOUNDERROR_Connection = FALSE;
+		$FOUNDERROR_Database = FALSE;
 		// database connection
 		$link = @mysql_connect($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password);
 		if(!$link)
 		{
-			$FOUNDERROR = TRUE;
+			$FOUNDERROR_Connection = TRUE;
 		}
 		else {
 			if(!@mysql_select_db($wrm_db_name,$link))
@@ -374,10 +425,10 @@ if($step == 2) {
 					$sql = "Create Database ".$wrm_db_name;
 				}
 				else
-				$FOUNDERROR = TRUE;
+				$FOUNDERROR_Database = TRUE;
 			}
 
-			if ($FOUNDERROR == FALSE)
+			if (($FOUNDERROR_Connection == FALSE) and ($FOUNDERROR_Database == FALSE))
 			{
 				//check: if you can write the wrm config file
 				$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
@@ -397,9 +448,18 @@ if($step == 2) {
 			//found error
 			else
 			{
-				echo "error step2";
-				//jump to step 2
-				//header("Location: install.php?step=2");
+				if (($FOUNDERROR_Connection == TRUE) and ($FOUNDERROR_Database == TRUE))
+				{
+					header("Location: install.php?step=2&erro_con=1&error_db=1");
+				}
+				if ($FOUNDERROR_Connection == TRUE)
+				{
+					header("Location: install.php?step=2&erro_con=1");
+				}
+				if ($FOUNDERROR_Database == TRUE)
+				{
+					header("Location: install.php?step=2&error_db=1");
+				}
 			}
 		}
 	}

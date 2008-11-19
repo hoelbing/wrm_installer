@@ -14,26 +14,31 @@
   {$erromsg}
   <tr>
    <td><table width="70%" align="center">
+     <tr>
+       <td>&nbsp;</td>
+       <td>&nbsp;</td>
+     </tr>
    <tr>
-     <td>{$bridge_db_name_text}</td>
-     <td><input type="text" name="bridge_db_name" class="post" value="{$bridge_db_name_value}"></td>
-    </tr>
-    <tr>
-     <td>{$bridge_db_server_hostname_text}</td>
-     <td><input type="text" name="bridge_db_server_hostname" class="post" value="{$bridge_db_server_hostname_value}"></td>
-    </tr>
-    <tr>
-     <td>{$bridge_db_username_text}</td>
-     <td><input type="text" name="bridge_db_username" class="post" value="{$bridge_db_username_value}"></td>
-    </tr>
-    <tr>
-     <td>{$bridge_db_password_text}</td>
-     <td><input type="text" name="bridge_db_password" class="post" value="{$bridge_db_password_value}"></td>
+     <td>{$bridge_db_prefix_text}</td>
+     <td><input type="text" name="bridge_db_prefix" class="post" value="{$bridge_db_prefix_value}"></td>
     </tr>
 	<tr>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
 	</tr>
+	<tr>
+      <td>{$bridge_type_text}</td>
+	  <td><select name="bridge_type">
+	    
+{html_options values=$bridge_type_values selected=$bridge_type_selected output=$bridge_type_values}
+		
+	    </select>
+      </td>
+	  </tr>
+	<tr>
+      <td>&nbsp;</td>
+	  <td>&nbsp;</td>
+	  </tr>
 
    </table>
   <tr>

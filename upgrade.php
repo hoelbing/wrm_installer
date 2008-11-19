@@ -47,7 +47,11 @@ $default_wrmtable_prefix = "wrm_";
 
 /**
  * check version nr
- * 
+ * repeat loop
+ * -array with all upgrade file
+ * -1. compare wrm db version with this array (upgrade files (x.x.x = version nr))
+ * -2. sql command
+ * -3. compare wrm db version and install file version 1. equal -> upgrade finish 2. not equal jump to step1 (now is the version +1)
  */
 if ($step==0)
 {
@@ -98,6 +102,7 @@ if ($step==0)
 		array_shift($files);
 		array_shift($files);
 
+		//version nr without point eg: 400 and not 4.0.0
 		while ((str_replace(".","",$versions_nr_current_wrm)) > (str_replace(".","",$versions_nr_install)))
 		{
 			$file_array_index = 0;

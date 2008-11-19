@@ -123,40 +123,34 @@ if ($step == 1)
  * 
  * user -> get bridge settings 
 */
-
 if ($step == 100)
 {
 	if(!isset($_POST['submit']))
 	{
+		$bridge_db_name = $_POST['bridge_db_name'];
+		$bridge_db_server_hostname = $_POST['bridge_db_server_hostname'];
+		$bridge_db_username = $_POST['bridge_db_username'];
+		$bridge_db_password = $_POST['bridge_db_password'];
+			
 		include ("includes/page_header.php");
-		// array with all bridge name
-		$array_bridge_name = array();
-		
-		
-		$array_bridge_name[] = "phpBB3";//only for testting
-		$array_bridge_name[] = "e107";//only for testting
+
 		$smarty->assign(
 			array(
 				"form_action" => $filename_bridge."?step=".$step ,
 				"headtitle" => "INFO: you have select the EXPERT MODE",
 	
 				"bridge_db_name_text" => $localstr['step2dbname'],
-				"bridge_db_name_value" => $db_name_value,
+				"bridge_db_name_value" => $bridge_db_name,
 				"bridge_db_server_hostname_text" => $localstr['step2dbserverhostname'],
-				"bridge_db_server_hostname_value" => $db_server_hostname_value,
+				"bridge_db_server_hostname_value" => $bridge_db_server_hostname,
 				"bridge_db_username_text" => $localstr['step2dbserverusername'],
-				"bridge_db_username_value" => $db_username_value,
+				"bridge_db_username_value" => $bridge_db_username,
 				"bridge_db_password_text" => $localstr['step2dbserverpwd'],
-				"bridge_db_password_value" => $db_password_value,
-				"bridge_type_text" => "select your bridge type",
-				"bridge_type_output" => $array_bridge_name,
-				"bridge_type_values" => $array_bridge_name,
-				"bridge_type_selected" => $array_bridge_name[0],
-	
+				"bridge_db_password_value" => $bridge_db_password,
 				"bd_submit" => $localstr['bd_submit'],
 			)
 		);
-		
+
 		$smarty->display('bridges_expertmode_1.tpl.html');
 		include ("includes/page_footer.php");
 	}
@@ -181,13 +175,88 @@ if ($step == 100)
 				$FOUNDERROR = TRUE;
 			}
 		}
+		if ($FOUNDERROR == FALSE)
+		{
+			header("Location: ".$filename_bridge."?step=101");
+		}
 	}
 }
 
-//set user, from cms/bb system, they have full/all rights in wrm
-if ($step == "ep_mode_2")
+/**
+ * get prefix and bridge type
+ */
+if ($step == 101)
 {
+	if(!isset($_POST['submit']))
+	{
+		$bridge_db_name = $_POST['bridge_db_name'];
+		$bridge_db_server_hostname = $_POST['bridge_db_server_hostname'];
+		$bridge_db_username = $_POST['bridge_db_username'];
+		$bridge_db_password = $_POST['bridge_db_password'];
+		$bridge_db_prefix = $_POST['bridge_db_prefix'];
+		if (isset($_POST['bridge_type']))
+		{
+			$bridge_type_selected = $_POST['bridge_type'];
+		}
+		else
+		{
+			$bridge_type_selected = $array_bridge_name[0];
+		}
+			
+		include ("includes/page_header.php");
+		// array with all bridge name
+		$array_bridge_name = array();
+		
+		
+		$array_bridge_name[] = "phpBB3";//only for testting
+		$array_bridge_name[] = "e107";//only for testting
+		$smarty->assign(
+			array(
+				"form_action" => $filename_bridge."?step=".$step ,
+				"headtitle" => "INFO: you have select the EXPERT MODE",
+
+				"bridge_db_prefix_text" => "Table Prefix",
+				"bridge_db_password_value" => $bridge_db_prefix,
+			
+				"bridge_type_text" => "select your bridge type",
+				"bridge_type_output" => $array_bridge_name,
+				"bridge_type_values" => $array_bridge_name,
+				"bridge_type_selected" => $bridge_type_selected,
 	
+				"bd_submit" => $localstr['bd_submit'],
+			)
+		);
+
+		$smarty->display('bridges_expertmode_2.tpl.html');
+		include ("includes/page_footer.php");
+	}
+	if(isset($_POST['submit']))
+	{
+		$bridge_db_name = $_POST['bridge_db_name'];
+		$bridge_db_server_hostname = $_POST['bridge_db_server_hostname'];
+		$bridge_db_username = $_POST['bridge_db_username'];
+		$bridge_db_password = $_POST['bridge_db_password'];
+
+		$FOUNDERROR = FALSE;
+		//test: database connection
+		$link = @mysql_connect($bridge_db_server_hostname, $bridge_db_username, $bridge_db_password);
+		if(!$link)
+		{
+			$FOUNDERROR = TRUE;
+		}
+		else 
+		{
+			if(!@mysql_select_db($bridge_db_name,$link))
+			{
+				$FOUNDERROR = TRUE;
+			}
+		}
+	}	
+}
+
+//set user, from cms/bb system, they have full/all rights in wrm
+if ($step == 102)
+{
 }
 
 if ($step == 2)
