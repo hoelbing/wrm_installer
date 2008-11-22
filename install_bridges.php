@@ -4,8 +4,7 @@
 //lang strg
 $localstr['bd_scan'] = "scan";
 $localstr['bridge_expert_mode'] = "expert mode";
-$localstr['bridge_scan_titel'] = "pls press the button SCAN for scanning after config files @ your web server";
-
+$localstr['bridge_step0_titel'] = "welcome to the bridge Mode";
 /*-------------------------------*/
 
 /*
@@ -20,6 +19,12 @@ $localstr['bridge_scan_titel'] = "pls press the button SCAN for scanning after c
 * user can select: a config file 
 * 
 * expert mode
+* 
+* ------
+* SHOW DATABASES
+* SHOW TABLES  
+* SHOW Columns from TABLE -> return a array with all columnsname
+* 
 * */
 
 if (!isset($_GET['step']))
@@ -53,21 +58,62 @@ function get_all_configfileposition_onwebserver()
 	return $array_all_conf_pos;
 }
 
+
+function get_bridge_pos_from_dbserver()
+{
+	/**
+	 *  * ------
+		* SHOW DATABASES
+		* SHOW TABLES  
+		* SHOW Columns from TABLE -> return a array with all columnsname
+		* 
+	 */
+	return (
+		array(
+			array (
+				"bridge_name" => "phpbb3",
+				"bridge_databbase" => "usr_web_2",
+				"bridge_table_suffix" => "phpbb_"
+			),
+			array (
+				"bridge_name" => "e107",
+				"bridge_databbase" => "usr_web_4",
+				"bridge_table_suffix" => "e107_"
+			)
+		)
+	);
+}
+
 if ($step == 0)
 {
 	if ( !isset($_POST['scan']) and !isset($_POST['submit']))
 	{
-		$array_all_conf_pos = array("","");
+		$array_bridge_db = array();
+		$array_bridge_db = get_bridge_pos_from_dbserver();
+		$bridge_type_output = array();
+		$bridge_type_values = array();
+		
+		for ($i=0;$i<count($array_bridge_db);$i++)
+		{
+			$bridge_type_output[]="name: ". $array_bridge_db[$i]["bridge_name"]."; dbname: ". $array_bridge_db[$i]["bridge_databbase"]."; dbsuffix: ".$array_bridge_db[$i]["bridge_table_suffix"];
+			$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_databbase"].".".$array_bridge_db[$i]["bridge_table_suffix"];
+			//$bridge_type_values[]=array ($array_bridge_db[$i]["bridge_name"],$array_bridge_db[$i]["bridge_databbase"],$array_bridge_db[$i]["bridge_table_suffix"]);
+		}
+		
+		//insert iums
+		$bridge_type_output[]="name: iUMS dbname: ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix'];
+		$bridge_type_values[]="iUMS:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'];
+		//$bridge_type_values[]=array ("iUMS",$phpraid_config['db_name'],$phpraid_config['db_prefix']);
 		include ("includes/page_header.php");
 		
 		$smarty->assign(
 			array(
-				"form_action" => $filename_bridge."?step=".$step ,
-				"headtitle" => $localstr['bridge_scan_titel'],
-				"bridge_type_output" => $localstr['bridge_expert_mode'],
-				"bridge_type_values" => $localstr['bridge_expert_mode'],
-				"bridge_type_selected" => $localstr['bridge_expert_mode'],
-				"bd_scan" => $localstr['bd_scan'],
+				"form_action" => $filename_bridge."?step=1" ,
+				"headtitle" => $localstr['bridge_step0_titel'],
+				"bridge_type_output" => $bridge_type_output,
+				"bridge_type_values" => $bridge_type_values,
+				//last entry are selected (iums)
+				"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
 				"bd_submit" => $localstr['bd_submit'],
 			)
 		);
@@ -75,44 +121,77 @@ if ($step == 0)
 		$smarty->display('bridges.s0.tpl.html');
 		include ("includes/page_footer.php");
 	}
-
-	if(isset($_POST['scan']))
-	{
-		$array_all_conf_pos = get_all_configfileposition_onwebserver();
-		$array_all_conf_pos[] = $localstr['bridge_expert_mode'];
-		include ("includes/page_header.php");
-		
-		$smarty->assign(
-			array(
-				"form_action" => $filename_bridge."?step=".$step ,
-				"headtitle" => $localstr['headtitle'],
-				"bridge_type_output" => $array_all_conf_pos,
-				"bridge_type_values" => $array_all_conf_pos,
-				"bridge_type_selected" => $array_all_conf_pos[0],
-				"bd_scan" => $localstr['bd_scan'],
-				"bd_submit" => $localstr['bd_submit'],
-			)
-		);
-		
-		$smarty->display('bridges.s0.tpl.html');
-		include ("includes/page_footer.php");		
-	}
 	
-	if(isset($_POST['submit']))
+/*	if(isset($_POST['submit']))
 	{
-		if ($_POST['allfoundbridges'] == $localstr['bridge_expert_mode'])
-		{
-			//goto ep_mode_1
-			header("Location: ".$filename_bridge."?step=100");
-			exit;
-		}
-		else
-			header("Location: ".$filename_bridge."?step=1");
+		//echo $_POST['allfoundbridges']."<br>";
+		print_r($_POST['allfoundbridges']);
 	}
+*/
 }
 
 if ($step == 1)
 {
+//	echo $_POST['allfoundbridges']."<br>";
+	include ("includes/page_header.php");
+	
+	
+	$bridge_name = "phpbb3";
+	$bridge_suffix = "usr_web_2.phpbb_";
+	
+	include("auth/install_".$bridge_name.".php");
+	
+	$bridge_setting = get_bridge_setting();
+
+	$group_array = array();
+	include ($wrm_config_file);
+	$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
+	$sql = 	"SELECT " . $bridge_setting['db_allgroups_id'] . " , ". $bridge_setting['db_allgroups_name'] .
+			" FROM " . 	$bridge_suffix . $bridge_setting['db_table_allgroups'] .
+			" ORDER BY ". $bridge_setting['db_allgroups_id'];
+
+	$result_group = @mysql_query($sql) or die("Error verifying " . mysql_error());
+	while ($data_group = @mysql_fetch_array($result_group,true))
+	{
+		array_push($group_array,
+			array(
+				'group_name'=>$data_group[$bridge_setting['db_allgroups_name']],
+				'group_id'=>$data_group[$bridge_setting['db_allgroups_id']]
+			)
+		);
+
+	}
+	@mysql_close($linkWRM);
+	
+	echo $sql;
+	print_r($group_array);
+	$smarty->assign(
+		array(
+			"form_action" => "install.php?step=".$step,
+			"headtitle" => $localstr['headtitle'],
+			"user_group_01_text" => $localstr['step5sub3group01'],
+			"user_group_02_text" => $localstr['step5sub3group02'],
+			"user_group_03_text" => $localstr['step5sub3group03'],
+			"user_group_alt_01_text" => $localstr['step5sub3altgroup01'],
+			"user_group_alt_02_text" => $localstr['step5sub3altgroup02'],
+
+			"user_group_output" => $array_bridge_name,
+			"user_group_values" => $array_bridge_name,
+			"user_group_selected" => $bridge_type_selected,
+			"user_alt_group_output" => $array_bridge_name,
+			"user_alt_group_values" => $array_bridge_name,
+			"user_alt_group_selected" => $bridge_type_selected,
+				
+			"error_msg" => $error_msg,
+			"bridge_name" => $bridge_name,
+			"bridge_suffix" => $bridge_suffix,
+			"bd_submit" => $localstr['bd_submit'],
+		)
+	);
+
+	$smarty->display("bridges.s1.tpl.html");
+	include ("includes/page_footer.php");
+		
 
 	//header("Location: ".$filename_bridge."?step=0");
 }

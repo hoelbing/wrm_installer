@@ -81,69 +81,6 @@ function get_mysql_version_from_phpinfo()
 	return $gd;
 }
 
-/**
- * write the WRM Config File "../config.php"
- *
- * @param var $wrm_db_name
- * @param var $wrm_db_server_hostname
- * @param var $wrm_db_username
- * @param var $wrm_db_password
- * @param var $wrm_db_tableprefix
- * @param var $eqdkp_db_name
- * @param var $eqdkp_db_host
- * @param var $eqdkp_db_user
- * @param var $eqdkp_db_pass
- * @param var $eqdkp_db_prefix
- * @return boolean 
- */
-function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
-{
-	global $wrm_config_file;
-	include('../version.php');
-	/**
-	 * write config file (config.php)
-	 */
-	$output  = "<?php\n";
-	$output .= "/*\n";
-	$output .= "#**********************************************#\n";
-	$output .= "#                                              #\n";
-	$output .= "#     auto-generated configuration file        #\n";
-	$output .= "#     WoW Raid Manager ".$version."                   #\n";
-	$output .= "#     date: ".date("Y-m-d - H:i:s")."              #\n";
-	$output .= "#   Do not change anything in this file!       #\n";
-	$output .= "#                                              #\n";
-	$output .= "#**********************************************#\n";
- 	$output .= "*/\n\n";
-	$output .= "global ".'$phpraid_config'.";\n";
-	$output .= '$phpraid_config[\'db_name\']'." = '$wrm_db_name';\n";
-	$output .= '$phpraid_config[\'db_host\']'." = '$wrm_db_server_hostname';\n";
-	$output .= '$phpraid_config[\'db_user\']'." = '$wrm_db_username';\n";
-	$output .= '$phpraid_config[\'db_pass\']'." = '$wrm_db_password';\n";
-	$output .= '$phpraid_config[\'db_prefix\']'." = '$wrm_db_tableprefix';\n";
-	$output .= '$phpraid_config[\'eqdkp_db_name\']'." = '$eqdkp_db_name';\n";
-	$output .= '$phpraid_config[\'eqdkp_db_host\']'." = '$eqdkp_db_host';\n";
-	$output .= '$phpraid_config[\'eqdkp_db_user\']'." = '$eqdkp_db_user';\n";
-	$output .= '$phpraid_config[\'eqdkp_db_pass\']'." = '$eqdkp_db_pass';\n";
-	$output .= '$phpraid_config[\'eqdkp_db_prefix\']'." = '$eqdkp_db_prefix';\n";
-	$output .= "?>\n";
-	
-	$fd = fopen($wrm_config_file,'w+');
-	if (!$fd)
-	{
-		echo "can not write this file: ". $wrm_config_file."<br>";
-		fclose($fd);
-		return (FALSE);
-	}
-	else
-	{
-		fwrite($fd, $output);
-		fclose($fd);
-
-		@chmod($wrm_config_file,0777);
-		
-		return (TRUE);
-	}
-}
 
 /**
  * --------------------
@@ -164,17 +101,19 @@ if($step == 0)
 		$FOUNDERROR = FALSE;
 
 		// database connection
-		$link = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-		if(!$link)
+		$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+		if(!$linkWRM)
 		{
 			$FOUNDERROR = TRUE;
 		}
 		else {
-			if(!@mysql_select_db($phpraid_config['db_name'],$link))
+			if(!@mysql_select_db($phpraid_config['db_name'],$linkWRM))
 			{
 				$FOUNDERROR = TRUE;
 			}
 		}
+		
+		@mysql_close($linkWRM);
 		
 		if ($FOUNDERROR == FALSE)
 		{
@@ -339,15 +278,21 @@ if($step == 2) {
  */
 		$error_msg = "";
 
-		if (isset($_POST['erro_con']))
-			$error_msg .= "Error connecting to Server <br/>";//. ;
+		if ( isset($_POST['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
+			$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
 
-		if (isset($_POST['error_db']))
+		if ( isset($_POST['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
 			$error_msg .= $localstr['step3errordbcon'];
 
 		if ($error_msg != "")
+		{
 			$error_msg .= "<br/>".$localstr['hittingsubmit'];
-
+			echo $error_msg;
+		}
+		else
+		{
+			echo $error_msg;
+		}
 		if(is_file($wrm_config_file))
 		{
 			include($wrm_config_file);
@@ -398,38 +343,46 @@ if($step == 2) {
 		$wrm_db_password = $_POST['wrm_db_password'];
 		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 
-		/*echo '<input type="hidden" name="wrm_db_name" value="'.$wrm_db_name.'" class="post">';
+	/*	echo '<form  method="POST">';
+		echo '<input type="hidden" name="wrm_db_name" value="'.$wrm_db_name.'" class="post">';
 		echo '<input type="hidden" name="wrm_create_db" value="'.$wrm_create_db.'" class="post">';
 		echo '<input type="hidden" name="wrm_db_server_hostname" value="'.$wrm_db_server_hostname.'" class="post">';
 		echo '<input type="hidden" name="wrm_db_username" value="'.$wrm_db_username.'" class="post">';
 		echo '<input type="hidden" name="wrm_db_password" value="'.$wrm_db_password.'" class="post">';
 		echo '<input type="hidden" name="wrm_db_tableprefix" value="'.$wrm_db_tableprefix.'" class="post">';
+		echo '</form>';
 		*/
+		
 		$wrm_config_writeable = FALSE;
-
 		$FOUNDERROR_Connection = FALSE;
 		$FOUNDERROR_Database = FALSE;
+		
 		// database connection
-		$link = @mysql_connect($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password);
-		if(!$link)
+		$linkWRM = @mysql_connect($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password);
+		if(!$linkWRM)
 		{
 			$FOUNDERROR_Connection = TRUE;
 		}
 		else {
-			if(!@mysql_select_db($wrm_db_name,$link))
+			if(!@mysql_select_db($wrm_db_name,$linkWRM))
 			{
 				if ($wrm_create_db == true)
 				{
 					//test, creating
-					$dblist=@mysql_list_dbs($link);
+					//$dblist=@mysql_list_dbs($linkWRM);
 					$sql = "Create Database ".$wrm_db_name;
+					@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
 				}
 				else
 				$FOUNDERROR_Database = TRUE;
 			}
-
+			
+			@mysql_close($linkWRM);
+			
 			if (($FOUNDERROR_Connection == FALSE) and ($FOUNDERROR_Database == FALSE))
 			{
+				include("includes/function.php");
+				
 				//check: if you can write the wrm config file
 				$wrm_config_writeable = write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix);
 				
@@ -450,15 +403,15 @@ if($step == 2) {
 			{
 				if (($FOUNDERROR_Connection == TRUE) and ($FOUNDERROR_Database == TRUE))
 				{
-					header("Location: install.php?step=2&erro_con=1&error_db=1");
+					header("Location: install.php?step=2&erro_con&error_db");
 				}
 				if ($FOUNDERROR_Connection == TRUE)
 				{
-					header("Location: install.php?step=2&erro_con=1");
+					header("Location: install.php?step=2&erro_con");
 				}
 				if ($FOUNDERROR_Database == TRUE)
 				{
-					header("Location: install.php?step=2&error_db=1");
+					header("Location: install.php?step=2&error_db");
 				}
 			}
 		}
@@ -478,6 +431,9 @@ if($step == 3)
 	include($wrm_config_file);
 	include("install_settings.php");
 
+	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	@mysql_select_db($phpraid_config['db_name']);
+
 	$foundtable = FALSE;
 	$result = @mysql_list_tables($phpraid_config['db_name']);
 
@@ -494,6 +450,7 @@ if($step == 3)
 		exit;
 	}
 	
+	@mysql_close($linkWRM);
 	header("Location: install.php?step=4");
 }
 
@@ -509,7 +466,7 @@ if($step == 4)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	@mysql_select_db($phpraid_config['db_name']);
 
 	//install schema
@@ -530,7 +487,8 @@ if($step == 4)
 		}
 		fclose($fd);
 	}
-
+	
+	@mysql_close($linkWRM);
 	header("Location: install.php?step=5");
 }
 
@@ -546,7 +504,7 @@ if($step == 5)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	@mysql_select_db($phpraid_config['db_name']);
 	
 	//insert (default) values
@@ -567,7 +525,8 @@ if($step == 5)
 		}
 		fclose($fd);
 	}
-
+	
+	@mysql_close($linkWRM);
 	header("Location: install.php?step=6");
 	exit();
 
@@ -586,7 +545,7 @@ if($step == 6)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	@mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	@mysql_select_db($phpraid_config['db_name']);
 	
 	$gd = get_mysql_version_from_phpinfo();
@@ -601,6 +560,7 @@ if($step == 6)
 		}
 	}
 
+	@mysql_close($linkWRM);
 	header("Location: install.php?step=7");
 	exit();
 }
@@ -632,12 +592,41 @@ if($step == 8)
 
 /**
  * --------------------
- * Step 9
+ * Step done
+ * 
+ * only for dynamic default values
  * ---------------------
  * */
-if($step == 9)
+if($step == 'done')
 {
-
+		include ($wrm_config_file);
+		
+		//insert default values
+		$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
+		$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
+		
+		$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
+		@mysql_select_db($phpraid_config['db_name']);
+		$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
+		$result =  @mysql_query($sql) or die("Error verifying " . mysql_error());
+		if((@mysql_num_rows($result) == 0))
+		{
+			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('header_link','$wrmserver')";
+			@mysql_query($sql) or die("Error inserting " . mysql_error());
+			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_site_url', '$wrmserverfile')";
+			@mysql_query($sql) or die("Error inserting " . mysql_error());
+			$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_export_url', '$wrmserverfile')";
+			@mysql_query($sql) or die("Error inserting " . mysql_error());
+		}
+		else{
+			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserver' WHERE config_name='header_link'";
+			@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
+			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_site_url'";
+			@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
+			$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
+			@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
+		}
+		@mysql_close($linkWRM);
 }
 
 ?>

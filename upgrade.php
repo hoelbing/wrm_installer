@@ -58,8 +58,8 @@ if ($step==0)
 	include($wrm_config_file);
 	include("../version.php");
 	
-	$link = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name'],$link);
+	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
+	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	
 	//get the last (max) version nr, from wrm db
 	$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
@@ -70,16 +70,19 @@ if ($step==0)
 
 	/*if ((str_replace(".","",$versions_nr_current_wrm)) < "400")
 	{
+		@mysql_close($linkWRM);
 		//"your wrm version is to old, for upgrade"
 		header("Location: .". $filename_upgrade."?step=100");
 	}*/
 	if ($versions_nr_current_wrm == $versions_nr_install)
 	{
+		@mysql_close($linkWRM);
 		// "your wrm is up to date";
 		header("Location: ". $filename_upgrade."?step=101");
 	}
 	else if ((str_replace(".","",$versions_nr_current_wrm)) > (str_replace(".","",$versions_nr_install)))
 	{
+		@mysql_close($linkWRM);
 		// "your wrm version is newer as this installation file";
 		header("Location: ". $filename_upgrade."?step=102");
 	}
@@ -139,7 +142,9 @@ if ($step==0)
 			$data = @mysql_fetch_assoc($result);
 			$versions_nr_current_wrm = $data['version_number'];
 		}
-	}	
+	}
+	
+	@mysql_close($linkWRM);	
 }
 
 /*---------error's--------------------*/
