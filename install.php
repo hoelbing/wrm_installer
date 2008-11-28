@@ -81,7 +81,6 @@ function get_mysql_version_from_phpinfo()
 	return $gd;
 }
 
-
 /**
  * --------------------
  * Step 0
@@ -92,7 +91,7 @@ function get_mysql_version_from_phpinfo()
  * ---------------------
  * */
 
-if($step == 0)
+if ($step == "0")
 {
 	if(is_file($wrm_config_file))
 	{
@@ -122,7 +121,6 @@ if($step == 0)
 			exit;
 		}
 	}
-	//echo $phpraid_config['db_host'].$FOUNDERROR;
 	header("Location: install.php?step=1");
 }
 
@@ -132,7 +130,7 @@ if($step == 0)
  * ---------------------
  * */
 
-if($step == 1) {
+else if($step == 1) {
 	if(!isset($_POST['submit']))
 	{
 		@chmod("./wowarmory_tooltip/",0775);
@@ -236,7 +234,7 @@ if($step == 1) {
  * show/set db settings
  * ---------------------
  * */
-if($step == 2) {
+else if($step == 2) {
 
 	// If the config file already exists and has something in it, we'll use it.
 	if(!isset($_POST['submit']))
@@ -425,14 +423,14 @@ if($step == 2) {
  * test: if selected db, are wrm table include
  * ---------------------
  * */
-if($step == 3)
+else if($step == 3)
 {
 
 	include($wrm_config_file);
 	include("install_settings.php");
 
 	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name']);
+	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 
 	$foundtable = FALSE;
 	$result = @mysql_list_tables($phpraid_config['db_name']);
@@ -461,13 +459,13 @@ if($step == 3)
  * insert schema(=tables), in wrm db
  * ---------------------
  * */
-if($step == 4)
+else if($step == 4)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
 
 	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name']);
+	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 
 	//install schema
 	if(!$fd = fopen('database_schema/install/install_schema.sql', 'r'))
@@ -499,13 +497,13 @@ if($step == 4)
  * fill, wrm db, with default values
  * ---------------------
  * */
-if($step == 5)
+else if($step == 5)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
 
 	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name']);
+	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	
 	//insert (default) values
 	if(!$fd = fopen('database_schema/install/insert_values.sql', 'r'))
@@ -540,13 +538,13 @@ if($step == 5)
  * Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
  * ---------------------
  * */
-if($step == 6)
+else if($step == 6)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
 
 	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name']);
+	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	
 	$gd = get_mysql_version_from_phpinfo();
 	if ($gd >= "4.1.0")
@@ -574,7 +572,7 @@ if($step == 6)
  * jump 2 bridge installion at/in "install_bridges.php"
  * ---------------------
  * */
-if($step == 7)
+else if($step == 7)
 {
 	header("Location: install_bridges.php?step=0");
 }
@@ -585,7 +583,7 @@ if($step == 7)
  *
  * ---------------------
  * */
-if($step == 8)
+else if($step == 8)
 {
 
 }
@@ -597,16 +595,15 @@ if($step == 8)
  * only for dynamic default values
  * ---------------------
  * */
-if($step == 'done')
+else if($step == "done")
 {
 		include ($wrm_config_file);
 		
 		//insert default values
 		$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
 		$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
-		
 		$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
-		@mysql_select_db($phpraid_config['db_name']);
+		@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 		$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
 		$result =  @mysql_query($sql) or die("Error verifying " . mysql_error());
 		if((@mysql_num_rows($result) == 0))
@@ -627,6 +624,20 @@ if($step == 'done')
 			@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 		}
 		@mysql_close($linkWRM);
+		
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				//"form_action" => "install.php?step=".$step,
+				"headtitle" => $localstr['stepdonefinished'],
+				"donesetupcomplete_text" => $localstr['stepdonesetupcomplete'],
+				"doneremovedir_text" => $localstr['stepdoneremovedir'],
+			
+			)
+		);
+	
+		$smarty->display("done.tpl.html");
+		include ("includes/page_footer.php");
 }
 
 ?>

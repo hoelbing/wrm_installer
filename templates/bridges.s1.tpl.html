@@ -12,21 +12,13 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><div align="center">{$user_group_01_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center">{$user_group_02_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center">{$user_group_03_text}</div></td>
+    <td><div align="center">{$user_admin_01_text}</div></td>
   </tr>
   <tr>
     <td>
       <div align="center">
-        <select name="user_group" class="post">
-          
-		 {html_options values=$user_group_values selected=$user_group_selected output=$user_group_output}
-		
+        <select name="bridge_admin_id" class="post">
+		 {html_options values=$bridge_admin_id_values selected=$bridge_admin_id_selected output=$bridge_admin_id_output}
         </select>
         </div></td>
   </tr>
@@ -34,31 +26,26 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><div align="center">{$user_group_alt_01_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center">{$user_group_alt_02_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center">
-      <select name="user_alt_group" class="post">
-        
-          
-		 {html_options values=$user_alt_group_values selected=$user_alt_group_selected output=$user_alt_group_output}
-		
-        
-      </select>
-    </div></td>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="34%"><div align="right">{$user_admin_password_text}</div></td>
+        <td width="66%"><input type="text" name="user_admin_password" value="{$user_admin_password_value}"/></td>
+      </tr>
+    </table></td>
   </tr>
   <tr>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><div align="center">
-        <input type="submit" name="submit" value="{$bd_submit}" />
-        <input type="hidden" name="bridge_name" value="{$bridge_name}" />
-        <input type="hidden" name="bridge_suffix" value="{$bridge_suffix}" />
-    </div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+		<input type="hidden" name="bridge_name" value="{$bridge_name}" />
+		<input type="hidden" name="bridge_prefix" value="{$bridge_prefix}" />
+      </div>    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>

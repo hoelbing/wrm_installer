@@ -1,0 +1,57 @@
+<form method="post" action="{$form_action}">
+
+{$select_lang}: <select name="classlang_type">
+{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
+</select>
+
+ <table align="center" width="600">
+  <tr>
+   <td><div align="center"><b>{$headtitle}</b></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="5" cellpadding="5">
+      <tr>
+        <td width="34%"><div align="right">{$bridge_name_text}</div></td>
+        <td width="66%"><div align="left"><input type="text" name="bridge_name" value="{$bridge_name_value}" readonly/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">{$bridge_prefix_text}</div></td>
+        <td><div align="left"><input type="text" name="bridge_prefix" value="{$bridge_prefix_value}" readonly/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">{$bridge_admin_id_text}</div></td>
+        <td><div align="left"><input type="text" name="bridge_admin_id" value="{$bridge_admin_id_value}" readonly/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">{$bridge_admin_password_text}</div></td>
+        <td><div align="left"><input type="text" name="bridge_admin_password" value="{$bridge_admin_password_value}" readonly/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">{$bridge_auth_user_text}</div></td>
+        <td><div align="left"><input type="text" name="bridge_auth_user" value="{$bridge_auth_user_group_value}" readonly/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">{$bridge_auth_user_alt_text}</div></td>
+        <td><div align="left"><input type="text" name="bridge_auth_user_alt_group" value="{$bridge_auth_user_alt_group_value}" readonly/></div></td>
+      </tr>
+
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+      </div>    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+ </table>  
+
+</form>

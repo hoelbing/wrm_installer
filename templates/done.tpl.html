@@ -1,0 +1,29 @@
+<form method="post" action="{$form_action}">
+
+{$select_lang}: <select name="classlang_type">
+{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
+</select>
+
+ <table align="center" width="600">
+  <tr>
+   <td><div align="center"><b>{$headtitle}</b></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center">{$donesetupcomplete_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center"></div></td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">{$doneremovedir_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center"></div></td>
+  </tr>
+ </table>  
+
+</form>

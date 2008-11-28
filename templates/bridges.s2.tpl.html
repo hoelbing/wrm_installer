@@ -1,0 +1,68 @@
+<form method="post" action="{$form_action}">
+
+{$select_lang}: <select name="classlang_type">
+{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
+</select>
+
+ <table align="center" width="600">
+  <tr>
+   <td><div align="center"><b>{$headtitle}</b></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center">{$user_group_01_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center">{$user_group_02_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center">{$user_group_03_text}</div></td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+        <select name="bridge_auth_user_group" class="post">
+          
+		 {html_options values=$user_group_values selected=$user_group_selected output=$user_group_output}
+		
+        </select>
+        </div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center">{$user_group_alt_01_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center">{$user_group_alt_02_text}</div></td>
+  </tr>
+  <tr>
+    <td><div align="center">
+      <select name="bridge_auth_user_alt_group" class="post">
+      	{html_options values=$user_alt_group_values selected=$user_alt_group_selected output=$user_alt_group_output}        
+	  </select>
+    </div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+      <div align="center">
+		<input type="submit" name="submit" value="{$bd_submit}" />
+		<input type="hidden" name="bridge_name" value="{$bridge_name}" />
+		<input type="hidden" name="bridge_prefix" value="{$bridge_prefix}" />
+		<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
+		<input type="hidden" name="bridge_admin_password" value="{$bridge_admin_password}" />
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+ </table>  
+
+</form>
