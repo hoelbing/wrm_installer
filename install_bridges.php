@@ -116,57 +116,50 @@ function get_bridge_pos_from_dbserver()
 		$result_tables = @mysql_query($sql_tables) or die("Error" . mysql_error());
 		while ($data_tables = @mysql_fetch_array($result_tables,true))
 		{
-			//print_r($data_tables);
-			//echo "<br>Tables: ".$data_tables["Tables_in_".$data_db_all['Database']]."(".strlen($data_tables["Tables_in_".$data_db_all['Database']]).")  :";
-			//echo strlen($data_tables["Tables_in_".$data_db_all['Database']]).":".strlen($bridge[0]['db_table_user_name']).":".$bridge[0]['db_table_user_name']."<br>";
 
-			//echo "<br>Tables: ".$data_tables["Tables_in_".$data_db_all['Database']]."   :<br>";
-
-			$db_name = $data_tables["Tables_in_".$data_db_all['Database']];
+			$db_table_name = $data_tables["Tables_in_".$data_db_all['Database']];
 			
+			//check line: with all bridges
 			for ($i=0;$i<count($bridge);$i++)
 			{
-				// not iums
-				if ($bridge[$i]['db_table_user_name']!="")
+				//phpbb_acl_users
+				//$bridge[$i]['db_table_user_name'] == users
+				//$tmp_prefix = phpbb_acl_
+				//none
+				
+				$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+				$sql_test_tables = 
+						'SHOW TABLES '.
+						' FROM '.$data_db_all['Database'].
+						' WHERE Tables_in_'.$data_db_all['Database'].' LIKE "'.$db_temp_prefix.'%"';
+				$result_test_tables = @mysql_query($sql_test_tables) or die("Error" . mysql_error());
+
+				//echo "<br>sql:".$sql_test_tables."<br>prefix:".$tmp_prefix; 
+				$tmp_counter_test_tables = 0;
+				while ($data_test_tables = @mysql_fetch_array($result_test_tables,true))
 				{
-					//echo strlen($data_tables["Tables_in_".$data_db_all['Database']]).substr($data_tables["Tables_in_".$data_db_all['Database']],strlen($data_tables["Tables_in_".$data_db_all['Database']])-strlen($bridge[$i]['db_table_user_name']))."<br>";
-					//echo $bridge[$i]['db_table_user_name']."(".strlen($bridge[$i]['db_table_user_name']).") ";
-				/*	if(	((strcmp(substr($db_name,strlen($db_name) - strlen($bridge[$i]['db_table_user_name'])),$bridge[$i]['db_table_user_name'])==0))
-					or 
-						((strcmp(substr($db_name,strlen($db_name) - strlen($bridge[$i]['db_table_group_name'])),$bridge[$i]['db_table_group_name'])==0))
-					or
-						((strcmp(substr($db_name,strlen($db_name) - strlen($bridge[$i]['db_table_allgroups'])),$bridge[$i]['db_table_allgroups'])==0))
-					)
+					if (strcmp($data_test_tables["Tables_in_".$data_db_all['Database']],$db_temp_prefix.$bridge[$i]['db_table_group_name'])==0 and ($bridge[$i]['db_table_group_name'] != ""))
 					{
-					*/	/*if()
-						{
-						}*/	
-						//echo substr($data_tables["Tables_in_".$data_db_all['Database']],strlen($data_tables["Tables_in_".$data_db_all['Database']])-strlen($bridge[$i]['db_table_user_name']))." == ".$bridge[$i]['db_table_user_name']."<br>";
-				//		$bridge_counter[$i] = $bridge_counter[$i]+1;
-						//echo "bridgename: ".$bridge[$i]['auth_type_name']." ".$data_tables["Tables_in_".$data_db_all['Database']]."<br>";
-				//	}
-					$tmp_prefix = substr($db_name,0,strlen($db_name) - strlen($bridge[$i]['db_table_user_name']));
-					if((strcmp(substr($db_name,strlen($db_name) - strlen($bridge[$i]['db_table_user_name'])),$bridge[$i]['db_table_user_name'])==0))
-					{
-						// SHOW TABLES FROM usr_web_2 WHERE Tables_in_usr_web_2 = 'phpbb_acl_users' 
-						$sql_test_tables = 
-								"SHOW TABLES ".
-								" FROM ".$data_db_all['Database'].
-								" WHERE Tables_in_".$data_db_all['Database']." = '".$tmp_prefix.$bridge[$i]['db_table_group_name']."'".
-								" OR Tables_in_".$data_db_all['Database']." = '".$tmp_prefix.$bridge[$i]['db_table_allgroups']."'";
-						$result_test_tables = @mysql_query($sql_test_tables) or die("Error" . mysql_error());
-						//echo "<br>sql:".$sql_test_tables."<br>prefix:".$tmp_prefix;
-						if (@mysql_num_rows($result_test_tables)>=1)
-						{
-							$bridge_counter[$i] = $bridge_counter[$i]+1;
-							echo "<br>sql:".$sql_test_tables."<br>prefix:".$tmp_prefix." bridgename:".$bridge[$i]['auth_type_name']."  ".mysql_num_rows($result_test_tables);
-						}
+						$tmp_counter_test_tables ++;
+						echo "<br>sql:".$sql_test_tables."<br>"."bridgename: ".$bridge[$i]['auth_type_name']." :prefix:".$db_temp_prefix." ;tmp_counter_test_tables:".$tmp_counter_test_tables." ;bridge_counter[i]:".$bridge_counter[$i];
+						echo "<br>(1)".$data_test_tables["Tables_in_".$data_db_all['Database']]."==".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
 					}
-					
+					if (strcmp($data_test_tables["Tables_in_".$data_db_all['Database']],$db_temp_prefix.$bridge[$i]['db_table_allgroups'])==0 and ($bridge[$i]['db_table_allgroups'] != ""))
+					{
+						$tmp_counter_test_tables ++;
+						echo "<br>sql:".$sql_test_tables."<br>"."bridgename: ".$bridge[$i]['auth_type_name']." :prefix:".$db_temp_prefix." ;tmp_counter_test_tables:".$tmp_counter_test_tables." ;bridge_counter[i]:".$bridge_counter[$i];
+						echo "<br>(2)".$data_test_tables["Tables_in_".$data_db_all['Database']]."==".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
+					}
+				}		
+
+				if ($tmp_counter_test_tables == 2)
+				{
+					$bridge_counter[$i] ++;
+					echo "<br>(3)bridgename: ".$bridge[$i]['auth_type_name']." :prefix: ".$db_temp_prefix; 
 				}
 			}
 			//echo "<br>";
-			if (1!=1)
+			/*if (1!=1)
 			{
 				// SHOW TABLES FROM usr_web_2 WHERE Tables_in_usr_web_2 = 'phpbb_acl_users' 
 				$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$data_tables["Tables_in_".$data_db_all['Database']];
@@ -176,12 +169,12 @@ function get_bridge_pos_from_dbserver()
 					//print_r($data_columns);
 					//echo $data_columns['Field']."<br>";
 				}
-			}
+			}*/
 		}
-		echo "<br>Tables: ".$data_tables["Tables_in_".$data_db_all['Database']]."   :<br>";
+		echo "<br>Tables: ".$data_test_tables["Tables_in_".$data_db_all['Database']]."   :<br>";
 		for ($i=0;$i<count($bridge);$i++)
 		{
-			echo "bridgename: ".$bridge[$i]['auth_type_name'].":".$bridge_counter[$i]."<br>";
+			echo "<br>bridgename: ".$bridge[$i]['auth_type_name'].": ".$bridge_counter[$i];
 		}
 	}
 	
