@@ -12,10 +12,8 @@
    <td>&nbsp;
     <tr>
 	<td>
-	  <div align="center">
-		<select name="allfoundbridges" size = "5" class="post">
-		 {html_options values=$bridge_type_values selected=$bridge_type_selected output=$bridge_type_output}
-		</select>
+	  <div align="Left">
+		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br><br>"}
 	  </div>
 	</td>
   </tr>

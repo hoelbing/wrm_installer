@@ -8,6 +8,7 @@
  * @param var $wrm_db_username
  * @param var $wrm_db_password
  * @param var $wrm_db_tableprefix
+ * @param var $wrm_db_type
  * @param var $eqdkp_db_name
  * @param var $eqdkp_db_host
  * @param var $eqdkp_db_user
@@ -15,7 +16,7 @@
  * @param var $eqdkp_db_prefix
  * @return boolean 
  */
-function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
+function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
 {
 	global $wrm_config_file;
 	include("../version.php");
@@ -39,6 +40,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 	$output .= '$phpraid_config[\'db_user\']'." = '$wrm_db_username';\n";
 	$output .= '$phpraid_config[\'db_pass\']'." = '$wrm_db_password';\n";
 	$output .= '$phpraid_config[\'db_prefix\']'." = '$wrm_db_tableprefix';\n";
+	$output .= '$phpraid_config[\'db_type\']'." = '$wrm_db_type';\n";
 	$output .= '$phpraid_config[\'eqdkp_db_name\']'." = '$eqdkp_db_name';\n";
 	$output .= '$phpraid_config[\'eqdkp_db_host\']'." = '$eqdkp_db_host';\n";
 	$output .= '$phpraid_config[\'eqdkp_db_user\']'." = '$eqdkp_db_user';\n";
@@ -104,5 +106,75 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 		}
 	}
 	return $value;
+}
+
+function print_error($type, $error, $die) {
+	global $phprlang, $phpraid_config;
+
+	$errorMsg = '<html><link rel="stylesheet" type="text/css" href="templates/style/stylesheet.css"><body>';
+	$errorMsg .= '<div align="center">'.$phprlang['print_error_msg_begin'];
+
+	if($die == 1)
+		$errorMsg .= $phprlang['print_error_critical'];
+	else
+		$errorMsg .= $phprlang['print_error_minor'];
+
+	$errorMsg .= '<br><br><b>'.$phprlang['print_error_page'].':</b> ' . $_SERVER['PHP_SELF'];
+	$errorMsg .= '<br><br><b>'.$phprlang['print_error_query'].':</b> ' . $type;
+	$errorMsg .= '<br><br><b>'.$phprlang['print_error_details'].':</b> ' . $error;
+	$errorMsg .= '<br><br><b>'.$phprlang['print_error_msg_end'].'</b></div></body></html>';
+	$errorTitle = $phprlang['print_error_title'];
+
+	echo '<div align="center"><div class="errorHeader" style="width:600px">'.$errorTitle .'</div>';
+	echo '<div class="errorBody" style="width:600px">'.$errorMsg.'</div>';
+
+	if($die == 1)
+		exit;
+}
+
+/**
+ * Check for a directory, if the passed path is a directory create a temp file as path
+ *  and try to open, otherwise just try to open that file for writing.
+ * Is Writeable function is bugged beyond belief, it has issues with ACL and Group accesses, use this instead.
+ * will work in despite of Windows ACLs bug.
+ * NOTE: use a trailing slash for folders!!!
+ * see http://bugs.php.net/bug.php?id=27609
+ * see http://bugs.php.net/bug.php?id=30931
+ *
+ * @param string $path
+ * @return boolean
+ */
+function is__writeable($path)
+{
+	$checkpath = $path;
+
+	if ($path{strlen($path)-1}=='/')
+	$checkpath = $path.uniqid(mt_rand()).'.tmp';
+
+	if (!($f = @fopen($checkpath, 'a+')))
+	return false;
+
+	fclose($f);
+	if ($checkpath != $path)
+	unlink($checkpath);
+	return true;
+}
+
+/**
+ * get mysql version from phpinfo()
+ *
+ * @return boolean
+ */
+function get_mysql_version_from_phpinfo()
+{
+	ob_start();
+	phpinfo(INFO_MODULES);
+	$info = ob_get_contents();
+	ob_end_clean();
+	$info = stristr($info, 'Client API version');
+	preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $info, $match);
+	$gd = $match[0];
+
+	return $gd;
 }
 ?>
