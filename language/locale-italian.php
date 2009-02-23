@@ -75,98 +75,115 @@ $localstr['step4desc_xoops'] = 'XOOPS';
 $localstr['step4unkownauth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
 $localstr['step4chooseauth'] = 'Seleziona uno dei tipi di autenticazione.';
 
+// errors
+$phprlang['connect_socked_error'] = 'Errore di connessione: %s';
+$phprlang['invalid_group_title'] = 'Team gi� presente';
+$phprlang['invalid_group_message'] = 'Il Team selezionato � gi� stato inserito. Torna indietro e riprova.';
+$phprlang['invalid_option_title'] = 'Dati non validi';
+$phprlang['invalid_option_msg'] = 'Sono stati forniti dati non validi per questa pagina.';
+$phprlang['no_user_msg'] = 'L\'Utente richiesto non esiste o � stato cancellato.';
+$phprlang['no_user_title'] = 'Utente non valido';
+$phprlang['print_error_critical'] = 'un errore critico!';
+$phprlang['print_error_details'] = 'Dettagli';
+$phprlang['print_error_minor'] = 'un errore!';
+$phprlang['print_error_msg_begin'] = 'Spiacente, WowRaidManager ha riscontrato ';
+$phprlang['print_error_msg_end'] = 'Se l\'errore persiste, segnalalo ad un Amministratore, grazie!';
+$phprlang['print_error_page'] = 'Pagina';
+$phprlang['print_error_query'] = 'Richiesta';
+$phprlang['print_error_title'] = 'Oh oh! Errore!';
+
 //--------------------------
 // Auth.
 //--------------------------
-$localstr['step5failconWRM'] = 'Impossibile connettersi al database di WRM';
-$localstr['step5selctusername'] = 'Assegna pieni permessi allo username selezionato';
-$localstr['step5sub1follval'] = 'Per completare l\'installazione, compila i seguenti campi';
-$localstr['step5done'] = 'fatto';
-$localstr['step5sub2usernamefullperm'] = 'Seleziona a quale username verranno garantiti pieni permessi in WowRaidManager';
-$localstr['step5sub3norest'] = 'Nessuna restrizione';
-$localstr['step5sub3noaddus'] = 'Nessun altro gruppo';
-$localstr['step5sub2failfindfile'] = 'File di configurazione non trovato:';
-$localstr['step5sub2checkdir'] = 'controlla nuovamente la cartella';
-$localstr['step5sub3group01'] = 'Seleziona il gruppo base di Utenti ai quali consentire l\'accesso a WRM';
-$localstr['step5sub3group02'] = 'Gli Utenti al di fuori di questo gruppo non avranno accesso a WRM';
-$localstr['step5sub3group03'] = 'Seleziona "Nessuna restrizione" per consentire l\'accesso a WRM a tutti gli Utenti indipendentemente dai gruppi di appartenenza';
-$localstr['step5sub3altgroup01'] = 'Seleziona un ulteriore gruppo di Utenti ai quali consentire l\'accesso a WRM';
-$localstr['step5sub3altgroup02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
+$wrm_install_lang['step5failconWRM'] = 'Impossibile connettersi al database di WRM';
+$wrm_install_lang['step5selctusername'] = 'Assegna pieni permessi allo username selezionato';
+$wrm_install_lang['step5sub1follval'] = 'Per completare l\'installazione, compila i seguenti campi';
+$wrm_install_lang['step5done'] = 'fatto';
+$wrm_install_lang['step5sub2usernamefullperm'] = 'Seleziona a quale username verranno garantiti pieni permessi in WowRaidManager';
+$wrm_install_lang['step5sub3norest'] = 'Nessuna restrizione';
+$wrm_install_lang['step5sub3noaddus'] = 'Nessun altro gruppo';
+$wrm_install_lang['step5sub2failfindfile'] = 'File di configurazione non trovato:';
+$wrm_install_lang['step5sub2checkdir'] = 'controlla nuovamente la cartella';
+$wrm_install_lang['step5sub3group01'] = 'Seleziona il gruppo base di Utenti ai quali consentire l\'accesso a WRM';
+$wrm_install_lang['step5sub3group02'] = 'Gli Utenti al di fuori di questo gruppo non avranno accesso a WRM';
+$wrm_install_lang['step5sub3group03'] = 'Seleziona "Nessuna restrizione" per consentire l\'accesso a WRM a tutti gli Utenti indipendentemente dai gruppi di appartenenza';
+$wrm_install_lang['step5sub3altgroup01'] = 'Seleziona un ulteriore gruppo di Utenti ai quali consentire l\'accesso a WRM';
+$wrm_install_lang['step5sub3altgroup02'] = 'Agli Utenti appartenenti a questo gruppo sarà consentito l\'accesso a WRM indipendentemente dall\'appartenenza anche all\'altro gruppo specificato';
 
 // phpBB
-$localstr['step5phpBBdesc'] = 'phpBB';
-$localstr['step5phpBBsub1desc'] = 'Hai selezionato l\'autenticazione phpBB';
-$localstr['step5phpBBsub1inputdir'] = 'Percorso della cartella base di phpBB (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5phpBBsub2failincdir'] = 'il percorso della cartella di phpBB è arrato';
-$localstr['step5phpBBsub2failfindautfile'] = 'Impossibile trovare il file di configurazione "../auth/auth_phpbb3.php"';
-$localstr['step5phpBBsub2faildownautfile'] = 'scaricalo (dal sito ufficiale di WRM) e copialo in "/auth".';
-$localstr['step5phpBBsub2founddb'] = 'Trovato il database di phpBB';
-$localstr['step5phpBBsub2readconffile'] = 'Lettura del file di configurazione di phpBB';
-$localstr['step5phpBBsub3errorretusergroup'] = 'Errore durante la lettura dei gruppi Utenti di phpBB3';
-$localstr['step5phpBBsub3errorretusername'] = 'Errore durante la lettura degli username di phpBB3';
-$localstr['step5phpBBsub4wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
-$localstr['step5phpBBsub4srynotsupport'] = 'Importazione da phpBB2 non supportata';
-$localstr['step5phpBBsub5import'] = 'Importa';
-$localstr['step5phpBBfailconphpBB'] = 'Impossibile connettersi al database di phpBB';
+$wrm_install_lang['step5phpBBdesc'] = 'phpBB';
+$wrm_install_lang['step5phpBBsub1desc'] = 'Hai selezionato l\'autenticazione phpBB';
+$wrm_install_lang['step5phpBBsub1inputdir'] = 'Percorso della cartella base di phpBB (relativo alla cartella di WRM, inclusa la barra finale!)';
+$wrm_install_lang['step5phpBBsub2failincdir'] = 'il percorso della cartella di phpBB è arrato';
+$wrm_install_lang['step5phpBBsub2failfindautfile'] = 'Impossibile trovare il file di configurazione "../auth/auth_phpbb3.php"';
+$wrm_install_lang['step5phpBBsub2faildownautfile'] = 'scaricalo (dal sito ufficiale di WRM) e copialo in "/auth".';
+$wrm_install_lang['step5phpBBsub2founddb'] = 'Trovato il database di phpBB';
+$wrm_install_lang['step5phpBBsub2readconffile'] = 'Lettura del file di configurazione di phpBB';
+$wrm_install_lang['step5phpBBsub3errorretusergroup'] = 'Errore durante la lettura dei gruppi Utenti di phpBB3';
+$wrm_install_lang['step5phpBBsub3errorretusername'] = 'Errore durante la lettura degli username di phpBB3';
+$wrm_install_lang['step5phpBBsub4wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
+$wrm_install_lang['step5phpBBsub4srynotsupport'] = 'Importazione da phpBB2 non supportata';
+$wrm_install_lang['step5phpBBsub5import'] = 'Importa';
+$wrm_install_lang['step5phpBBfailconphpBB'] = 'Impossibile connettersi al database di phpBB';
 
 // e107
-$localstr['step5e107desc'] = 'e107';
-$localstr['step5e107sub1desc'] = 'Hai selezionato l\'autenticazione e107';
-$localstr['step5e107sub1inputdir'] = 'Percorso della cartella base di e107 (relativo alla cartella di WRM, inclusa la barra finale!)';;
-$localstr['step5e107sub2failincdir'] = 'il percorso della cartella di e107 è arrato';
-$localstr['step5e107sub2readconffile'] = 'Lettura del file di configurazione di e107';
-$localstr['step5e107sub3errorretusername'] = 'Errore durante la lettura degli username di e107';
-$localstr['step5e107sub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di e107';
-$localstr['step5e107failcone107'] = 'Impossibile connettersi al database di e107';
+$wrm_install_lang['step5e107desc'] = 'e107';
+$wrm_install_lang['step5e107sub1desc'] = 'Hai selezionato l\'autenticazione e107';
+$wrm_install_lang['step5e107sub1inputdir'] = 'Percorso della cartella base di e107 (relativo alla cartella di WRM, inclusa la barra finale!)';;
+$wrm_install_lang['step5e107sub2failincdir'] = 'il percorso della cartella di e107 è arrato';
+$wrm_install_lang['step5e107sub2readconffile'] = 'Lettura del file di configurazione di e107';
+$wrm_install_lang['step5e107sub3errorretusername'] = 'Errore durante la lettura degli username di e107';
+$wrm_install_lang['step5e107sub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di e107';
+$wrm_install_lang['step5e107failcone107'] = 'Impossibile connettersi al database di e107';
 
 // iums = integrated User Management System
-$localstr['step5iumsdesc'] = 'Sistema di gestione Utenti integrato';
-$localstr['step5iumssub1desc'] = 'Hai selezionato l\'autenticazione attraverso il sistema di gestione Utenti integrato';
-$localstr['step5sub1iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Super Admin.';
+$wrm_install_lang['step5iumsdesc'] = 'Sistema di gestione Utenti integrato';
+$wrm_install_lang['step5iumssub1desc'] = 'Hai selezionato l\'autenticazione attraverso il sistema di gestione Utenti integrato';
+$wrm_install_lang['step5sub1iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Super Admin.';
 
 // Joomla
-$localstr['step5joomladesc'] = 'Joomla';
-$localstr['step5joomlasub1desc'] = 'Hai selezionato l\'autenticazione Joomla';
-$localstr['step5joomlasub1inputdir'] = 'Percorso della cartella base di Joomla (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5joomlasub2failincdir'] = 'il percorso della cartella di Joomla è arrato';
-$localstr['step5joomlasub2readconffile'] = 'Lettura del file di configurazione di Joomla';
-$localstr['step5joomlasub3errorretusername'] = 'Errore durante la lettura degli username di Joomla';
-$localstr['step5joomlasub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di Joomla';
-$localstr['step5joomlafailconejoomla'] = 'Impossibile connettersi al database di Joomla';
+$wrm_install_lang['step5joomladesc'] = 'Joomla';
+$wrm_install_lang['step5joomlasub1desc'] = 'Hai selezionato l\'autenticazione Joomla';
+$wrm_install_lang['step5joomlasub1inputdir'] = 'Percorso della cartella base di Joomla (relativo alla cartella di WRM, inclusa la barra finale!)';
+$wrm_install_lang['step5joomlasub2failincdir'] = 'il percorso della cartella di Joomla è arrato';
+$wrm_install_lang['step5joomlasub2readconffile'] = 'Lettura del file di configurazione di Joomla';
+$wrm_install_lang['step5joomlasub3errorretusername'] = 'Errore durante la lettura degli username di Joomla';
+$wrm_install_lang['step5joomlasub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di Joomla';
+$wrm_install_lang['step5joomlafailconejoomla'] = 'Impossibile connettersi al database di Joomla';
 
 // SMF = Simple Machines Forum
-$localstr['step5smfdesc'] = 'Simple Machines Forum (SMF)';
-$localstr['step5smfsub1desc'] = 'Hai selezionato l\'autenticazione SMF';
-$localstr['step5smfsub1inputdir'] = 'Percorso della cartella base di SMF (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5smfsub2failincdir'] = 'il percorso della cartella di SMF è arrato';
-$localstr['step5smfsub2readconffile'] = 'Lettura del file di configurazione di SMF';
-$localstr['step5smfsub3errorretusername'] = 'Errore durante la lettura degli username di SMF';
-$localstr['step5smfsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di SMF';
-$localstr['step5smffailconesmf'] = 'Impossibile connettersi al database di SMF';
+$wrm_install_lang['step5smfdesc'] = 'Simple Machines Forum (SMF)';
+$wrm_install_lang['step5smfsub1desc'] = 'Hai selezionato l\'autenticazione SMF';
+$wrm_install_lang['step5smfsub1inputdir'] = 'Percorso della cartella base di SMF (relativo alla cartella di WRM, inclusa la barra finale!)';
+$wrm_install_lang['step5smfsub2failincdir'] = 'il percorso della cartella di SMF è arrato';
+$wrm_install_lang['step5smfsub2readconffile'] = 'Lettura del file di configurazione di SMF';
+$wrm_install_lang['step5smfsub3errorretusername'] = 'Errore durante la lettura degli username di SMF';
+$wrm_install_lang['step5smfsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di SMF';
+$wrm_install_lang['step5smffailconesmf'] = 'Impossibile connettersi al database di SMF';
 
 // WoltLab Burning Board Lite 1.x.x = wbb
-$localstr['step5wbbdesc'] = 'WoltLab Burning Board';
-$localstr['step5wbbsub1desc'] = 'Hai selezionato l\'autenticazione WBB';
-$localstr['step5wbbsub1inputdir'] = 'Percorso della cartella base di WBB (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5wbbsub2failincdir'] = 'il percorso della cartella di WBB è arrato';
-$localstr['step5wbbsub2readconffile'] = 'Lettura del file di configurazione di WBB';
-$localstr['step5wbbsub3errorretusername'] = 'Errore durante la lettura degli username di WBB';
-$localstr['step5wbbsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di WBB';
-$localstr['step5wbbfailconesmf'] = 'Impossibile connettersi al database di WBB';
+$wrm_install_lang['step5wbbdesc'] = 'WoltLab Burning Board';
+$wrm_install_lang['step5wbbsub1desc'] = 'Hai selezionato l\'autenticazione WBB';
+$wrm_install_lang['step5wbbsub1inputdir'] = 'Percorso della cartella base di WBB (relativo alla cartella di WRM, inclusa la barra finale!)';
+$wrm_install_lang['step5wbbsub2failincdir'] = 'il percorso della cartella di WBB è arrato';
+$wrm_install_lang['step5wbbsub2readconffile'] = 'Lettura del file di configurazione di WBB';
+$wrm_install_lang['step5wbbsub3errorretusername'] = 'Errore durante la lettura degli username di WBB';
+$wrm_install_lang['step5wbbsub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di WBB';
+$wrm_install_lang['step5wbbfailconesmf'] = 'Impossibile connettersi al database di WBB';
 
 // XOOPS
-$localstr['step5xoopsdesc'] = 'XOOPS';
-$localstr['step5xoopssub1desc'] = 'Hai selezionato l\'autenticazione XOOPS';
-$localstr['step5xoopssub1inputdir'] = 'Percorso della cartella base di XOOPS (relativo alla cartella di WRM, inclusa la barra finale!)';
-$localstr['step5xoopssub2failincdir'] = 'il percorso della cartella di XOOPS è arrato';
-$localstr['step5xoopssub2readconffile'] = 'Lettura del file di configurazione di XOOPS';
-$localstr['step5xoopssub3errorretusername'] = 'Errore durante la lettura degli username di XOOPS';
-$localstr['step5xoopssub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di XOOPS';
-$localstr['step5xoopsfailconesmf'] = 'Impossibile connettersi al database di XOOPS';
+$wrm_install_lang['step5xoopsdesc'] = 'XOOPS';
+$wrm_install_lang['step5xoopssub1desc'] = 'Hai selezionato l\'autenticazione XOOPS';
+$wrm_install_lang['step5xoopssub1inputdir'] = 'Percorso della cartella base di XOOPS (relativo alla cartella di WRM, inclusa la barra finale!)';
+$wrm_install_lang['step5xoopssub2failincdir'] = 'il percorso della cartella di XOOPS è arrato';
+$wrm_install_lang['step5xoopssub2readconffile'] = 'Lettura del file di configurazione di XOOPS';
+$wrm_install_lang['step5xoopssub3errorretusername'] = 'Errore durante la lettura degli username di XOOPS';
+$wrm_install_lang['step5xoopssub3errorretuserclass'] = 'Errore durante la lettura dei gruppi Utenti di XOOPS';
+$wrm_install_lang['step5xoopsfailconesmf'] = 'Impossibile connettersi al database di XOOPS';
 
 //----------------------------------------------
 //step 6
-$localstr['stepdonefinished'] = 'Finito';
-$localstr['stepdonesetupcomplete'] = 'Installazione completata.';
-$localstr['stepdoneremovedir'] = 'Rimuovi la cartella "install/" e clicka <a href="../index.php">qui</a> dopo averlo fatto.';
+$wrm_install_lang['stepdonefinished'] = 'Finito';
+$wrm_install_lang['stepdonesetupcomplete'] = 'Installazione completata.';
+$wrm_install_lang['stepdoneremovedir'] = 'Rimuovi la cartella "install/" e clicka <a href="../index.php">qui</a> dopo averlo fatto.';
 ?>

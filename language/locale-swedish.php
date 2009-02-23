@@ -75,98 +75,117 @@ $localstr['step4desc_xoops'] = 'XOOPS';
 $localstr['step4unkownauth'] = '(om du är osäker, vänligen välj "IAHS")';
 $localstr['step4chooseauth'] = 'Vänligen välj ett autentisering sätt.';
 
+// errors
+$phprlang['connect_socked_error'] = 'Failed to connect to socket with error %s';
+$phprlang['invalid_group_title'] = 'Group exists';
+$phprlang['invalid_group_message'] = 'The group selected is already part of this set. Press your browsers BACK button to try again.';
+$phprlang['invalid_option_title'] = 'Invalid input for page';
+$phprlang['invalid_option_msg'] = 'You have tried to access this page using invalid input.';
+$phprlang['no_user_msg'] = 'The user you are trying to view does not exist or has been deleted.';
+$phprlang['no_user_title'] = 'User does not exist';
+$phprlang['print_error_critical'] = 'a critical error!';
+$phprlang['print_error_details'] = 'Details';
+$phprlang['print_error_minor'] = 'a minor error!';
+$phprlang['print_error_msg_begin'] = 'Sorry, WRM has encountered ';
+$phprlang['print_error_msg_end'] = 'If this error persists, please make a post 
+									with this message <br>on the <a href="http://www.wowraidmanager.net/">wowraidmanager.net Forums</a> and
+									we will do our best to get it corrected. Thanks!';
+$phprlang['print_error_page'] = 'Page';
+$phprlang['print_error_query'] = 'Query';
+$phprlang['print_error_title'] = 'Uh oh! You hit a boo boo';
+
 //--------------------------
 // Auth.
 //--------------------------
-$localstr['step5failconWRM'] = 'Uppkoppling till WRM DB misslyckades';
-$localstr['step5selctusername'] = 'Sätt fulla rättigheter till det valda Användarnamnet';
-$localstr['step5sub1follval'] = 'Vänligen fyll i följande värden för att kunna fullfölja installationen';
-$localstr['step5done'] = 'klart';
-$localstr['step5sub2usernamefullperm'] = 'Välj det användarnamn som kommer att få full rättigheter till wowRaidManager';
-$localstr['step5sub3norest'] = 'Inga Restriktioner';
-$localstr['step5sub3noaddus'] = 'Inga Ytterliggare Användargrupper';
-$localstr['step5sub2failfindfile'] = 'Misslyckades med att hitta konfigurationsfilen:';
-$localstr['step5sub2checkdir'] = 'verifiera foldern/sökvägen igen';
-$localstr['step5sub3group01'] = 'Välj grund gruppen/klassen som har tillgång attnyttja WRM';
-$localstr['step5sub3group02'] = 'Alla användare utan denna grupp kommer inte atttillåtas logga in';
-$localstr['step5sub3group03'] = 'Vänligen völj "Inga Restriktioner" här om du vill att alla användare oavsett grupp/klass skall kunna logga in och nyttja WRM';
-$localstr['step5sub3altgroup01'] = 'Välj en alternativ grupp/klass som kan nyttja WRM';
-$localstr['step5sub3altgroup02'] = 'Alla användare i denna grupp kommer att tillåtas att logga in, oavsett om de är i ovanstående grupp/klass eller inte';
+$wrm_install_lang['step5failconWRM'] = 'Uppkoppling till WRM DB misslyckades';
+$wrm_install_lang['step5selctusername'] = 'Sätt fulla rättigheter till det valda Användarnamnet';
+$wrm_install_lang['step5sub1follval'] = 'Vänligen fyll i följande värden för att kunna fullfölja installationen';
+$wrm_install_lang['step5done'] = 'klart';
+$wrm_install_lang['step5sub2usernamefullperm'] = 'Välj det användarnamn som kommer att få full rättigheter till wowRaidManager';
+$wrm_install_lang['step5sub3norest'] = 'Inga Restriktioner';
+$wrm_install_lang['step5sub3noaddus'] = 'Inga Ytterliggare Användargrupper';
+$wrm_install_lang['step5sub2failfindfile'] = 'Misslyckades med att hitta konfigurationsfilen:';
+$wrm_install_lang['step5sub2checkdir'] = 'verifiera foldern/sökvägen igen';
+$wrm_install_lang['step5sub3group01'] = 'Välj grund gruppen/klassen som har tillgång attnyttja WRM';
+$wrm_install_lang['step5sub3group02'] = 'Alla användare utan denna grupp kommer inte atttillåtas logga in';
+$wrm_install_lang['step5sub3group03'] = 'Vänligen völj "Inga Restriktioner" här om du vill att alla användare oavsett grupp/klass skall kunna logga in och nyttja WRM';
+$wrm_install_lang['step5sub3altgroup01'] = 'Välj en alternativ grupp/klass som kan nyttja WRM';
+$wrm_install_lang['step5sub3altgroup02'] = 'Alla användare i denna grupp kommer att tillåtas att logga in, oavsett om de är i ovanstående grupp/klass eller inte';
 
 // phpBB
-$localstr['step5phpBBdesc'] = 'phpBB';
-$localstr['step5phpBBsub1desc'] = 'Du har valt phpBB autentisering';
-$localstr['step5phpBBsub1inputdir'] = 'Skriv in den relativa sökvägen till din phpBB folder (inkluderat det efterföljande snedstrecket!)';
-$localstr['step5phpBBsub2failincdir'] = 'din phpBB folder är felaktig';
-$localstr['step5phpBBsub2failfindautfile'] = 'Misslyckades med att hitta "../auth/auth_phpbb3.php" konfiguationsfilen';
-$localstr['step5phpBBsub2faildownautfile'] = 'vänligen ladda ner (från WRM-hemsidan) och kopiera till "/auth".';
-$localstr['step5phpBBsub2founddb'] = 'phpBB DB funnen';
-$localstr['step5phpBBsub2readconffile'] = 'phpBB konfigurationsfil läst';
-$localstr['step5phpBBsub3errorretusergroup'] = 'Fel vid hämtning av användargrupp från phpBB3';
-$localstr['step5phpBBsub3errorretusername'] = 'Fel vid hämtning av användarnamn från phpBB3';
-$localstr['step5phpBBsub4wantimport'] = 'vill du importera alla användare från phpBB Forumet';
-$localstr['step5phpBBsub4srynotsupport'] = 'FÖRLÅT import från phpBB Forumet: inget stöd för phpBB2';
-$localstr['step5phpBBsub5import'] = 'Importera';
-$localstr['step5phpBBfailconphpBB'] = 'Uppkoppling till phpBB DB misslyckades';
+$wrm_install_lang['step5phpBBdesc'] = 'phpBB';
+$wrm_install_lang['step5phpBBsub1desc'] = 'Du har valt phpBB autentisering';
+$wrm_install_lang['step5phpBBsub1inputdir'] = 'Skriv in den relativa sökvägen till din phpBB folder (inkluderat det efterföljande snedstrecket!)';
+$wrm_install_lang['step5phpBBsub2failincdir'] = 'din phpBB folder är felaktig';
+$wrm_install_lang['step5phpBBsub2failfindautfile'] = 'Misslyckades med att hitta "../auth/auth_phpbb3.php" konfiguationsfilen';
+$wrm_install_lang['step5phpBBsub2faildownautfile'] = 'vänligen ladda ner (från WRM-hemsidan) och kopiera till "/auth".';
+$wrm_install_lang['step5phpBBsub2founddb'] = 'phpBB DB funnen';
+$wrm_install_lang['step5phpBBsub2readconffile'] = 'phpBB konfigurationsfil läst';
+$wrm_install_lang['step5phpBBsub3errorretusergroup'] = 'Fel vid hämtning av användargrupp från phpBB3';
+$wrm_install_lang['step5phpBBsub3errorretusername'] = 'Fel vid hämtning av användarnamn från phpBB3';
+$wrm_install_lang['step5phpBBsub4wantimport'] = 'vill du importera alla användare från phpBB Forumet';
+$wrm_install_lang['step5phpBBsub4srynotsupport'] = 'FÖRLÅT import från phpBB Forumet: inget stöd för phpBB2';
+$wrm_install_lang['step5phpBBsub5import'] = 'Importera';
+$wrm_install_lang['step5phpBBfailconphpBB'] = 'Uppkoppling till phpBB DB misslyckades';
 
 // e107
-$localstr['step5e107desc'] = 'e107';
-$localstr['step5e107sub1desc'] = 'Du har valt e107 autentisering';
-$localstr['step5e107sub1inputdir'] = 'Skriv in den relativa sökvägen till din e107 folder (inkluderat det efterföljande snedstrecket!)';
-$localstr['step5e107sub2failincdir'] = 'din e107 folder är felaktig';
-$localstr['step5e107sub2readconffile'] = 'e107 konfigurationsfil läst';
-$localstr['step5e107sub3errorretusername'] = 'Fel vid hämtning av användarnamn från e107';
-$localstr['step5e107sub3errorretuserclass'] = 'Fel vid hämtning av användarklassfrån e107';
-$localstr['step5e107failcone107'] = 'Uppkoppling till e107 DB misslyckades';
+$wrm_install_lang['step5e107desc'] = 'e107';
+$wrm_install_lang['step5e107sub1desc'] = 'Du har valt e107 autentisering';
+$wrm_install_lang['step5e107sub1inputdir'] = 'Skriv in den relativa sökvägen till din e107 folder (inkluderat det efterföljande snedstrecket!)';
+$wrm_install_lang['step5e107sub2failincdir'] = 'din e107 folder är felaktig';
+$wrm_install_lang['step5e107sub2readconffile'] = 'e107 konfigurationsfil läst';
+$wrm_install_lang['step5e107sub3errorretusername'] = 'Fel vid hämtning av användarnamn från e107';
+$wrm_install_lang['step5e107sub3errorretuserclass'] = 'Fel vid hämtning av användarklassfrån e107';
+$wrm_install_lang['step5e107failcone107'] = 'Uppkoppling till e107 DB misslyckades';
 
 // iums = integrated User Management System
-$localstr['step5iumsdesc'] = 'Inbyggt Användar Hanterings System';
-$localstr['step5iumssub1desc'] = 'Du har valt "Inbyggt Användar Hanterings System" autentisering';
-$localstr['step5sub1iumsfilladmindesc'] = 'Allt som kvarstår är att fylla i din information för Super Administratör nedan.';
+$wrm_install_lang['step5iumsdesc'] = 'Inbyggt Användar Hanterings System';
+$wrm_install_lang['step5iumssub1desc'] = 'Du har valt "Inbyggt Användar Hanterings System" autentisering';
+$wrm_install_lang['step5sub1iumsfilladmindesc'] = 'Allt som kvarstår är att fylla i din information för Super Administratör nedan.';
 
 // Joomla
-$localstr['step5joomladesc'] = 'Joomla';
-$localstr['step5joomlasub1desc'] = 'You have selected Joomla authentication';
-$localstr['step5joomlasub1inputdir'] = 'Input the relative path to your Joomla directory (including trailing slash!)';
-$localstr['step5joomlasub2failincdir'] = 'your Joomla directory is incorect';
-$localstr['step5joomlasub2readconffile'] = 'read Joomla config file';
-$localstr['step5joomlasub3errorretusername'] = 'Error retrieving username from Joomla';
-$localstr['step5joomlasub3errorretuserclass'] = 'Error retrieving userclass from Joomla';
-$localstr['step5joomlafailconejoomla'] = 'Unable to connect to Joomla DB';
+$wrm_install_lang['step5joomladesc'] = 'Joomla';
+$wrm_install_lang['step5joomlasub1desc'] = 'You have selected Joomla authentication';
+$wrm_install_lang['step5joomlasub1inputdir'] = 'Input the relative path to your Joomla directory (including trailing slash!)';
+$wrm_install_lang['step5joomlasub2failincdir'] = 'your Joomla directory is incorect';
+$wrm_install_lang['step5joomlasub2readconffile'] = 'read Joomla config file';
+$wrm_install_lang['step5joomlasub3errorretusername'] = 'Error retrieving username from Joomla';
+$wrm_install_lang['step5joomlasub3errorretuserclass'] = 'Error retrieving userclass from Joomla';
+$wrm_install_lang['step5joomlafailconejoomla'] = 'Unable to connect to Joomla DB';
 
 // SMF = Simple Machines Forum
-$localstr['step5smfdesc'] = 'SMF';
-$localstr['step5smfsub1desc'] = 'Du har valt SMF autentisering';
-$localstr['step5smfsub1inputdir'] = 'Skriv in den relativa sökvägen till din SMFfolder (inkluderat det efterföljande snedstrecket!)';
-$localstr['step5smfsub2failincdir'] = 'din SMF folder är felaktig';
-$localstr['step5smfsub2readconffile'] = 'SMF konfigurationsfil läst';
-$localstr['step5smfsub3errorretusername'] = 'Fel vid hämtning av användarnamn från SMF';
-$localstr['step5smfsub3errorretuserclass'] = 'Fel vid hämtning av användarklass från SMF';
-$localstr['step5smffailconesmf'] = 'Uppkoppling till SMF DB misslyckades';
+$wrm_install_lang['step5smfdesc'] = 'SMF';
+$wrm_install_lang['step5smfsub1desc'] = 'Du har valt SMF autentisering';
+$wrm_install_lang['step5smfsub1inputdir'] = 'Skriv in den relativa sökvägen till din SMFfolder (inkluderat det efterföljande snedstrecket!)';
+$wrm_install_lang['step5smfsub2failincdir'] = 'din SMF folder är felaktig';
+$wrm_install_lang['step5smfsub2readconffile'] = 'SMF konfigurationsfil läst';
+$wrm_install_lang['step5smfsub3errorretusername'] = 'Fel vid hämtning av användarnamn från SMF';
+$wrm_install_lang['step5smfsub3errorretuserclass'] = 'Fel vid hämtning av användarklass från SMF';
+$wrm_install_lang['step5smffailconesmf'] = 'Uppkoppling till SMF DB misslyckades';
 
 // WoltLab Burning Board Lite 1.x.x = wbb
-$localstr['step5wbbdesc'] = 'WoltLab Burning Board';
-$localstr['step5wbbsub1desc'] = 'Du har valt WBB autentisering';
-$localstr['step5wbbsub1inputdir'] = 'Skriv in den relativa sökvägen till din wbbfolder (inkluderat det efterföljande snedstrecket!)';
-$localstr['step5wbbsub2failincdir'] = 'din WBB folder är felaktig';
-$localstr['step5wbbsub2readconffile'] = 'WBB konfigurationsfil läst';
-$localstr['step5wbbsub3errorretusername'] = 'Fel vid hämtning av användarnamn från WBB';
-$localstr['step5wbbsub3errorretuserclass'] = 'Fel vid hämtning av användarklass från WBB';
-$localstr['step5wbbfailconesmf'] = 'Uppkoppling till WBB DB misslyckades';
+$wrm_install_lang['step5wbbdesc'] = 'WoltLab Burning Board';
+$wrm_install_lang['step5wbbsub1desc'] = 'Du har valt WBB autentisering';
+$wrm_install_lang['step5wbbsub1inputdir'] = 'Skriv in den relativa sökvägen till din wbbfolder (inkluderat det efterföljande snedstrecket!)';
+$wrm_install_lang['step5wbbsub2failincdir'] = 'din WBB folder är felaktig';
+$wrm_install_lang['step5wbbsub2readconffile'] = 'WBB konfigurationsfil läst';
+$wrm_install_lang['step5wbbsub3errorretusername'] = 'Fel vid hämtning av användarnamn från WBB';
+$wrm_install_lang['step5wbbsub3errorretuserclass'] = 'Fel vid hämtning av användarklass från WBB';
+$wrm_install_lang['step5wbbfailconesmf'] = 'Uppkoppling till WBB DB misslyckades';
 
 // XOOPS
-$localstr['step5xoopsdesc'] = 'XOOPS';
-$localstr['step5xoopssub1desc'] = 'Du har valt XOOPS autentisering';
-$localstr['step5xoopssub1inputdir'] = 'Skriv in den relativa sökvägen till din XOOPS folder (inkluderat det efterföljande snedstrecket!)';
-$localstr['step5xoopssub2failincdir'] = 'din XOOPS folder är felaktig';
-$localstr['step5xoopssub2readconffile'] = 'XOOPS konfigurationsfil läst';
-$localstr['step5xoopssub3errorretusername'] = 'Fel vid hämtning av användarnamn från XOOPS';
-$localstr['step5xoopssub3errorretuserclass'] = 'Fel vid hämtning av användarklass från from XOOPS';
-$localstr['step5xoopsfailconesmf'] = 'Uppkoppling till XOOPS DB misslyckades';
+$wrm_install_lang['step5xoopsdesc'] = 'XOOPS';
+$wrm_install_lang['step5xoopssub1desc'] = 'Du har valt XOOPS autentisering';
+$wrm_install_lang['step5xoopssub1inputdir'] = 'Skriv in den relativa sökvägen till din XOOPS folder (inkluderat det efterföljande snedstrecket!)';
+$wrm_install_lang['step5xoopssub2failincdir'] = 'din XOOPS folder är felaktig';
+$wrm_install_lang['step5xoopssub2readconffile'] = 'XOOPS konfigurationsfil läst';
+$wrm_install_lang['step5xoopssub3errorretusername'] = 'Fel vid hämtning av användarnamn från XOOPS';
+$wrm_install_lang['step5xoopssub3errorretuserclass'] = 'Fel vid hämtning av användarklass från from XOOPS';
+$wrm_install_lang['step5xoopsfailconesmf'] = 'Uppkoppling till XOOPS DB misslyckades';
 
 //----------------------------------------------
 //step 6
-$localstr['stepdonefinished'] = 'Färdigt';
-$localstr['stepdonesetupcomplete'] = 'Installationen är nu klar.';
-$localstr['stepdoneremovedir'] = 'Se till att ta bort "install/" foldern och klicka sedan <a href="../index.php">här</a> när du har gjort det.';
+$wrm_install_lang['stepdonefinished'] = 'Färdigt';
+$wrm_install_lang['stepdonesetupcomplete'] = 'Installationen är nu klar.';
+$wrm_install_lang['stepdoneremovedir'] = 'Se till att ta bort "install/" foldern och klicka sedan <a href="../index.php">här</a> när du har gjort det.';
 ?>

@@ -38,6 +38,7 @@ CREATE TABLE `wrm_column_headers` (
 `visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
 `position` TINYINT( 2 ) NOT NULL ,
 `img_url` VARCHAR( 100 ) DEFAULT NULL,
+`format_code` VARCHAR ( 25 ) DEFAULT NULL,
 INDEX ( `view_name` )
 ) ;
 

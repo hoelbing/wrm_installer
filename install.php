@@ -2,7 +2,7 @@
 
 /*-------------------------------*/
 //lang strg
-$localstr['step2_create_db'] = "Create Database?";
+$wrm_install_lang['step2_create_db'] = "Create Database?";
 /*-------------------------------*/
 
 /*
@@ -112,12 +112,12 @@ else if($step == 1) {
 		if (get_cfg_var("magic_quotes_sybase"))
 		{
 			$magic_quotes_sybase_bgcolor = "red";
-			$magic_quotes_sybase_value = $localstr['step0_nonactive'];
+			$magic_quotes_sybase_value = $wrm_install_lang['step0_nonactive'];
 		}
 		else
 		{
 			$magic_quotes_sybase_bgcolor = "green";
-			$magic_quotes_sybase_value = $localstr['step0_active'];
+			$magic_quotes_sybase_value = $wrm_install_lang['step0_active'];
 		}
 
 		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
@@ -126,12 +126,12 @@ else if($step == 1) {
 			if(!is__writeable($wrm_config_file))
 			{
 				$writeable_config_bgcolor = "red";
-				$writeable_config_value = $localstr['no'];
+				$writeable_config_value = $wrm_install_lang['no'];
 			}
 			else
 			{
 				$writeable_config_bgcolor = "green";
-				$writeable_config_value = $localstr['yes'];
+				$writeable_config_value = $wrm_install_lang['yes'];
 			}
 		}
 		
@@ -140,29 +140,29 @@ else if($step == 1) {
 			array(
 					"form_action" => "install.php?step=1",
 					//table
-					"headtitle" => $localstr['headtitle'],
-					"property" => $localstr['step0_property'],
-					"required" => $localstr['step0_required'],
-					"exist" => $localstr['step0_exist'],
-					"system_requirements" => $localstr['step0_system_requirements'],
-					"phpversion_text" => $localstr['step0_phpversion_text'],
+					"headtitle" => $wrm_install_lang['headtitle'],
+					"property" => $wrm_install_lang['step0_property'],
+					"required" => $wrm_install_lang['step0_required'],
+					"exist" => $wrm_install_lang['step0_exist'],
+					"system_requirements" => $wrm_install_lang['step0_system_requirements'],
+					"phpversion_text" => $wrm_install_lang['step0_phpversion_text'],
 					"phpversion_value" => phpversion(),
 					"phpversion_bgcolor" => $phpversion_bgcolor,
-					"mysqlversion_text" => $localstr['step0_mysqlversion'],
+					"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
 					"mysqlversion_value" => $gd,
 					"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
 					"upload_max_filesize_value" => get_cfg_var("upload_max_filesize"),
 					"upload_max_filesize_bgcolor" => $upload_max_filesize_bgcolor,
 					"magic_quotes_sybase_value" => $magic_quotes_sybase_value,
 					"magic_quotes_sybase_bgcolor" => $magic_quotes_sybase_bgcolor,
-					"nonactive" => $localstr['step0_nonactive'],
+					"nonactive" => $wrm_install_lang['step0_nonactive'],
 			
-					"writeable_config_text" => $localstr['step0_writeable_config'],
+					"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
 					"writeable_config_value" => $writeable_config_value,
-					"yes" => $localstr['yes'],
+					"yes" => $wrm_install_lang['yes'],
 					"writeable_config_bgcolor" => $writeable_config_bgcolor,
 			
-					"bd_submit" => $localstr['bd_submit'],
+					"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
 		
@@ -189,11 +189,11 @@ else if($step == 2) {
 		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
 
 	if ( isset($_POST['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
-		$error_msg .= $localstr['step3errordbcon'];
+		$error_msg .= $wrm_install_lang['step3errordbcon'];
 
 	if ($error_msg != "")
 	{
-		$error_msg .= "<br/>".$localstr['hittingsubmit'];
+		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
 		//echo $error_msg;
 	}
 
@@ -245,22 +245,22 @@ else if($step == 2) {
 	$smarty->assign(
 		array(
 			"form_action" => "install.php?step=3",
-			"headtitle" => $localstr['headtitle'],
-			"wrm_db_name_text" => $localstr['step2dbname'],
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
 			"wrm_db_name_value" => $wrm_db_name_value,
-			"wrm_create_db_text" => $localstr['step2_create_db'],
+			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
 			"wrm_create_db_value" => $wrm_create_db_value,
-			"wrm_db_server_hostname_text" => $localstr['step2dbserverhostname'],
+			"wrm_db_server_hostname_text" => $wrm_install_lang['step2dbserverhostname'],
 			"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
-			"wrm_db_username_text" => $localstr['step2dbserverusername'],
+			"wrm_db_username_text" => $wrm_install_lang['step2dbserverusername'],
 			"wrm_db_username_value" => $wrm_db_username_value,
-			"wrm_db_password_text" => $localstr['step2dbserverpwd'],
+			"wrm_db_password_text" => $wrm_install_lang['step2dbserverpwd'],
 			"wrm_db_password_value" => $wrm_db_password_value,
-			"wrm_db_tableprefix_text" => $localstr['step2WRMtableprefix'],
+			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
 			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
 			"error_msg" => $error_msg,
 		
-			"bd_submit" => $localstr['bd_submit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
 
@@ -307,7 +307,7 @@ else if($step == 3)
 			if ($wrm_create_db == TRUE)
 			{
 				$sql = "Create Database ".$wrm_db_name;
-				//@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error());
+				//@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error());
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(),1);
 				$FOUNDERROR_Database = FALSE;
 			}
@@ -404,7 +404,7 @@ else if($step == 5)
 
 	//install schema
 	if(!$fd = fopen('database_schema/install/install_schema.sql', 'r'))
-	die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
+	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
 
 	if ($fd) {
 		while (!feof($fd)) {
@@ -415,7 +415,7 @@ else if($step == 5)
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//		@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
+		//		@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
@@ -445,7 +445,7 @@ else if($step == 6)
 	
 	//insert (default) values
 	if(!$fd = fopen('database_schema/install/insert_values.sql', 'r'))
-	die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
+	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
 
 	if ($fd) {
 		while (!feof($fd)) {
@@ -456,7 +456,7 @@ else if($step == 6)
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-//				@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
+//				@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
@@ -496,7 +496,7 @@ else if($step == 7)
 		for ($i=0; $i <count($wrm_tables); $i++)
 		{
 			$sql = "ALTER TABLE `".$phpraid_config['db_prefix'].$wrm_tables[$i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
-			//@mysql_query($sql) or die($localstr['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
+			//@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}
 	}
@@ -584,9 +584,9 @@ else if($step === "done")
 	$smarty->assign(
 		array(
 			//"form_action" => "install.php?step=".$step,
-			"headtitle" => $localstr['stepdonefinished'],
-			"donesetupcomplete_text" => $localstr['stepdonesetupcomplete'],
-			"doneremovedir_text" => $localstr['stepdoneremovedir'],
+			"headtitle" => $wrm_install_lang['stepdonefinished'],
+			"donesetupcomplete_text" => $wrm_install_lang['stepdonesetupcomplete'],
+			"doneremovedir_text" => $wrm_install_lang['stepdoneremovedir'],
 		
 		)
 	);

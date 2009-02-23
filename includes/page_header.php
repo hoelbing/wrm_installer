@@ -39,7 +39,7 @@ array_shift($files);
 
 $smarty->assign("classlang_type_values", $files);
 $smarty->assign("classlang_type_selected", $lang);
-$smarty->assign("select_lang", $localstr['select_lang']);
+$smarty->assign("select_lang", $wrm_install_lang['select_lang']);
 
 $smarty->display('header.tpl.html');
 ?>

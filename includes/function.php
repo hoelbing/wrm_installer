@@ -109,21 +109,21 @@ function quote_smart($value = "", $nullify = false, $conn = null)
 }
 
 function print_error($type, $error, $die) {
-	global $phprlang, $phpraid_config;
+	global $wrm_install_lang, $phpraid_config;
 
 	$errorMsg = '<html><link rel="stylesheet" type="text/css" href="templates/style/stylesheet.css"><body>';
-	$errorMsg .= '<div align="center">'.$phprlang['print_error_msg_begin'];
+	$errorMsg .= '<div align="center">'.$wrm_install_lang['print_error_msg_begin'];
 
 	if($die == 1)
-		$errorMsg .= $phprlang['print_error_critical'];
+		$errorMsg .= $wrm_install_lang['print_error_critical'];
 	else
-		$errorMsg .= $phprlang['print_error_minor'];
+		$errorMsg .= $wrm_install_lang['print_error_minor'];
 
-	$errorMsg .= '<br><br><b>'.$phprlang['print_error_page'].':</b> ' . $_SERVER['PHP_SELF'];
-	$errorMsg .= '<br><br><b>'.$phprlang['print_error_query'].':</b> ' . $type;
-	$errorMsg .= '<br><br><b>'.$phprlang['print_error_details'].':</b> ' . $error;
-	$errorMsg .= '<br><br><b>'.$phprlang['print_error_msg_end'].'</b></div></body></html>';
-	$errorTitle = $phprlang['print_error_title'];
+	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_page'].':</b> ' . $_SERVER['PHP_SELF'];
+	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_query'].':</b> ' . $type;
+	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_details'].':</b> ' . $error;
+	$errorMsg .= '<br><br><b>'.$wrm_install_lang['print_error_msg_end'].'</b></div></body></html>';
+	$errorTitle = $wrm_install_lang['print_error_title'];
 
 	echo '<div align="center"><div class="errorHeader" style="width:600px">'.$errorTitle .'</div>';
 	echo '<div class="errorBody" style="width:600px">'.$errorMsg.'</div>';
@@ -176,5 +176,26 @@ function get_mysql_version_from_phpinfo()
 	$gd = $match[0];
 
 	return $gd;
+}
+
+//copy from \includes\functions.php
+// Reverses database sanitization by removing escape backslashes
+// and decoding html entities.
+function desanitize($array) {
+  $retarr_keys = array_keys($array);
+  $retarr_values = array_values($array);
+  
+  for ($i = 0; $i < count($retarr_keys) - 1; $i++)
+  {
+  	if (is_string($retarr_values[$i]))
+  	{
+		$retarr_values[$i] = stripslashes($retarr_values[$i]);
+		$retarr_values[$i] = htmlspecialchars_decode($retarr_values[$i]);
+  	}
+
+  	$array[$retarr_keys[$i]] = $retarr_values[$i];
+  }
+
+  return $array;
 }
 ?>

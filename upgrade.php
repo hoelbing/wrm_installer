@@ -17,7 +17,9 @@ if (!isset($_POST['classlang_type']))
 else
 	$lang = $_POST['classlang_type'];
 
-include('language/locale-'.$lang.'.php');
+include_once ('language/locale-'.$lang.'.php');
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
 
 /**
  * Name from the wrm Config File
@@ -170,7 +172,7 @@ if ($step==100)
 	);
 	$smarty->display("error.html");
 	include ("includes/page_footer.php");
- */
+*/
 	echo "your wrm version is to old, for upgrade";
 }
 
@@ -181,7 +183,7 @@ if ($step==101)
 	$smarty->assign(
 		array(
 			"form_action" => "",
-			"error_msg_headtitle" => $localstr['headtitle'],
+			"error_msg_headtitle" => $wrm_install_lang['headtitle'],
 			"versions_nr_current_wrm" => $versions_nr_current_wrm,
 			"versions_nr_install" => $versions_nr_install,
 		)
@@ -204,7 +206,7 @@ if ($step==102)
 	);
 	$smarty->display("error.html");
 	include ("includes/page_footer.php");
-*/		
+*/
 	echo "your wrm version is newer as this installation file";
 }
 

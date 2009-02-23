@@ -25,7 +25,9 @@ include('language/locale-'.$lang.'.php');
 
 $filename_bridge = "install_bridges.php";
 $wrm_config_file = "../config.php";
-include($wrm_config_file);
+include_once($wrm_config_file);
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
 
 function scan_dbserver()
 {
@@ -56,7 +58,7 @@ function scan_dbserver()
 
 	include ($wrm_config_file);
 	//$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql_db_all = "SHOW DATABASES";
 
@@ -71,7 +73,7 @@ function scan_dbserver()
 		$sql_tables = "SHOW TABLES FROM ".$data_db_all['Database'];
 		$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
 		//$result_tables = @mysql_query($sql_tables) or die("Error" . mysql_error()."<br>SQL: ". $sql_tables);
-		while ($data_tables = $wrm_install->sql_fetchrow($result_db_all,true))
+		while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
 		//while ($data_tables = @mysql_fetch_array($result_tables,true))
 		{
 
@@ -189,24 +191,25 @@ if ($step == 0)
 		for ($i=0;$i<count($array_bridge_db);$i++)
 		{
 
-			$bridge_type_output[]=" Name: ". $array_bridge_db[$i]["bridge_name"]."; Datenbankname: ". $array_bridge_db[$i]["bridge_database"]."; Table Prefix: ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: ".$array_bridge_db[$i]["bridge_founduser"];
+			$bridge_type_output[]=" Name: ". $array_bridge_db[$i]["bridge_name"]." ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: ".$array_bridge_db[$i]["bridge_founduser"];
 			$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":";
 			//$bridge_type_values[]=array ($array_bridge_db[$i]["bridge_name"],$array_bridge_db[$i]["bridge_databbase"],$array_bridge_db[$i]["bridge_table_prefix"]);
 		}
-
-		$bridge_type_output[]=" Name: iums ;Datenbankname: ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix']."; Found User: "."0";
+		
+		$bridge_type_output[]=" Name: iums ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: 0";
+		$bridge_type_output[]=" Name: iums ; ". $array_bridge_db[$i]["bridge_name"].": ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix']."; Found User: "."0";
 		$bridge_type_values[]="iums:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'].":0:";
 		include ("includes/page_header.php");
 		
 		$smarty->assign(
 			array(
 				"form_action" => $filename_bridge."?step=1" ,
-				"headtitle" => $localstr['bridge_step0_titel'],
+				"headtitle" => $wrm_install_lang['bridge_step0_titel'],
 				"bridge_type_output" => $bridge_type_output,
 				"bridge_type_values" => $bridge_type_values,
 				//last entry are selected (iums)
 				"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
-				"bd_submit" => $localstr['bd_submit'],
+				"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
 		
@@ -253,7 +256,7 @@ if ($step == 1)
 	
 	//$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
 	//@mysql_select_db($phpraid_config['db_name'], $linkWRM);
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = 	"SELECT " . $bridge_setting['db_user_name'] . " , ". $bridge_setting['db_user_email'] ." , ". $bridge_setting['db_user_id'].
 			" FROM " . 	$bridge_database_name  ."." . $bridge_prefix . $bridge_setting['db_table_user_name'] .
@@ -265,7 +268,7 @@ if ($step == 1)
 	//$result_admin = @mysql_query($sql) or die("Error verifying :" . mysql_error()."<br>SQL: ".$sql);
 	//while ($data_admin = @mysql_fetch_array($result_admin,true))
 	{
-		$bridge_admin_id_output[] = $localstr['txtusername'].": ".utf8_encode($data_admin[$bridge_setting['db_user_name']]).";  ".$localstr['txtemail'].": ".$data_admin[$bridge_setting['db_user_email']];
+		$bridge_admin_id_output[] = $wrm_install_lang['txtusername'].": ".utf8_encode($data_admin[$bridge_setting['db_user_name']]).";  ".$wrm_install_lang['txtemail'].": ".$data_admin[$bridge_setting['db_user_email']];
 		$bridge_admin_id_values[] = $data_admin[$bridge_setting['db_user_id']];
 	}
 	
@@ -281,21 +284,21 @@ if ($step == 1)
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."?step=2" ,
-			"headtitle" => $localstr['headtitle'],
-			"user_admin_01_text" => $localstr['step5sub2usernamefullperm'],
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
 
 			"bridge_admin_id_output" => $bridge_admin_id_output,
 			"bridge_admin_id_values" => $bridge_admin_id_values,
 			"bridge_admin_id_selected" => $bridge_admin_id_selected,
 		
-			"user_admin_password_text" => $localstr['txtpassword'],
+			"user_admin_password_text" => $wrm_install_lang['txtpassword'],
 		
 			"bridge_name" => $bridge_name,
 			"bridge_prefix" => $bridge_prefix,
 			"bridge_admin_id" => $bridge_admin_id,
 			"bridge_database_name" => $bridge_database_name,
 		
-			"bd_submit" => $localstr['bd_submit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
 
@@ -322,7 +325,7 @@ if ($step == 2)
 	include ($wrm_config_file);
 //	$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 //	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = 	"SELECT " . $bridge_setting['db_allgroups_id'] . " , " . $bridge_setting['db_allgroups_name'] .
 			" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
@@ -342,8 +345,8 @@ if ($step == 2)
 	$user_group_values[] = 0;
 	$user_alt_group_output = $user_group_output;
 	$user_alt_group_values = $user_group_values;
-	$user_group_output[] = $localstr['step5sub3norest'];
-	$user_alt_group_output[] = $localstr['step5sub3noaddus'];
+	$user_group_output[] = $wrm_install_lang['step5sub3norest'];
+	$user_alt_group_output[] = $wrm_install_lang['step5sub3noaddus'];
 
 	if (isset($_POST['user_group']))
 		$user_group_selected = $_POST['user_group'];
@@ -359,12 +362,12 @@ if ($step == 2)
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."?step=3" ,
-			"headtitle" => $localstr['headtitle'],
-			"user_group_01_text" => $localstr['step5sub3group01'],
-			"user_group_02_text" => $localstr['step5sub3group02'],
-			"user_group_03_text" => $localstr['step5sub3group03'],
-			"user_group_alt_01_text" => $localstr['step5sub3altgroup01'],
-			"user_group_alt_02_text" => $localstr['step5sub3altgroup02'],
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"user_group_01_text" => $wrm_install_lang['step5sub3group01'],
+			"user_group_02_text" => $wrm_install_lang['step5sub3group02'],
+			"user_group_03_text" => $wrm_install_lang['step5sub3group03'],
+			"user_group_alt_01_text" => $wrm_install_lang['step5sub3altgroup01'],
+			"user_group_alt_02_text" => $wrm_install_lang['step5sub3altgroup02'],
 
 			"user_group_output" => $user_group_output,
 			"user_group_values" => $user_group_values,
@@ -378,7 +381,7 @@ if ($step == 2)
 			"bridge_admin_id" => $bridge_admin_id,
 			"bridge_admin_password" => $bridge_admin_password,
 		
-			"bd_submit" => $localstr['bd_submit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
 
@@ -406,22 +409,22 @@ if($step == 3)
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."?step=bridge_done" ,
-			"headtitle" => $localstr['headtitle'],
+			"headtitle" => $wrm_install_lang['headtitle'],
 				
 			"bridge_name_text" => "bridge name",
 			"bridge_name_value" => $bridge_name,
-			"bridge_prefix_text" => $localstr['step2WRMtableprefix'],
+			"bridge_prefix_text" => $wrm_install_lang['step2WRMtableprefix'],
 			"bridge_prefix_value" => $bridge_prefix,
-			"bridge_admin_id_text" => $localstr['txtusername'],
+			"bridge_admin_id_text" => $wrm_install_lang['txtusername'],
 			"bridge_admin_id_value" => $bridge_admin_id,
-			"bridge_admin_password_text" => $localstr['txtpassword'],
+			"bridge_admin_password_text" => $wrm_install_lang['txtpassword'],
 			"bridge_admin_password_value" => $bridge_admin_password,
 			"bridge_auth_user_text" => "group",
 			"bridge_auth_user_group_value" => $bridge_auth_user_group,
 			"bridge_auth_user_alt_text" => " alt group",
 			"bridge_auth_user_alt_group_value" => $bridge_auth_user_alt_group,
 		
-			"bd_submit" => $localstr['bd_submit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
 
@@ -439,13 +442,13 @@ if($step === "bridge_done")
 	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
 
 	include ($wrm_config_file);
-	include ("includes/function.php");
+	//include ("includes/function.php");
 	include ("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
 //	$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 //	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = sprintf(	"SELECT " . $bridge_setting['db_user_id']. " , ". $bridge_setting['db_user_name'] . " , " .	$bridge_setting['db_user_email'] . " , " .$bridge_setting['db_user_password'] .
 					" FROM " . $bridge_prefix . $bridge_setting['db_table_user_name'] . 
