@@ -1,44 +1,42 @@
+ <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 <form method="post" action="{$form_action}">
-
-{$select_lang}: <select name=classlang_type>
-{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-</select>
 
  <table align="center" width="600">
   <tr>
    <td><div align="center"><b>{$headtitle}</b></div></td>
   </tr>
   <tr>
-   <td>&nbsp;<br><i>{$system_requirements}:</i>
+   <td>&nbsp;<br><i class="menuHeader">{$system_requirements}:</i>
+   <br/>
    <table width="70%" align="center">
     <tr>
-     <td><u>{$property}</u></td>
-     <td><u>{$required}</u></td>
-     <td><u>{$exist}</u></td>
+     <td class="rowHover"><u>{$property}</u></td>
+     <td class="rowHover"><u>{$required}</u></td>
+     <td class="rowHover"><u>{$exist}</u></td>
     </tr>
     <tr>
-     <td>{$phpversion_text}</td>
-     <td>4.0.1</td>
+     <td class="row1">{$phpversion_text}</td>
+     <td class="row1">4.0.1</td>
      <td bgcolor="{$phpversion_bgcolor}">{$phpversion_value}</td>
     </tr>
     <tr>
-     <td>{$mysqlversion_text}</td>
-     <td>4.1.0</td>
+     <td class="row2">{$mysqlversion_text}</td>
+     <td class="row2">4.1.0</td>
      <td bgcolor="{$mysqlversion_bgcolor}">{$mysqlversion_value}</td>
     </tr>
     <tr>
-     <td>upload_max_filesize</td>
-     <td> 0</td>
+     <td class="row1">upload_max_filesize</td>
+     <td class="row1"> 0</td>
      <td bgcolor="{$upload_max_filesize_bgcolor}">{$upload_max_filesize_value}</td>
     </tr>
     <tr>
-     <td>magic_quotes_sybase</td>
-     <td>{$nonactive}</td>
+     <td class="row2">magic_quotes_sybase</td>
+     <td class="row2">{$nonactive}</td>
      <td bgcolor="{$magic_quotes_sybase_bgcolor}">{$magic_quotes_sybase_value}</td>
 	</tr>
     <tr>
-     <td>{$writeable_config_text}</td>
-     <td>{$yes}</td>
+     <td class="row1">{$writeable_config_text}</td>
+     <td class="row1">{$yes}</td>
      <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}</td>
 	</tr>
    </table>

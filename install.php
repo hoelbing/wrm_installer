@@ -21,11 +21,13 @@ if (!isset($_POST['classlang_type']))
 else
 	$lang = $_POST['classlang_type'];
 
-include('language/locale-'.$lang.'.php');
+include_once('language/locale-'.$lang.'.php');
 
 
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
+
+
 /**
  * This is the path to the WRM Config File
  */
@@ -194,7 +196,6 @@ else if($step == 2) {
 	if ($error_msg != "")
 	{
 		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
-		//echo $error_msg;
 	}
 
 	if (isset($_POST['wrm_db_name']))
@@ -307,7 +308,6 @@ else if($step == 3)
 			if ($wrm_create_db == TRUE)
 			{
 				$sql = "Create Database ".$wrm_db_name;
-				//@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error());
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(),1);
 				$FOUNDERROR_Database = FALSE;
 			}
@@ -397,8 +397,6 @@ else if($step == 5)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-//	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-//	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 
@@ -415,7 +413,6 @@ else if($step == 5)
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		//		@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
@@ -423,7 +420,6 @@ else if($step == 5)
 	}
 	
 	$wrm_install->sql_close();
-	//@mysql_close($linkWRM);
 	header("Location: install.php?step=6");
 }
 
@@ -439,8 +435,6 @@ else if($step == 6)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	//$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	//@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	//insert (default) values
@@ -456,7 +450,6 @@ else if($step == 6)
 			{
 				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-//				@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 				$sql = '';
 			}
 		}
@@ -464,7 +457,6 @@ else if($step == 6)
 	}
 	
 	$wrm_install->sql_close();
-	//@mysql_close($linkWRM);
 	header("Location: install.php?step=7");
 	exit();
 
@@ -483,9 +475,6 @@ else if($step == 7)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	//$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	//@mysql_select_db($phpraid_config['db_name'],$linkWRM);
-	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	$gd = get_mysql_version_from_phpinfo();
@@ -496,13 +485,11 @@ else if($step == 7)
 		for ($i=0; $i <count($wrm_tables); $i++)
 		{
 			$sql = "ALTER TABLE `".$phpraid_config['db_prefix'].$wrm_tables[$i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
-			//@mysql_query($sql) or die($wrm_install_lang['step3errorsql'].' ' . mysql_error()."<br/>sql:".$sql);
 			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		}
 	}
 
 	$wrm_install->sql_close();
-//	@mysql_close($linkWRM);
 	header("Location: install.php?step=8");
 	exit();
 }
@@ -547,38 +534,27 @@ else if($step === "done")
 	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
 	$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
 	
-	//$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
-	//@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	//$result =  @mysql_query($sql) or die("Error verifying " . mysql_error());
-	//if((@mysql_num_rows($result) == 0))
 	if($wrm_install->sql_numrows($result) == 0)
 	{
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('header_link','$wrmserver')";
-		//@mysql_query($sql) or die("Error inserting " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_site_url', '$wrmserverfile')";
-		//@mysql_query($sql) or die("Error inserting " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_export_url', '$wrmserverfile')";
-		//@mysql_query($sql) or die("Error inserting " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else{
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserver' WHERE config_name='header_link'";
-		//@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_site_url'";
-		//@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
-		//@mysql_query($sql) or die("Error updating header_link in config table. " . mysql_error());
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
-	//@mysql_close($linkWRM);
 	$wrm_install->sql_close();
 	include ("includes/page_header.php");
 	$smarty->assign(

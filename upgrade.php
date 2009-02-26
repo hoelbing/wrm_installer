@@ -37,7 +37,7 @@ $filename_upgrade = "upgrade.php";
 $versions_nr_install = $version;
 
 /**
- * Version from your wrm Database
+ * Version from your wrm (Server) Database
  */
 $versions_nr_current_wrm = "";
 
