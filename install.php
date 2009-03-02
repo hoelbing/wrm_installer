@@ -263,11 +263,13 @@ else if($step == 2) {
  * ---------------------
  * */
 else if($step == 3) {
-	$wrm_db_name = $_POST['wrm_db_name'];
-	$wrm_create_db = $_POST['wrm_create_db'];
+
 	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 	$wrm_db_username = $_POST['wrm_db_username'];
 	$wrm_db_password = $_POST['wrm_db_password'];
+	
+	$wrm_db_name = $_POST['wrm_db_name'];
+	$wrm_create_db = $_POST['wrm_create_db'];
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	$sql_db_name_selected = $_POST['list_sql_db_name'];
 	
@@ -352,6 +354,9 @@ else if($step == 3) {
 			"sql_db_name_values" => $sql_db_name_values,
 			"sql_db_name_selected" => $sql_db_name_selected,
 			"wrm_db_create_name" => $wrm_install_lang['none'],
+			"wrm_db_server_hostname" => $wrm_db_server_hostname,
+			"wrm_db_username" => $wrm_db_username,
+			"wrm_db_password" => $wrm_db_password,		
 			"error_msg" => $error_msg,
 		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
@@ -370,16 +375,19 @@ else if($step == 3) {
  * */
 else if($step == 4)
 {
-	$wrm_db_name = $_POST['wrm_db_create_name'];
-	$wrm_create_db = $_POST['wrm_create_db'];
 	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 	$wrm_db_username = $_POST['wrm_db_username'];
 	$wrm_db_password = $_POST['wrm_db_password'];
+	
+	$wrm_db_name = $_POST['wrm_db_create_name'];
+	//$wrm_create_db = $_POST['wrm_create_db'];
+
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Database = FALSE;
 	
+	//echo $wrm_db_server_hostname. $wrm_db_username . $wrm_db_password;
 	if ( $_POST['list_sql_db_name'] != " - ".$wrm_install_lang['create_db']." - ")
 	{
 		$wrm_db_name = $_POST['list_sql_db_name'];
@@ -388,8 +396,9 @@ else if($step == 4)
 	else
 	{
 		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
-		$sql = "Create Database ".$wrm_db_name;
-		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(),1);
+		$sql = "CREATE DATABASE ".$wrm_db_name;
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error() ,1);
+		//echo ;
 	}
 	
 	if(!$wrm_install->db_connect_id)
