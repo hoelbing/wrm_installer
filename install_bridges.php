@@ -446,8 +446,8 @@ if($step === "bridge_done")
 	include ("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
-//	$linkWRM = @mysql_connect($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
-//	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
+	$bridge_utf8_support = "enabled";//$bridge_setting['bridge_utf8_support'];
+	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = sprintf(	"SELECT " . $bridge_setting['db_user_id']. " , ". $bridge_setting['db_user_name'] . " , " .	$bridge_setting['db_user_email'] . " , " .$bridge_setting['db_user_password'] .
@@ -488,8 +488,12 @@ if($step === "bridge_done")
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
+	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+					" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_utf8_support)
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
 	//close connection
-	//@mysql_close($linkWRM);
 	$wrm_install->sql_close();
 	header("Location: install.php?step=done");
 }

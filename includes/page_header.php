@@ -41,13 +41,17 @@ if (!isset($_POST['classlang_type']))
 	$lang = "english";
 else
 	$lang = $_POST['classlang_type'];
-	
-$smarty->assign("headtitle",  $wrm_install_lang['headtitle']);
-$smarty->assign("install_title",  $wrm_install_lang['headtitle']);
-$smarty->assign("form_action",  'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"]);
-$smarty->assign("classlang_type_values", $files);
-$smarty->assign("classlang_type_selected", $lang);
-$smarty->assign("select_lang", $wrm_install_lang['select_lang']);
+
+$smarty->assign(
+	array(
+		"headtitle" =>  $wrm_install_lang['headtitle'],
+		"install_title" =>  $wrm_install_lang['headtitle'],
+		"form_action" =>  'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"],
+		"classlang_type_values" => $files,
+		"classlang_type_selected" => $lang,
+		"select_lang" => $wrm_install_lang['select_lang'],
+	)
+);
 
 $smarty->display('header.tpl.html');
 ?>

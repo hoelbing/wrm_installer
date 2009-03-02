@@ -1,48 +1,29 @@
-<form method="post" action="{$form_action}">
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 
-{$select_lang}: <select name=classlang_type>
-{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-</select>
+<form method="post" action="{$form_action}">
 
  <table align="center" width="650">
   <tr>
-   <td><div align="center"><b>{$headtitle}</b></div></td>
-  </tr>
-  <tr>
     <td>&nbsp;</td>
   </tr>
-  {$error_msg}
   <tr>
-   <td><table width="95%" align="center">
-   <tr>
-     <td width="40%">{$wrm_db_name_text}</td>
-     <td width="30%"><input type="text" name="wrm_db_name" class="post" value="{$wrm_db_name_value}"></td>
-     <td width="30%">{$wrm_create_db_text}<input name="wrm_create_db" type="checkbox" value="" />
-       &nbsp;</td>
-   </tr>
+    <td>{$error_msg}</td>
+  </tr>  
+  <tr>
+   <td><table width="95%" border="0" align="center" cellpadding="2" cellspacing="2">
     <tr>
-     <td>{$wrm_db_server_hostname_text}</td>
-     <td><input type="text" name="wrm_db_server_hostname" class="post" value="{$wrm_db_server_hostname_value}"></td>
-     <td>&nbsp;</td>
+     <td width="40%" class="row2">{$wrm_db_server_hostname_text}</td>
+     <td width="30%"><input type="text" name="wrm_db_server_hostname" class="post" value="{$wrm_db_server_hostname_value}"></td>
+     <td width="30%">&nbsp;</td>
     </tr>
     <tr>
-     <td>{$wrm_db_username_text}</td>
+     <td class="row1">{$wrm_db_username_text}</td>
      <td><input type="text" name="wrm_db_username" class="post" value="{$wrm_db_username_value}"></td>
      <td>&nbsp;</td>
     </tr>
     <tr>
-     <td>{$wrm_db_password_text}</td>
+     <td class="row2">{$wrm_db_password_text}</td>
      <td><input type="text" name="wrm_db_password" class="post" value="{$wrm_db_password_value}"></td>
-     <td>&nbsp;</td>
-    </tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-	    <td>&nbsp;</td>
-	</tr>
-    <tr>
-     <td>{$wrm_db_tableprefix_text}</td>
-     <td><input type="text" name="wrm_db_tableprefix" class="post" value="{$wrm_db_tableprefix_value}"></td>
      <td>&nbsp;</td>
     </tr>
 

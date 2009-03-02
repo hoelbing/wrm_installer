@@ -2,11 +2,12 @@
 
 /*-------------------------------*/
 //lang strg
-$wrm_install_lang['step2_create_db'] = "Create Database?";
+$wrm_install_lang['create_db'] = "Create Database?";
 /*-------------------------------*/
 
 /*
  * todo
+ * error msg in step 3 and 4; work not correct
  * sql layer
  * step 4: mysql_list_tables, mysql_tablename
  */
@@ -181,7 +182,7 @@ else if($step == 1) {
  * --------------------
  * Step 2
  *
- * show/set db settings
+ * show/set db settings (server_hostname, db_username, db_password)
  * ---------------------
  * */
 else if($step == 2) {
@@ -198,11 +199,6 @@ else if($step == 2) {
 		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
 	}
 
-	if (isset($_POST['wrm_db_name']))
-		$wrm_db_name_value = $_POST['wrm_db_name'];
-	else
-		$wrm_db_name_value_value = "";
-		
 	if (isset($_POST['wrm_db_server_hostname']))
 		$wrm_db_server_hostname_value = $_POST['wrm_db_server_hostname'];
 	else
@@ -217,16 +213,7 @@ else if($step == 2) {
 		$wrm_db_password_value = $_POST['wrm_db_password'];
 	else
 		$wrm_db_password_value = "";			
-		
-	if (isset($_POST['wrm_db_tableprefix']))
-		$wrm_db_tableprefix_value = $_POST['wrm_db_tableprefix'];
-	else
-		$wrm_db_tableprefix_value = "wrm_";
 
-	if (isset($_POST['wrm_create_db']))
-		$wrm_create_db_value = $_POST['wrm_create_db'];
-	else
-		$wrm_create_db_value = false;
 
 	if(is_file($wrm_config_file))
 	{
@@ -234,11 +221,9 @@ else if($step == 2) {
 		
 		if (isset($phpraid_config['db_name']))
 		{
-			$wrm_db_name_value = $phpraid_config['db_name'];
 			$wrm_db_server_hostname_value = $phpraid_config['db_host'];
 			$wrm_db_username_value = $phpraid_config['db_user'];
 			$wrm_db_password_value = $phpraid_config['db_pass'];
-			$wrm_db_tableprefix_value = $phpraid_config['db_prefix'];				
 		}
 	}
 	 
@@ -247,18 +232,19 @@ else if($step == 2) {
 		array(
 			"form_action" => "install.php?step=3",
 			"headtitle" => $wrm_install_lang['headtitle'],
-			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
-			"wrm_db_name_value" => $wrm_db_name_value,
-			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
-			"wrm_create_db_value" => $wrm_create_db_value,
+			//"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
+			//"wrm_db_name_value" => $wrm_db_name_value,
+			//"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
+			//"wrm_create_db_value" => $wrm_create_db_value,
 			"wrm_db_server_hostname_text" => $wrm_install_lang['step2dbserverhostname'],
 			"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
 			"wrm_db_username_text" => $wrm_install_lang['step2dbserverusername'],
 			"wrm_db_username_value" => $wrm_db_username_value,
 			"wrm_db_password_text" => $wrm_install_lang['step2dbserverpwd'],
 			"wrm_db_password_value" => $wrm_db_password_value,
-			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
-			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+			//"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
+			//"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+
 			"error_msg" => $error_msg,
 		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
@@ -273,11 +259,118 @@ else if($step == 2) {
  * --------------------
  * Step 3
  *
+ * show/set db settings (db_name and db_tableprefix) 
  * ---------------------
  * */
-else if($step == 3)
-{
+else if($step == 3) {
 	$wrm_db_name = $_POST['wrm_db_name'];
+	$wrm_create_db = $_POST['wrm_create_db'];
+	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
+	$wrm_db_username = $_POST['wrm_db_username'];
+	$wrm_db_password = $_POST['wrm_db_password'];
+	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	$sql_db_name_selected = $_POST['list_sql_db_name'];
+	
+	$wrm_config_writeable = FALSE;
+	$FOUNDERROR_Connection = FALSE;
+	
+	if(is_file($wrm_config_file))
+	{
+		include($wrm_config_file);
+		
+		if (isset($phpraid_config['db_name']))
+		{
+			$wrm_db_server_hostname = $phpraid_config['db_host'];
+			$wrm_db_username = $phpraid_config['db_user'];
+			$wrm_db_password = $phpraid_config['db_pass'];
+			$wrm_db_name = $phpraid_config['db_name'];
+			$wrm_db_tableprefix = $phpraid_config['db_prefix'];	
+		}
+	}
+	
+	//check/test connection
+	$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+	
+	if(!$wrm_install->db_connect_id)
+	{
+		$FOUNDERROR_Connection = TRUE;
+		header("Location: install.php?step=2&erro_con=1");
+	}
+	
+	$error_msg = "";
+
+	if ( isset($_POST['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
+		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
+
+	if ( isset($_POST['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
+		$error_msg .= $wrm_install_lang['step3errordbcon'];
+
+	if ($error_msg != "")
+	{
+		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
+	}
+
+	if (isset($_POST['wrm_db_name']))
+		$wrm_db_name = $_POST['wrm_db_name'];
+	else
+		$wrm_db_name = "";
+			
+	if (isset($_POST['wrm_db_tableprefix']))
+		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	else
+		$wrm_db_tableprefix = "wrm_";
+
+
+
+	
+	//load all DATABASES name in a array ($sql_all_dbname)
+	$sql_db_name_values = array();
+	$sql_db_all = "SHOW DATABASES";
+
+	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
+	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+	{
+		//show all TABLES
+		$sql_db_name_values[] = $data_db_all['Database'];
+	}
+	
+	//add create db
+	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";
+	$wrm_install->sql_close();
+	
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => "install.php?step=4",
+			"headtitle" => $wrm_install_lang['headtitle'],
+			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
+			//"wrm_db_name_value" => $wrm_db_name_value,
+			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
+			"wrm_create_db_value" => $wrm_create_db_value,
+			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
+			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+			"sql_db_name_values" => $sql_db_name_values,
+			"sql_db_name_selected" => $sql_db_name_selected,
+			"wrm_db_create_name" => $wrm_install_lang['none'],
+			"error_msg" => $error_msg,
+		
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("step3.tpl.html");
+	include ("includes/page_footer.php");
+}
+
+/**
+ * --------------------
+ * Step 4
+ *
+ * ---------------------
+ * */
+else if($step == 4)
+{
+	$wrm_db_name = $_POST['wrm_db_create_name'];
 	$wrm_create_db = $_POST['wrm_create_db'];
 	$wrm_db_server_hostname = $_POST['wrm_db_server_hostname'];
 	$wrm_db_username = $_POST['wrm_db_username'];
@@ -285,38 +378,28 @@ else if($step == 3)
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	
 	$wrm_config_writeable = FALSE;
-	$FOUNDERROR_Connection = FALSE;
 	$FOUNDERROR_Database = FALSE;
 	
-	$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_name);
+	if ( $_POST['list_sql_db_name'] != " - ".$wrm_install_lang['create_db']." - ")
+	{
+		$wrm_db_name = $_POST['list_sql_db_name'];
+		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_name);
+	}
+	else
+	{
+		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+		$sql = "Create Database ".$wrm_db_name;
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(),1);
+	}
 	
 	if(!$wrm_install->db_connect_id)
 	{
 		$FOUNDERROR_Database = TRUE;
-		$FOUNDERROR_Connection = TRUE;
-	}
-
-	else
-	{
-		$wrm_install->sql_db($wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,"");
-		
-		if(!$wrm_install->db_connect_id)
-		{
-			$FOUNDERROR_Database = TRUE;
-			$FOUNDERROR_Connection = FALSE;
-			
-			if ($wrm_create_db == TRUE)
-			{
-				$sql = "Create Database ".$wrm_db_name;
-				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(),1);
-				$FOUNDERROR_Database = FALSE;
-			}
-		}
 	}
 
 	$wrm_install->sql_close();
 
-	if ( ($FOUNDERROR_Database == FALSE) and ($FOUNDERROR_Connection == FALSE))
+	if ($FOUNDERROR_Database == FALSE) 
 	{
 		$wrm_config_writeable = write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
 	
@@ -324,7 +407,7 @@ else if($step == 3)
 		if ($wrm_config_writeable == TRUE)
 		{
 			//go to next step
-			header("Location: install.php?step=4");
+			header("Location: install.php?step=5");
 		}
 		//config FILE ist NOT writeable
 		else
@@ -333,27 +416,19 @@ else if($step == 3)
 		}
 	}
 
-	if (($FOUNDERROR_Connection == TRUE) and ($FOUNDERROR_Database == TRUE))
-	{
-		header("Location: install.php?step=2&erro_con=1&error_db=1");
-	}
-	if ($FOUNDERROR_Connection == TRUE)
-	{
-		header("Location: install.php?step=2&erro_con=1");
-	}
 	if ($FOUNDERROR_Database == TRUE)
 	{
-		header("Location: install.php?step=2&error_db=1");
+		header("Location: install.php?step=3&error_db=1");
 	}
 }
 /**
  * --------------------
- * Step 4
+ * Step 5
  *
  * test: if selected db, are wrm table include
  * ---------------------
  * */
-else if($step == 4)
+else if($step == 5)
 {
 
 	include($wrm_config_file);
@@ -387,12 +462,12 @@ else if($step == 4)
 
 /**
  * --------------------
- * Step 5
+ * Step 6
  *
  * insert schema(=tables), in wrm db
  * ---------------------
  * */
-else if($step == 5)
+else if($step == 6)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
@@ -425,12 +500,12 @@ else if($step == 5)
 
 /**
  * --------------------
- * Step 6
+ * Step 7
  *
  * fill, wrm db, with default values
  * ---------------------
  * */
-else if($step == 6)
+else if($step == 7)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
@@ -464,13 +539,13 @@ else if($step == 6)
 
 /**
  * --------------------
- * Step 7
+ * Step 8
  *
  * install Collation on wrm tablle @ MySQL
  * Run the alter_tables.sql for setting Character Set and Collation if MySQL version > 4.1.0
  * ---------------------
  * */
-else if($step == 7)
+else if($step == 8)
 {
 	include($wrm_config_file);
 	include("install_settings.php");
@@ -498,23 +573,23 @@ else if($step == 7)
 
 /**
  * --------------------
- * Step 8
+ * Step 9
  *
  * jump 2 bridge installion at/in "install_bridges.php"
  * ---------------------
  * */
-else if($step == 8)
+else if($step == 9)
 {
 	header("Location: install_bridges.php?step=0");
 }
 
 /**
  * --------------------
- * Step 9
+ * Step 10
  *
  * ---------------------
  * */
-else if($step == 9)
+else if($step == 10)
 {
 
 }
@@ -554,6 +629,7 @@ else if($step === "done")
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+
 	}
 	$wrm_install->sql_close();
 	include ("includes/page_header.php");
