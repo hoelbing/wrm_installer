@@ -8,8 +8,6 @@ $wrm_install_lang['create_db'] = "Create Database?";
 /*
  * todo
  * error msg in step 3 and 4; work not correct
- * sql layer
- * step 4: mysql_list_tables, mysql_tablename
  */
 if (!isset($_GET['step']))
 $step = 0;
@@ -443,16 +441,22 @@ else if($step == 5)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-	//$db_raid = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-
-	$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	@mysql_select_db($phpraid_config['db_name'],$linkWRM);
-
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	
 	$foundtable = FALSE;
-	$result = @mysql_list_tables($phpraid_config['db_name']);
-
-	for($i=0; $i < @mysql_num_rows($result); $i++) {
-		if(in_array(@mysql_tablename($result,$i),$wrm_tables)) {
+	
+	//load all DATABASES name in a array ($sql_all_dbname)
+	$result_list_tables = array();
+	$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+	$result_db_all = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
+	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
+	{
+		//show all TABLES
+		$result_list_tables[] = $db_table_name['Database'];
+	}
+	
+	for($i=0; $i < count($result_list_tables)-1; $i++) {
+		if(in_array($result_list_tables[$i],$wrm_tables)) {
 			$foundtable = TRUE;
 			break;
 		}
@@ -463,10 +467,9 @@ else if($step == 5)
 		echo "found exist table";
 		exit;
 	}
-	
-	@mysql_close($linkWRM);
-	//$db_raid->sql_close();
-	header("Location: install.php?step=5");
+
+	$wrm_install->sql_close();
+	header("Location: install.php?step=6");
 }
 
 /**
@@ -504,7 +507,7 @@ else if($step == 6)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: install.php?step=6");
+	header("Location: install.php?step=7");
 }
 
 /**
@@ -541,7 +544,7 @@ else if($step == 7)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: install.php?step=7");
+	header("Location: install.php?step=8");
 	exit();
 
 }
@@ -574,7 +577,7 @@ else if($step == 8)
 	}
 
 	$wrm_install->sql_close();
-	header("Location: install.php?step=8");
+	header("Location: install.php?step=9");
 	exit();
 }
 
