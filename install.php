@@ -3,11 +3,12 @@
 /*-------------------------------*/
 //lang strg
 $wrm_install_lang['create_db'] = "Create Database?";
+$wrm_install_lang['default'] = "default";
 /*-------------------------------*/
 
 /*
  * todo
- * error msg in step 3 and 4; work not correct
+ * step 5 existing Database: drop , question at user
  */
 if (!isset($_GET['step']))
 $step = 0;
@@ -186,15 +187,11 @@ else if($step == 1) {
 else if($step == 2) {
 	$error_msg = "";
 
-	if ( isset($_POST['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
-		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
-
-	if ( isset($_POST['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
-		$error_msg .= $wrm_install_lang['step3errordbcon'];
-
-	if ($error_msg != "")
+	if ( isset($_GET['erro_con']) )
 	{
-		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
+		$error_msg .= '<div class="errorHeader">Error connecting to Server (Servername or Username or Password incorrect) <br/>';
+		$error_msg .= $wrm_install_lang['step3errordbcon'];
+		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit']."</div><br/>"."<br/>";
 	}
 
 	if (isset($_POST['wrm_db_server_hostname']))
@@ -213,7 +210,7 @@ else if($step == 2) {
 		$wrm_db_password_value = "";			
 
 
-	if(is_file($wrm_config_file))
+	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
 	{
 		include($wrm_config_file);
 		
@@ -230,19 +227,14 @@ else if($step == 2) {
 		array(
 			"form_action" => "install.php?step=3",
 			"headtitle" => $wrm_install_lang['headtitle'],
-			//"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
-			//"wrm_db_name_value" => $wrm_db_name_value,
-			//"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
-			//"wrm_create_db_value" => $wrm_create_db_value,
 			"wrm_db_server_hostname_text" => $wrm_install_lang['step2dbserverhostname'],
 			"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
 			"wrm_db_username_text" => $wrm_install_lang['step2dbserverusername'],
 			"wrm_db_username_value" => $wrm_db_username_value,
 			"wrm_db_password_text" => $wrm_install_lang['step2dbserverpwd'],
 			"wrm_db_password_value" => $wrm_db_password_value,
-			//"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
-			//"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
-
+			"wrm_db_create_name" => $_POST['wrm_db_create_name'],
+			"wrm_db_tableprefix" => $_POST['wrm_db_tableprefix'],
 			"error_msg" => $error_msg,
 		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
@@ -267,14 +259,14 @@ else if($step == 3) {
 	$wrm_db_password = $_POST['wrm_db_password'];
 	
 	$wrm_db_name = $_POST['wrm_db_name'];
-	$wrm_create_db = $_POST['wrm_create_db'];
+	$wrm_create_db_value = $_POST['wrm_db_create_name'];
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	$sql_db_name_selected = $_POST['list_sql_db_name'];
 	
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Connection = FALSE;
 	
-	if(is_file($wrm_config_file))
+	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
 	{
 		include($wrm_config_file);
 		
@@ -299,30 +291,23 @@ else if($step == 3) {
 	
 	$error_msg = "";
 
-	if ( isset($_POST['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
+	if ( isset($_GET['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
 		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
 
-	if ( isset($_POST['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
+	if ( isset($_GET['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
 		$error_msg .= $wrm_install_lang['step3errordbcon'];
 
 	if ($error_msg != "")
 	{
 		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit'];
 	}
-
-	if (isset($_POST['wrm_db_name']))
-		$wrm_db_name = $_POST['wrm_db_name'];
-	else
-		$wrm_db_name = "";
 			
-	if (isset($_POST['wrm_db_tableprefix']))
-		$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
+	if (isset($_POST['wrm_db_tableprefix'])and $_POST['wrm_db_tableprefix'] != "")
+		$wrm_db_tableprefix_value = $_POST['wrm_db_tableprefix'];
 	else
-		$wrm_db_tableprefix = "wrm_";
+		$wrm_db_tableprefix_value = "wrm_";
 
 
-
-	
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$sql_db_name_values = array();
 	$sql_db_all = "SHOW DATABASES";
@@ -344,11 +329,11 @@ else if($step == 3) {
 			"form_action" => "install.php?step=4",
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
-			//"wrm_db_name_value" => $wrm_db_name_value,
 			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
 			"wrm_create_db_value" => $wrm_create_db_value,
 			"wrm_db_tableprefix_text" => $wrm_install_lang['step2WRMtableprefix'],
 			"wrm_db_tableprefix_value" => $wrm_db_tableprefix_value,
+			"wrm_db_tableprefix_default_text" => "(".$wrm_install_lang['default'].":".' "wrm_" )',
 			"sql_db_name_values" => $sql_db_name_values,
 			"sql_db_name_selected" => $sql_db_name_selected,
 			"wrm_db_create_name" => $wrm_install_lang['none'],
@@ -378,17 +363,15 @@ else if($step == 4)
 	$wrm_db_password = $_POST['wrm_db_password'];
 	
 	$wrm_db_name = $_POST['wrm_db_create_name'];
-	//$wrm_create_db = $_POST['wrm_create_db'];
 
 	$wrm_db_tableprefix = $_POST['wrm_db_tableprefix'];
 	
 	$wrm_config_writeable = FALSE;
 	$FOUNDERROR_Database = FALSE;
 	
-	//echo $wrm_db_server_hostname. $wrm_db_username . $wrm_db_password;
-	if ( $_POST['list_sql_db_name'] != " - ".$wrm_install_lang['create_db']." - ")
+	if ( $_POST['sql_db_list_name'] != " - ".$wrm_install_lang['create_db']." - ")
 	{
-		$wrm_db_name = $_POST['list_sql_db_name'];
+		$wrm_db_name = $_POST['sql_db_list_name'];
 		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_name);
 	}
 	else

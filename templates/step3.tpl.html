@@ -16,7 +16,7 @@
      <tr>
        <td width="40%" class="row1"><div align="right">{$wrm_db_name_text}</div></td>
        <td width="30%"><div align="center">
-         <select name="list_sql_db_name" class="post">
+         <select name="sql_db_list_name" class="post">
 			{html_options values=$sql_db_name_values selected=$sql_db_name_selected output=$sql_db_name_values}		
           </select>     
        </div></td>
@@ -34,7 +34,7 @@
        <td><div align="center">
          <input type="text" name="wrm_db_tableprefix" class="post" value="{$wrm_db_tableprefix_value}" />
        </div></td>
-       <td>&nbsp;</td>
+       <td class="row2">{$wrm_db_tableprefix_default_text}</td>
      </tr>
 
    </table>
