@@ -353,7 +353,8 @@ else if($step == 3) {
 /**
  * --------------------
  * Step 4
- *
+ *  create datebase
+ *	write wrm configfile
  * ---------------------
  * */
 else if($step == 4)
@@ -376,10 +377,32 @@ else if($step == 4)
 	}
 	else
 	{
-		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
-		$sql = "CREATE DATABASE ".$wrm_db_name;
-		$wrm_install->sql_query($sql) or print_error($sql, mysql_error() ,1);
-		//echo ;
+		//load all DATABASES name in a array ($sql_all_dbname)
+		$sql_db_name_values = array();
+		$Database_Exist = FALSE;
+		$sql_db_all = "SHOW DATABASES";
+	
+		$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
+		while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+		{
+			//cmp if select db ($wrm_db_name) in/on Server exist
+			if ($wrm_db_name == $data_db_all['Database'])
+			{
+				$Database_Exist = TRUE;
+			}
+		}
+		
+		if ($Database_Exist != TRUE)
+		{
+			$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
+			$sql = "CREATE DATABASE ".$wrm_db_name;
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error() ,1);
+			//echo ;
+		}
+		else
+		{
+			header("Location: install.php?step=3&db_exist=1");
+		}
 	}
 	
 	if(!$wrm_install->db_connect_id)
@@ -415,7 +438,7 @@ else if($step == 4)
  * --------------------
  * Step 5
  *
- * test: if selected db, are wrm table include
+ * test: if selected db, are wrm table include/exist
  * ---------------------
  * */
 else if($step == 5)
