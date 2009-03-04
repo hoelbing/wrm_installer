@@ -401,6 +401,7 @@ else if($step == 4)
 		}
 		else
 		{
+			$wrm_install->sql_close();
 			header("Location: install.php?step=3&db_exist=1");
 		}
 	}
@@ -470,6 +471,28 @@ else if($step == 5)
 
 	if($foundtable == TRUE)
 	{
+		//bd next -> jmp to step 6 -> drop all exist tables before install new tables
+		//and
+		//bd cancel/back - > jmp to step 4
+		
+		/*
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action_bd_next" => "install.php?step=4",
+				"form_action_bd_back" => "install.php?step=6",
+
+	
+				"error_msg" => $error_msg,
+			
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+			)
+		);
+	
+		$smarty->display("step5.tpl.html");
+		*/
+
+		include ("includes/page_footer.php");
 		echo "found exist table";
 		exit;
 	}
