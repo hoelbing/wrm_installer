@@ -445,16 +445,17 @@ else if($step == 4)
 else if($step == 5)
 {
 
-	include($wrm_config_file);
-	include("install_settings.php");
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
 
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$foundtable = FALSE;
 	
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$result_list_tables = array();
 	$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+	//echo $sql_tables;
 	$result_db_all = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
 	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
@@ -462,43 +463,52 @@ else if($step == 5)
 		$result_list_tables[] = $db_table_name['Database'];
 	}
 	
-	for($i=0; $i < count($result_list_tables)-1; $i++) {
-		if(in_array($result_list_tables[$i],$wrm_tables)) {
-			$foundtable = TRUE;
-			break;
-		}
+	for($x=0; $x < count($result_list_tables)-1; $x++)
+	{
+			for($i=0; $i < count($result_list_tables)-1; $i++)
+			{
+				if( $result_list_tables[$x] == $wrm_tables[$i] )
+				{
+					$foundtable = TRUE;
+				}
+			}
 	}
-
+	
+	$wrm_install->sql_close();
+	
 	if($foundtable == TRUE)
 	{
 		//bd next -> jmp to step 6 -> drop all exist tables before install new tables
 		//and
 		//bd cancel/back - > jmp to step 4
 		
-		/*
+		
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-				"form_action_bd_next" => "install.php?step=4",
-				"form_action_bd_back" => "install.php?step=6",
+				"form_action_bd_next" => "install.php?step=6",
+				"form_action_bd_back" => "install.php?step=3",
 
 	
-				"error_msg" => $error_msg,
+				"error_msg" => "found exist table"."</br>".
+								"</br>"."Botton Back : change Table Prefix or Database".
+								"</br>"."Botton Continue : drop all exist Tables before install new Tables",
 			
+				"bd_back" => $wrm_install_lang['bd_back'],
 				"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
 	
 		$smarty->display("step5.tpl.html");
-		*/
-
 		include ("includes/page_footer.php");
-		echo "found exist table";
-		exit;
-	}
 
-	$wrm_install->sql_close();
-	header("Location: install.php?step=6");
+	}
+	else
+	{
+		header("Location: install.php?step=6");
+	}
+	
+	
 }
 
 /**

@@ -1,18 +1,15 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 <form method="post" action="{$form_action}">
-
-{$select_lang}: <select name="classlang_type">
-{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-</select>
 
  <table align="center" width="600">
   <tr>
-   <td><div align="center"><b>{$headtitle}</b></div></td>
+   <td>&nbsp;</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><div align="center">{$user_admin_01_text}</div></td>
+    <td><div align="center" class="row1">{$user_admin_01_text}</div></td>
   </tr>
   <tr>
     <td>
@@ -26,10 +23,10 @@
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <td><table width="100%" border="0" cellspacing="4" cellpadding="0">
       <tr>
-        <td width="34%"><div align="right">{$user_admin_password_text}</div></td>
-        <td width="66%"><input type="text" name="user_admin_password" value="{$user_admin_password_value}"/></td>
+        <td width="34%"><div align="right" class="row1">{$user_admin_password_text}</div></td>
+        <td width="66%"><input name="user_admin_password" type="text" class="row2" value="{$user_admin_password_value}"/></td>
       </tr>
     </table></td>
   </tr>

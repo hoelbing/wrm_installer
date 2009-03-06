@@ -1,19 +1,17 @@
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 <form method="post" action="{$form_action}">
-
-{$select_lang}: <select name="classlang_type">
-{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-</select>
 
  <table align="center" width="600">
   <tr>
-   <td><div align="center"><b>{$headtitle}</b></div></td>
+   <td>&nbsp;</td>
   </tr>
   <tr>
-   <td>&nbsp;
+   <td>
     <tr>
 	<td>
-	  <div align="Left">
-		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br><br>"}
+	  <div align="Left" class="row1">
+		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br>
+		 <br>"}
 	  </div>
 	</td>
   </tr>

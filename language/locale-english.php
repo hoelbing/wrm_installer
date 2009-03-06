@@ -26,6 +26,7 @@ $wrm_install_lang['freshinstall'] = 'Fresh Install';
 //botton
 $wrm_install_lang['bd_submit'] = 'Continue';
 $wrm_install_lang['bd_reset'] = 'Reset';
+$wrm_install_lang['bd_back'] = 'Back';
 
 //step 2
 $wrm_install_lang['step2upgradefrom'] = 'Upgrade to';

@@ -2,43 +2,44 @@
 //
 //germany install strings
 //
-global $localstr;
-$localstr['headtitle'] = 'Willkommen zu der WRM 4.x.x Installation.';
+global $wrm_install_lang;
+$wrm_install_lang['headtitle'] = 'Willkommen zu der WRM 4.x.x Installation.';
 //$localstr['headbodyinfo'] = 'Bitte beachte das die Datenbank, auf welche du sie installieren willst, auch existiert.';
-$localstr['select_lang'] = 'Sprache wählen';
+$wrm_install_lang['select_lang'] = 'Sprache whlen';
 
-$localstr['step0_system_requirements'] = 'Systemvoraussetzungen';
-$localstr['step0_property'] = 'Eigenschaft';
-$localstr['step0_required'] = 'erforderlich';
-$localstr['step0_exist'] = 'vorhanden';
-$localstr['step0_phpversion_text'] = 'PHP Version';
-$localstr['step0_mysqlversion'] = "MySQL Version";
-$localstr['step0_active'] = "aktiviert";
-$localstr['step0_nonactive'] = "deaktiviert";
-$localstr['step0_writeable_config'] = "config.php schreibbar?";
-$localstr['step7sub1inputdir'] = 'Input the path to your CMS directory (including trailing slash!)';
+$wrm_install_lang['step0_system_requirements'] = 'Systemvoraussetzungen';
+$wrm_install_lang['step0_property'] = 'Eigenschaft';
+$wrm_install_lang['step0_required'] = 'erforderlich';
+$wrm_install_lang['step0_exist'] = 'vorhanden';
+$wrm_install_lang['step0_phpversion_text'] = 'PHP Version';
+$wrm_install_lang['step0_mysqlversion'] = "MySQL Version";
+$wrm_install_lang['step0_active'] = "aktiviert";
+$wrm_install_lang['step0_nonactive'] = "deaktiviert";
+$wrm_install_lang['step0_writeable_config'] = "config.php schreibbar?";
+//$wrm_install_lang['step7sub1inputdir'] = 'Input the path to your CMS directory (including trailing slash!)';
 
-$localstr['yes'] = "ja";
-$localstr['no'] = "nein";
-$localstr['upgrade'] = 'Upgrade';
-$localstr['freshinstall'] = 'Neue Installation';
+$wrm_install_lang['yes'] = "ja";
+$wrm_install_lang['no'] = "nein";
+$wrm_install_lang['upgrade'] = 'Upgrade';
+$wrm_install_lang['freshinstall'] = 'Neue Installation';
 
 //menu
-$localstr['InstallationProgress'] = 'Fortschritt der Installation';
-$localstr['menustep1init'] = '1. Initialisierung';
-$localstr['menustep2conf'] = '2. Konfiguration';
-$localstr['menustep3instab'] = '3. Tabellen installieren';
-$localstr['menustep4auth'] = '4. Berechtigungsschema';
-$localstr['menustep5confauth'] = '5. Konf. Berechtigungsschema';
-$localstr['menustep6final'] = '6. Abschliessen';
+$wrm_install_lang['InstallationProgress'] = 'Fortschritt der Installation';
+$wrm_install_lang['menustep1init'] = '1. Initialisierung';
+$wrm_install_lang['menustep2conf'] = '2. Konfiguration';
+$wrm_install_lang['menustep3instab'] = '3. Tabellen installieren';
+$wrm_install_lang['menustep4auth'] = '4. Berechtigungsschema';
+$wrm_install_lang['menustep5confauth'] = '5. Konf. Berechtigungsschema';
+$wrm_install_lang['menustep6final'] = '6. Abschliessen';
 
 //botton
-$localstr['bd_submit'] = 'weiter';
-$localstr['bd_reset'] = 'zurücksetzen';
+$wrm_install_lang['bd_submit'] = 'weiter';
+$wrm_install_lang['bd_reset'] = 'zurcksetzen';
+$wrm_install_lang['bd_back'] = 'Back';
 
 //stuff
-$wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du auf "weiter" drückst.';
-$wrm_install_lang['pressbrowserpack'] ='Bitte benutze, in deinem Browsers, die "zurück" Taste und gebe die Daten erneut ein.';
+$wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du auf "weiter" drckst.';
+$wrm_install_lang['pressbrowserpack'] ='Bitte benutze, in deinem Browsers, die "zurck" Taste und gebe die Daten erneut ein.';
 $wrm_install_lang['problem'] ='Problem';
 $wrm_install_lang['txtusername'] = 'Benutzername';
 $wrm_install_lang['txtpassword'] = 'Password';
@@ -53,11 +54,11 @@ $wrm_install_lang['step2dbserverusername'] = 'SQL Server Benutzername';
 $wrm_install_lang['step2dbserverpwd'] = 'SQL Server Passwort';
 $wrm_install_lang['step2WRMtableprefix'] = 'WRM Table Prefix';
 $wrm_install_lang['step2installtype'] = 'Art der Installation';
-$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben könnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
+$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben knnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
 
 //step 3
 $wrm_install_lang['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Datenbank herstellen.<br>';
-$wrm_install_lang['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht geöffnet werden';
+$wrm_install_lang['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht geffnet werden';
 $wrm_install_lang['step3errorsql'] = 'Fehler bei der Installation :<br> SQL String: $sql<br> Bericht: ';
 $wrm_install_lang['step3installinfo'] = 'Wenn du dies hier lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
 $wrm_install_lang['step3errorversion'] = 'Die Software-Version in version.php entsprich nicht der Version der Datenbank in der Version-Tabelle.';
@@ -76,18 +77,18 @@ $wrm_install_lang['step4unkownauth'] = '(wenn sie sich nicht sicher sind, wÃ¤hle
 $wrm_install_lang['step4chooseauth'] = 'Bitte wÃ¤hle deine Berechtigungsschema aus.';
 
 //errors
-$phprlang['no_user_msg'] = 'Der Benutzer, den du dir ansehen möchtest, existiert nicht oder wurde gelöscht.';
-$phprlang['no_user_title'] = 'Benutzer existiert nicht';
-$phprlang['print_error_critical'] = 'kritischen Fehler entdeckt!';
-$phprlang['print_error_details'] = 'Details';
-$phprlang['print_error_minor'] = 'kleinen Fehler entdeckt!';
-$phprlang['print_error_msg_begin'] = 'Entschuldigung, WRM hat einen ';
-$phprlang['print_error_msg_end'] = 'Wenn der Fehler weiter auftritt, erzeuge bitte ein Posting
+$wrm_install_lang['no_user_msg'] = 'Der Benutzer, den du dir ansehen mchtest, existiert nicht oder wurde gelscht.';
+$wrm_install_lang['no_user_title'] = 'Benutzer existiert nicht';
+$wrm_install_lang['print_error_critical'] = 'kritischen Fehler entdeckt!';
+$wrm_install_lang['print_error_details'] = 'Details';
+$wrm_install_lang['print_error_minor'] = 'kleinen Fehler entdeckt!';
+$wrm_install_lang['print_error_msg_begin'] = 'Entschuldigung, WRM hat einen ';
+$wrm_install_lang['print_error_msg_end'] = 'Wenn der Fehler weiter auftritt, erzeuge bitte ein Posting
 									mit dieser Nachricht <br>in den <a href="http://www.wowraidmanager.net/">wowraidmanager.net-Forums</a> und
 									wir werden unser Bestes geben, um ihn zu beheben. Danke!';
-$phprlang['print_error_page'] = 'Seite';
-$phprlang['print_error_query'] = 'Anfrage';
-$phprlang['print_error_title'] = 'Oh-oh! Da ist ein Fehler passiert';
+$wrm_install_lang['print_error_page'] = 'Seite';
+$wrm_install_lang['print_error_query'] = 'Anfrage';
+$wrm_install_lang['print_error_title'] = 'Oh-oh! Da ist ein Fehler passiert';
 
 //--------------------------
 // Auth.
@@ -182,6 +183,6 @@ $wrm_install_lang['step5xoopsfailconesmf'] = 'Verbindung zur XOOPS Datenbank nic
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Fertig';
 $wrm_install_lang['stepdonesetupcomplete'] = 'Das Setup ist nun komplett.';
-$wrm_install_lang['stepdoneremovedir'] = 'Löschen Sie bitte das "install/" Verzeichnis und klicken sie anschliessend <a href="../index.php">hier</a> drauf wenn sie fertig sind.';
+$wrm_install_lang['stepdoneremovedir'] = 'Lschen Sie bitte das "install/" Verzeichnis und klicken sie anschliessend <a href="../index.php">hier</a> drauf wenn sie fertig sind.';
 
 ?>

@@ -35,6 +35,7 @@ $localstr['menustep6final'] = '6. Completamento dell\'installazione';
 //botton
 $localstr['bd_submit'] = 'Continua';
 $localstr['bd_reset'] = 'Reset';
+$wrm_install_lang['bd_back'] = 'Back';
 
 //stuff
 $localstr['hittingsubmit'] = 'Verifica la correttezza di tutte le informazioni inserite prima di proseguire!';
@@ -77,11 +78,11 @@ $localstr['step4chooseauth'] = 'Seleziona uno dei tipi di autenticazione.';
 
 // errors
 $phprlang['connect_socked_error'] = 'Errore di connessione: %s';
-$phprlang['invalid_group_title'] = 'Team già presente';
-$phprlang['invalid_group_message'] = 'Il Team selezionato è già stato inserito. Torna indietro e riprova.';
+$phprlang['invalid_group_title'] = 'Team gi presente';
+$phprlang['invalid_group_message'] = 'Il Team selezionato  gi stato inserito. Torna indietro e riprova.';
 $phprlang['invalid_option_title'] = 'Dati non validi';
 $phprlang['invalid_option_msg'] = 'Sono stati forniti dati non validi per questa pagina.';
-$phprlang['no_user_msg'] = 'L\'Utente richiesto non esiste o è stato cancellato.';
+$phprlang['no_user_msg'] = 'L\'Utente richiesto non esiste o  stato cancellato.';
 $phprlang['no_user_title'] = 'Utente non valido';
 $phprlang['print_error_critical'] = 'un errore critico!';
 $phprlang['print_error_details'] = 'Dettagli';

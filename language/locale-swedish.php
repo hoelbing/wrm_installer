@@ -35,6 +35,7 @@ $localstr['menustep6final'] = '6. Avslutande';
 //botton
 $localstr['bd_submit'] = 'Fortsätt';
 $localstr['bd_reset'] = 'Återställ';
+$wrm_install_lang['bd_back'] = 'Back';
 
 //stuff
 $localstr['hittingsubmit'] = 'Vänligen verifiera all information innan du fortsätter vidare!';
