@@ -11,11 +11,6 @@ $step = 0;
 else
 $step = $_GET['step'];
 
-//set Lang. Format
-if (!isset($_POST['classlang_type']))
-	$lang = "english";
-else
-	$lang = $_POST['classlang_type'];
 
 include_once ('language/locale-'.$lang.'.php');
 include_once ("includes/db/db.php");
@@ -60,8 +55,6 @@ if ($step==0)
 	include($wrm_config_file);
 	include("../version.php");
 	
-	//$linkWRM = @mysql_connect($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass']);
-	//@mysql_select_db($phpraid_config['db_name'],$linkWRM);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass']);
 	
 	//get the last (max) version nr, from wrm db

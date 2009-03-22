@@ -4,11 +4,29 @@
 //lang strg
 $wrm_install_lang['create_db'] = "Create Database?";
 $wrm_install_lang['default'] = "default";
+$wrm_install_lang['php_variables'] = "PHP Variables";
+$wrm_install_lang['error_found_table_titel'] = "already, existing tables were found";
+$wrm_install_lang['error_found_table_bd_back'] = "Botton Back : change Table Prefix or Database";
+$wrm_install_lang['error_found_table_bd_cont'] = "Botton Continue : deletes all existing tables, before the new tables are installed";
+
 /*-------------------------------*/
 
 /*
  * todo
- * step 5 existing Database: drop , question at user
+ * update: übersichtsseite
+ * 			lösung finden für x.x.x.x.x evtl mit schleifens
+
+ * sprache 
+ * 			ändern der Sprache
+ * 			files anpassen /löschen und so
+ * phpbb 2 und 3 problem (noch keine lsg)
+ * 		wenn gleiche datenbank + tabel prefix
+ * überlegung
+ * 		install step5: wenn eine datenbank gefunden wurde evtl . updaten?
+ * 
+ * bride:
+ * 			import der user vom bridesystem
+ * 
  */
 if (!isset($_GET['step']))
 $step = 0;
@@ -32,8 +50,6 @@ include_once ("includes/function.php");
  * This is the path to the WRM Config File
  */
 $wrm_config_file = "../config.php";
-
-$phpversion = (int)(str_replace(".", "", phpversion()));
 
 
 /**
@@ -81,6 +97,8 @@ if ($step == "0")
  * */
 
 else if($step == 1) {
+$phpversion = (int)(str_replace(".", "", phpversion()));
+
 	if(!isset($_POST['submit']))
 	{
 		@chmod("./wowarmory_tooltip/",0775);
@@ -102,24 +120,6 @@ else if($step == 1) {
 		else
 		{
 			$mysqlversion_bgcolor = "green";
-		}
-		if (get_cfg_var("upload_max_filesize") <= 0)
-		{
-			$upload_max_filesize_bgcolor = "red";
-		}
-		else
-		{
-			$upload_max_filesize_bgcolor = "green";
-		}
-		if (get_cfg_var("magic_quotes_sybase"))
-		{
-			$magic_quotes_sybase_bgcolor = "red";
-			$magic_quotes_sybase_value = $wrm_install_lang['step0_nonactive'];
-		}
-		else
-		{
-			$magic_quotes_sybase_bgcolor = "green";
-			$magic_quotes_sybase_value = $wrm_install_lang['step0_active'];
 		}
 
 		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
@@ -153,16 +153,22 @@ else if($step == 1) {
 					"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
 					"mysqlversion_value" => $gd,
 					"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
-					"upload_max_filesize_value" => get_cfg_var("upload_max_filesize"),
-					"upload_max_filesize_bgcolor" => $upload_max_filesize_bgcolor,
-					"magic_quotes_sybase_value" => $magic_quotes_sybase_value,
-					"magic_quotes_sybase_bgcolor" => $magic_quotes_sybase_bgcolor,
 					"nonactive" => $wrm_install_lang['step0_nonactive'],
 			
 					"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
 					"writeable_config_value" => $writeable_config_value,
 					"yes" => $wrm_install_lang['yes'],
 					"writeable_config_bgcolor" => $writeable_config_bgcolor,
+			
+					"php_variables_text" => $wrm_install_lang['php_variables'],
+					"SERVER_SERVER_SOFTWARE_text" => '_SERVER["SERVER_SOFTWARE"]',
+					"SERVER_SERVER_SOFTWARE_value" => $_SERVER["SERVER_SOFTWARE"],
+					"SERVER_DOCUMENT_ROOT_text" => '_SERVER["DOCUMENT_ROOT"]',
+					"SERVER_DOCUMENT_ROOT_value" => $_SERVER["DOCUMENT_ROOT"],
+					"SERVER_SERVER_NAME_text" => '_SERVER["SERVER_NAME"]',
+					"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
+					"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
+					"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
 			
 					"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
@@ -475,24 +481,18 @@ else if($step == 5)
 	}
 	
 	$wrm_install->sql_close();
-	
+
 	if($foundtable == TRUE)
 	{
-		//bd next -> jmp to step 6 -> drop all exist tables before install new tables
-		//and
-		//bd cancel/back - > jmp to step 4
-		
-		
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
 				"form_action_bd_next" => "install.php?step=6",
 				"form_action_bd_back" => "install.php?step=3",
-
 	
-				"error_msg" => "found exist table"."</br>".
-								"</br>"."Botton Back : change Table Prefix or Database".
-								"</br>"."Botton Continue : drop all exist Tables before install new Tables",
+				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
+				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
+				"error_found_table_bd_cont_text" => $wrm_install_lang['error_found_table_bd_cont'],
 			
 				"bd_back" => $wrm_install_lang['bd_back'],
 				"bd_submit" => $wrm_install_lang['bd_submit'],
@@ -507,8 +507,6 @@ else if($step == 5)
 	{
 		header("Location: install.php?step=6");
 	}
-	
-	
 }
 
 /**

@@ -1,9 +1,9 @@
  <link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 <form method="post" action="{$form_action}">
 
- <table align="center" width="600">
+ <table width="700" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-   <td><div align="center"><b>{$headtitle}</b></div></td>
+   <td>&nbsp;</td>
   </tr>
   <tr>
    <td>&nbsp;<br><i class="menuHeader">{$system_requirements}:</i>
@@ -25,23 +25,45 @@
      <td bgcolor="{$mysqlversion_bgcolor}">{$mysqlversion_value}</td>
     </tr>
     <tr>
-     <td class="row1">upload_max_filesize</td>
-     <td class="row1"> 0</td>
-     <td bgcolor="{$upload_max_filesize_bgcolor}">{$upload_max_filesize_value}</td>
-    </tr>
-    <tr>
-     <td class="row2">magic_quotes_sybase</td>
-     <td class="row2">{$nonactive}</td>
-     <td bgcolor="{$magic_quotes_sybase_bgcolor}">{$magic_quotes_sybase_value}</td>
-	</tr>
-    <tr>
      <td class="row1">{$writeable_config_text}</td>
      <td class="row1">{$yes}</td>
      <td bgcolor="{$writeable_config_bgcolor}">{$writeable_config_value}</td>
 	</tr>
    </table>
   <tr>
-	<td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+	<td><table width="100%" border="0" cellspacing="3" cellpadding="0">
+      <tr>
+        <td colspan="2"><div align="center" class="rowHover"><strong>{$php_variables_text}</strong></div></td>
+        </tr>
+      <tr>
+        <td width="40%" class="row1">{$SERVER_SERVER_SOFTWARE_text}</td>
+        <td class="row1">{$SERVER_SERVER_SOFTWARE_value}</td>
+      </tr>
+      <tr>
+        <td class="row2">{$SERVER_DOCUMENT_ROOT_text}</td>
+        <td class="row2">{$SERVER_DOCUMENT_ROOT_value}</td>
+      </tr>
+      <tr>
+        <td class="row1">{$SERVER_SERVER_NAME_text}</td>
+        <td class="row1">{$SERVER_SERVER_NAME_value}</td>
+      </tr>
+      <tr>
+        <td class="row2">{$SERVER_HTTP_ACCEPT_CHARSET_text}</td>
+        <td class="row2">{$SERVER_HTTP_ACCEPT_CHARSET_value}</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
   </tr>
   <tr>
 	<td><div align="center">

@@ -39,6 +39,12 @@ $bridge_setting_value = array(
 
 	//Name from the Config File
 	'DB_configfile_name' => "config.php",
+
+
+	// ------------- Optional -------------
+
+	//bridge Major Version
+	$bridge_major_version => 2, //only the first nr; 
 );
 
 /**
