@@ -19,8 +19,9 @@ $wrm_install_lang['error_found_table_bd_cont'] = "Botton Continue : deletes all 
  * sprache 
  * 			ändern der Sprache
  * 			files anpassen /löschen und so
- * phpbb 2 und 3 problem (noch keine lsg)
- * 		wenn gleiche datenbank + tabel prefix
+ * phpbb 2 und 3 problem
+ * 		lsg: $bridge_major_version
+ * 
  * überlegung
  * 		install step5: wenn eine datenbank gefunden wurde evtl . updaten?
  * 
