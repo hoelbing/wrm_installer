@@ -12,23 +12,35 @@ $wrm_install_lang['step0_property'] = 'Property';
 $wrm_install_lang['step0_required'] = 'Required';
 $wrm_install_lang['step0_exist'] = 'Exist';
 $wrm_install_lang['step0_phpversion_text'] = 'PHP Version';
-$wrm_install_lang['step0_mysqlversion'] = "MySQL Version";
-$wrm_install_lang['step0_active'] = "active";
-$wrm_install_lang['step0_nonactive'] = "non active";
-$wrm_install_lang['step0_writeable_config'] = "config.php writeable?";
-//$wrm_install_lang['step7sub1inputdir'] = 'Input the path to your CMS directory (including trailing slash!)';
+$wrm_install_lang['step0_mysqlversion'] = 'MySQL Version';
+$wrm_install_lang['step0_active'] = 'active';
+$wrm_install_lang['step0_nonactive'] = 'non active';
+$wrm_install_lang['step0_writeable_config'] = 'config.php writeable?';
 
-$wrm_install_lang['yes'] = "yes";
-$wrm_install_lang['no'] = "no";
+$wrm_install_lang['yes'] = 'yes';
+$wrm_install_lang['no'] = 'no';
 $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Fresh Install';
-$wrm_install_lang['change'] = "change";
+$wrm_install_lang['change'] = 'change';
 $wrm_install_lang['database_text'] = 'Database';
+
+$wrm_install_lang['create_db'] = 'Create Database?';
+$wrm_install_lang['default'] = 'default';
+$wrm_install_lang['php_variables'] = 'PHP Variables';
+$wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
+$wrm_install_lang['error_found_table_bd_back'] = 'Botton Back : change Table Prefix or Database';
+$wrm_install_lang['error_found_table_bd_cont'] = 'Botton Continue : deletes all existing tables, before the new tables are installed';
+
+$wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';
+$wrm_install_lang['txt_group'] = 'Group';
+$wrm_install_lang['txt_alt_group'] = 'Alternative Group';
+$wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';
 
 //botton
 $wrm_install_lang['bd_submit'] = 'Continue';
 $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';
+$wrm_install_lang['bd_start'] = 'Start';
 
 //step 2
 $wrm_install_lang['step2upgradefrom'] = 'Upgrade to';
@@ -47,20 +59,21 @@ $wrm_install_lang['step3errorsql'] = 'Error installing<br>Query: $sql<br>Reporte
 $wrm_install_lang['step3installinfo'] = 'If you are seeing this then no errors occurred during table installation!';
 $wrm_install_lang['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
 
+//step done
 $wrm_install_lang['stepdonefinished'] = 'Finished';
 $wrm_install_lang['stepdonesetupcomplete'] = 'Setup is now complete.';
 $wrm_install_lang['stepdoneremovedir'] = 'Be sure to remove the "install/" directory and click <a href="../index.php">here</a> when you have done so.';
 
 //stuff
 $wrm_install_lang['hittingsubmit'] = 'Please verify all information before hitting submit!';
-$wrm_install_lang['pressbrowserpack'] ='Press your browsers BACK button to try again.';
-$wrm_install_lang['problem'] ='Problem';
+$wrm_install_lang['pressbrowserpack'] = 'Press your browsers BACK button to try again.';
+$wrm_install_lang['problem'] = 'Problem';
 $wrm_install_lang['txtusername'] = 'Username';
 $wrm_install_lang['txtpassword'] = 'Password';
 $wrm_install_lang['txtemail'] = 'E-mail';
 $wrm_install_lang['txtconfig'] = 'config';
 
-// errors
+//errors
 $wrm_install_lang['connect_socked_error'] = 'Failed to connect to socket with error %s';
 $wrm_install_lang['invalid_group_title'] = 'Group exists';
 $wrm_install_lang['invalid_group_message'] = 'The group selected is already part of this set. Press your browsers BACK button to try again.';
@@ -97,17 +110,7 @@ $wrm_install_lang['step5sub3group03'] = 'Please select "No Restrictios" here if 
 $wrm_install_lang['step5sub3altgroup01'] = 'Select an alternate user group/class that can access WRM';
 $wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group/class or not';
 
-//----------------
-//menu
-$wrm_install_lang['InstallationProgress'] = 'Installation Progress';
-$wrm_install_lang['menustep1init'] = '1. Initialization';
-$wrm_install_lang['menustep2conf'] = '2. Configuration';
-$wrm_install_lang['menustep3instab'] = '3. Install Tables';
-$wrm_install_lang['menustep4auth'] = '4. Authorization';
-$wrm_install_lang['menustep5confauth'] = '5. conf. Authorization';
-$wrm_install_lang['menustep6final'] = '6. Finalize';
-
-//step 4
+//bridge mode
 $wrm_install_lang['step4auttype'] = 'authorization type';
 $wrm_install_lang['step4desc'] = 'Description';
 $wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
@@ -120,78 +123,14 @@ $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
 $wrm_install_lang['step4unkownauth'] = '(if you are not sure, please select "iUMS")';
 $wrm_install_lang['step4chooseauth'] = 'Please choose an authorization type.';
 
-
-// phpBB
-$wrm_install_lang['step5phpBBdesc'] = 'phpBB';
-$wrm_install_lang['step5phpBBsub1desc'] = 'You have selected phpBB authentication';
-$wrm_install_lang['step5phpBBsub1inputdir'] = 'Input the path to your phpBB directory (including trailing slash!)';
-$wrm_install_lang['step5phpBBsub2failincdir'] = 'your phpBB directory is incorect';
-$wrm_install_lang['step5phpBBsub2failfindautfile'] = 'Failed to find "../auth/auth_phpbb3.php" config file';
-$wrm_install_lang['step5phpBBsub2faildownautfile'] = 'please download (from WRM-Homepage) and copy to "/auth".';
-$wrm_install_lang['step5phpBBsub2founddb'] = 'found phpBB DB';
-$wrm_install_lang['step5phpBBsub2readconffile'] = 'read phpBB config file';
-$wrm_install_lang['step5phpBBsub3errorretusergroup'] = 'Error retrieving usergroup from phpBB3';
-$wrm_install_lang['step5phpBBsub3errorretusername'] = 'Error retrieving username from phpBB3';
-$wrm_install_lang['step5phpBBsub4wantimport'] = 'Do you want to import all users from your phpBB Forum?';
-$wrm_install_lang['step5phpBBsub4srynotsupport'] = 'Import from phpBB Forum/Board: not supported with phpBB2';
-$wrm_install_lang['step5phpBBsub5import'] = 'Import';
-$wrm_install_lang['step5phpBBfailconphpBB'] = 'Unable to connect to phpBB DB';
-
-// e107
-$wrm_install_lang['step5e107desc'] = 'e107';
-$wrm_install_lang['step5e107sub1desc'] = 'You have selected e107 authentication';
-$wrm_install_lang['step5e107sub1inputdir'] = 'Input the relative path to your e107 directory (including trailing slash!)';
-$wrm_install_lang['step5e107sub2failincdir'] = 'your e107 directory is incorect';
-$wrm_install_lang['step5e107sub2readconffile'] = 'read e107 config file';
-$wrm_install_lang['step5e107sub3errorretusername'] = 'Error retrieving username from e107';
-$wrm_install_lang['step5e107sub3errorretuserclass'] = 'Error retrieving userclass from e107';
-$wrm_install_lang['step5e107failcone107'] = 'Unable to connect to e107 DB';
+$wrm_install_lang['question_wantimport'] = 'Do you want to import all users from your CMS/BB?';
+$wrm_install_lang['import_not_support'] = 'UserDaten Import: not supported';
+$wrm_install_lang['import'] = 'Import';
 
 // iums = integrated User Management System
 $wrm_install_lang['step5iumsdesc'] = 'integrated User Management System';
 $wrm_install_lang['step5iumssub1desc'] = 'You have selected "integrated User Management System" authentication';
 $wrm_install_lang['step5sub1iumsfilladmindesc'] = 'All that is left is to enter your Super Administrator information by filling out the information below.';
 
-// Joomla
-$wrm_install_lang['step5joomladesc'] = 'Joomla';
-$wrm_install_lang['step5joomlasub1desc'] = 'You have selected Joomla authentication';
-$wrm_install_lang['step5joomlasub1inputdir'] = 'Input the relative path to your Joomla directory (including trailing slash!)';
-$wrm_install_lang['step5joomlasub2failincdir'] = 'your Joomla directory is incorect';
-$wrm_install_lang['step5joomlasub2readconffile'] = 'read Joomla config file';
-$wrm_install_lang['step5joomlasub3errorretusername'] = 'Error retrieving username from Joomla';
-$wrm_install_lang['step5joomlasub3errorretuserclass'] = 'Error retrieving userclass from Joomla';
-$wrm_install_lang['step5joomlafailconejoomla'] = 'Unable to connect to Joomla DB';
 
-// SMF = Simple Machines Forum
-$wrm_install_lang['step5smfdesc'] = 'SMF';
-$wrm_install_lang['step5smfsub1desc'] = 'You have selected SMF authentication';
-$wrm_install_lang['step5smfsub1inputdir'] = 'Input the relative path to your SMF directory (including trailing slash!)';
-$wrm_install_lang['step5smfsub2failincdir'] = 'your SMF directory is incorect';
-$wrm_install_lang['step5smfsub2readconffile'] = 'read SMF config file';
-$wrm_install_lang['step5smfsub3errorretusername'] = 'Error retrieving username from SMF';
-$wrm_install_lang['step5smfsub3errorretuserclass'] = 'Error retrieving userclass from SMF';
-$wrm_install_lang['step5smffailconesmf'] = 'Unable to connect to SMF DB';
-
-// WoltLab Burning Board Lite 1.x.x = wbb
-$wrm_install_lang['step5wbbdesc'] = 'WoltLab Burning Board';
-$wrm_install_lang['step5wbbsub1desc'] = 'You have selected wbb authentication';
-$wrm_install_lang['step5wbbsub1inputdir'] = 'Input the relative path to your wbb directory (including trailing slash!)';
-$wrm_install_lang['step5wbbsub2failincdir'] = 'your wbb directory is incorect';
-$wrm_install_lang['step5wbbsub2readconffile'] = 'read wbb config file';
-$wrm_install_lang['step5wbbsub3errorretusername'] = 'Error retrieving username from wbb';
-$wrm_install_lang['step5wbbsub3errorretuserclass'] = 'Error retrieving userclass from wbb';
-$wrm_install_lang['step5wbbfailconesmf'] = 'Unable to connect to wbb DB';
-
-// XOOPS
-$wrm_install_lang['step5xoopsdesc'] = 'XOOPS';
-$wrm_install_lang['step5xoopssub1desc'] = 'You have selected XOOPS authentication';
-$wrm_install_lang['step5xoopssub1inputdir'] = 'Input the relative path to your XOOPS directory (including trailing slash!)';
-$wrm_install_lang['step5xoopssub2failincdir'] = 'your XOOPS directory is incorect';
-$wrm_install_lang['step5xoopssub2readconffile'] = 'read XOOPS config file';
-$wrm_install_lang['step5xoopssub3errorretusername'] = 'Error retrieving username from XOOPS';
-$wrm_install_lang['step5xoopssub3errorretuserclass'] = 'Error retrieving userclass from XOOPS';
-$wrm_install_lang['step5xoopsfailconesmf'] = 'Unable to connect to XOOPS DB';
-
-//----------------------------------------------
-//step 6
 ?>

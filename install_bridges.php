@@ -1,12 +1,5 @@
 <?php
 
-/*-------------------------------*/
-//lang strg
-$wrm_install_lang['install_bridge_titel'] = "Bridge Preferences";
-$wrm_install_lang['txt_group'] = "Group";
-$wrm_install_lang['txt_alt_group'] = "Alternative Group";
-/*-------------------------------*/
-
 if (!isset($_GET['step']))
 $step = 0;
 else
@@ -29,9 +22,11 @@ function scan_dbserver()
 {
 //load all auth briges settings
 	$bridge = array();
-	//$array_confname = array();
 	$found_bridge = array();
+	
 	global $wrm_config_file;
+	global $lang;
+	
 	$dir_brige = "auth";
 	//load all available files, from "auth" dir in a array
 	$dh = opendir($dir_brige);
@@ -46,7 +41,7 @@ function scan_dbserver()
 	array_shift($files);
 	
 	//include and load ALL briges settings
-	for ($i=0;$i<count($files);$i++)
+	for ($i=0; $i<count($files); $i++)
 	{
 		include ($dir_brige."/".$files[$i]);
 		array_push($bridge, $bridge_setting_value);
@@ -142,26 +137,46 @@ function scan_dbserver()
 							{
 								$counter_valid_column++;
 							}
-						}		
-						if ($counter_valid_column == 7)
-						{
-								array_push($found_bridge,
-									array(
-										'bridge_name'=>$bridge[$i]['auth_type_name'],
-										'bridge_database'=>$data_db_all['Database'],
-										'bridge_table_prefix'=>$db_temp_prefix,
-										'bridge_founduser'=>$count_user,
-									)
-								);
-						}						
+						}
 					}
+				}
+				
+				//-----------------------------------------------------------------------//
+				//add bridge to array
+				//-----------------------------------------------------------------------//
+				if ($counter_valid_column == 7)
+				{
+					//add new bridge to array
+					array_push($found_bridge,
+						array(
+							'bridge_name' => $bridge[$i]['auth_type_name'],
+							'bridge_database' => $data_db_all['Database'],
+							'bridge_table_prefix' => $db_temp_prefix,
+							'bridge_founduser' => $count_user,
+						)
+					);
 					
+					$counter_valid_column = 0;
 				}
 			}
 		}
 	}
 	
 	$wrm_install->sql_close();
+	
+	//sort and del double entries/ bridges
+	for ($y=0; $y<count($found_bridge); $y++)
+	{
+		//if (isset($bridge['bridge_major_version']))
+			if (	($found_bridge[$y]['bridge_name'] == $bridge[$i]['auth_type_name']) and
+					($found_bridge[$y]['bridge_database'] == $data_db_all['Database']) and
+					($found_bridge[$y]['bridge_table_prefix'] == $db_temp_prefix) 
+				)
+			
+			{
+				
+			}
+	}
 	return $found_bridge;
 }
 

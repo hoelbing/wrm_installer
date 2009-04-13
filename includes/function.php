@@ -207,11 +207,12 @@ function get_language_filename($Suffix = FALSE)
 {
 	$lang_dir = 'language';
 	$dh = opendir($lang_dir);
-	while(false != ($filename = readdir($dh))) {
-		$filename = substr($filename, 7);
-		$filename = str_replace('.php','',$filename);
-		$files[] = $filename;
+	while($filename = readdir($dh))
+	{
+		$filename = substr($filename, 7);//cut from position 7 to filename.lenght end
+		$files[] = str_replace('.php','',$filename);
 	}
+
 	sort($files);
 	array_shift($files);
 	array_shift($files);

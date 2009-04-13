@@ -44,7 +44,8 @@ $bridge_setting_value = array(
 	// ------------- Optional -------------
 
 	//bridge Major Version
-	$bridge_major_version => 2, //only the first nr; 
+	'bridge_major_name' => "phpbb",
+	'bridge_major_version' => 2, //only the first nr; 
 );
 
 /**

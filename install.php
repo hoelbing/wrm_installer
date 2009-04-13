@@ -1,23 +1,10 @@
 <?php
 
-/*-------------------------------*/
-//lang strg
-$wrm_install_lang['create_db'] = "Create Database?";
-$wrm_install_lang['default'] = "default";
-$wrm_install_lang['php_variables'] = "PHP Variables";
-$wrm_install_lang['error_found_table_titel'] = "already, existing tables were found";
-$wrm_install_lang['error_found_table_bd_back'] = "Botton Back : change Table Prefix or Database";
-$wrm_install_lang['error_found_table_bd_cont'] = "Botton Continue : deletes all existing tables, before the new tables are installed";
-
-/*-------------------------------*/
-
 /*
  * todo
  * update: übersichtsseite
  * 			lösung finden für x.x.x.x.x evtl mit schleifens
-
- * sprache 
- * 			files anpassen /löschen und so
+ * 
  * phpbb 2 und 3 problem
  * 		lsg: $bridge_major_version
  * 
