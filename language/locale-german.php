@@ -5,7 +5,7 @@
 global $wrm_install_lang;
 $wrm_install_lang['headtitle'] = 'Willkommen zu der WRM 4.x.x Installation.';
 //$localstr['headbodyinfo'] = 'Bitte beachte das die Datenbank, auf welche du sie installieren willst, auch existiert.';
-$wrm_install_lang['select_lang'] = 'Sprache whlen';
+$wrm_install_lang['select_lang'] = 'Sprache waehlen';
 
 $wrm_install_lang['step0_system_requirements'] = 'Systemvoraussetzungen';
 $wrm_install_lang['step0_property'] = 'Eigenschaft';
@@ -22,6 +22,7 @@ $wrm_install_lang['yes'] = "ja";
 $wrm_install_lang['no'] = "nein";
 $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Neue Installation';
+$wrm_install_lang['change'] = "aendern";
 
 //menu
 $wrm_install_lang['InstallationProgress'] = 'Fortschritt der Installation';
@@ -34,11 +35,11 @@ $wrm_install_lang['menustep6final'] = '6. Abschliessen';
 
 //botton
 $wrm_install_lang['bd_submit'] = 'weiter';
-$wrm_install_lang['bd_reset'] = 'zurcksetzen';
+$wrm_install_lang['bd_reset'] = 'zuruecksetzen';
 $wrm_install_lang['bd_back'] = 'Back';
 
 //stuff
-$wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du auf "weiter" drckst.';
+$wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du auf "weiter" drueckst.';
 $wrm_install_lang['pressbrowserpack'] ='Bitte benutze, in deinem Browsers, die "zurck" Taste und gebe die Daten erneut ein.';
 $wrm_install_lang['problem'] ='Problem';
 $wrm_install_lang['txtusername'] = 'Benutzername';
@@ -58,7 +59,7 @@ $wrm_install_lang['step2error01'] = 'Bei falschen Eingaben knnte es zu unvorhers
 
 //step 3
 $wrm_install_lang['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Datenbank herstellen.<br>';
-$wrm_install_lang['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht geffnet werden';
+$wrm_install_lang['step3errorschema'] = 'Fehler: das Upgrade Schema konnte nicht geoffnet werden';
 $wrm_install_lang['step3errorsql'] = 'Fehler bei der Installation :<br> SQL String: $sql<br> Bericht: ';
 $wrm_install_lang['step3installinfo'] = 'Wenn du dies hier lesen kannst, sind keine Fehler bei der Installation der SQL-Tabellen aufgetreten!';
 $wrm_install_lang['step3errorversion'] = 'Die Software-Version in version.php entsprich nicht der Version der Datenbank in der Version-Tabelle.';

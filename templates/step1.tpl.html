@@ -8,7 +8,7 @@
   <tr>
    <td>&nbsp;<br><i class="menuHeader">{$system_requirements}:</i>
    <br/>
-   <table width="70%" border="0" align="center" cellpadding="2" cellspacing="2">
+   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
     <tr>
      <td class="rowHover"><u>{$property}</u></td>
      <td class="rowHover"><u>{$required}</u></td>
@@ -58,6 +58,22 @@
         <td class="row2">{$SERVER_HTTP_ACCEPT_CHARSET_value}</td>
       </tr>
     </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>
+			<div align="right" class="tooltip_title">
+			  <div align="center">{$select_lang}:
+				<select name="classlang_type" class="post">
+					{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
+			    </select>
+			  </div>
+			</div>	</td>
   </tr>
   <tr>
     <td>&nbsp;</td>

@@ -10,6 +10,7 @@
 $wrm_install_lang['upgrade_headtitle'] = "Upgrade Modus";
 $wrm_install_lang['wrm_versions_nr_current_text'] = "Upgrade Modus";
 $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Upgrade Modus";
+$wrm_install_lang['bd_start'] = "Start";
 /*-------------------------------*/
 
 if (!isset($_GET['step']))
@@ -18,7 +19,7 @@ else
 $step = $_GET['step'];
 
 
-include_once ('language/locale-'.$lang.'.php');
+//include_once ('language/locale-'.$lang.'.php');
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
 
@@ -27,13 +28,19 @@ include_once ("includes/function.php");
  */
 $wrm_config_file = "../config.php";
 
+//set Lang. Format
+if (!isset($_GET['lang']))
+	$lang = "english";
+else
+	$lang = $_GET['lang'];
+include_once('language/locale-'.$lang.'.php');
 /**
  * Name from this File
  */
-$filename_upgrade = "upgrade.php";
+$filename_upgrade = "upgrade.php?lang=".$lang."&";
 
 /**
- *  VersionNR, from this wrm Install
+ *  VersionNR, from this wrm Install File
  */
 $versions_nr_install = $version;
 
@@ -77,11 +84,42 @@ if ($step==0)
 	{
 		// "your wrm is up to date";
 		header("Location: ". $filename_upgrade."?step=101");
+		
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action" => $filename_upgrade."?step=1",
+				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
+				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
+				"wrm_versions_nr_current_text" => $wrm_install_lang['upgrade_headtitle'],
+				"wrm_versions_nr_from_install_value" => $versions_nr_install, 
+				"wrm_versions_nr_from_install_text" => $wrm_install_lang['upgrade_headtitle'],
+				"bd_start" => $wrm_install_lang['bd_start'],	
+			)
+		);
+		$smarty->display("update.tpl.html");
+		include ("includes/page_footer.php");
 	}
 	else if ((str_replace(".", "", $wrm_versions_nr_current_value)) > (str_replace(".","",$versions_nr_install)))
 	{
 		// "your wrm version is newer as this installation file";
 		header("Location: ". $filename_upgrade."?step=102");
+		
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action" => $filename_upgrade."?step=1",
+				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
+				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
+				"wrm_versions_nr_current_text" => $wrm_install_lang['upgrade_headtitle'],
+				"wrm_versions_nr_from_install_value" => $versions_nr_install, 
+				"wrm_versions_nr_from_install_text" => $wrm_install_lang['upgrade_headtitle'],
+				"bd_start" => $wrm_install_lang['bd_start'],	
+			)
+		);
+		$smarty->display("update.tpl.html");
+		include ("includes/page_footer.php");
+		
 	}
 	else
 	{
@@ -92,7 +130,7 @@ if ($step==0)
 				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
 				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
 				"wrm_versions_nr_current_text" => $wrm_install_lang['upgrade_headtitle'],
-				"wrm_versions_nr_from_install_value" => $version, // from version.php
+				"wrm_versions_nr_from_install_value" => $versions_nr_install, 
 				"wrm_versions_nr_from_install_text" => $wrm_install_lang['upgrade_headtitle'],
 				"bd_start" => $wrm_install_lang['bd_start'],	
 			)

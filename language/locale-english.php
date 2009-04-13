@@ -22,6 +22,7 @@ $wrm_install_lang['yes'] = "yes";
 $wrm_install_lang['no'] = "no";
 $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Fresh Install';
+$wrm_install_lang['change'] = "change";
 
 //botton
 $wrm_install_lang['bd_submit'] = 'Continue';

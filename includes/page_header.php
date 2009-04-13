@@ -13,8 +13,8 @@ $smarty->caching = false;
 $smarty->compile_check = true;
 
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-$smarty->debugging = false;
-//$smarty->debugging = true;
+//$smarty->debugging = false;
+$smarty->debugging = true;
 
 $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'cache/templates_c';
@@ -24,32 +24,18 @@ $smarty->cache_dir = 'cache/smarty_cache';
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-//body header stuff
-$lang_dir = 'language';
-$dh = opendir($lang_dir);
-while(false != ($filename = readdir($dh))) {
-	$filename = substr($filename, 7);
-	$filename = str_replace('.php','',$filename);
-	$files[] = $filename;
-}
-sort($files);
-array_shift($files);
-array_shift($files);
-
 //set Lang. Format
-if (!isset($_POST['classlang_type']))
+if (!isset($_GET['lang']))
 	$lang = "english";
 else
-	$lang = $_POST['classlang_type'];
+	$lang = $_GET['lang'];
+
+include_once ('language/locale-'.$lang.'.php');
 
 $smarty->assign(
 	array(
 		"headtitle" =>  $wrm_install_lang['headtitle'],
 		"install_title" =>  $wrm_install_lang['headtitle'],
-		"form_action" =>  'http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?".$_SERVER["QUERY_STRING"],
-		"classlang_type_values" => $files,
-		"classlang_type_selected" => $lang,
-		"select_lang" => $wrm_install_lang['select_lang'],
 	)
 );
 

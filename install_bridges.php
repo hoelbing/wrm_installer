@@ -12,7 +12,13 @@ $step = 0;
 else
 $step = $_GET['step'];
 
-$filename_bridge = "install_bridges.php";
+//set Lang. Format
+if (!isset($_GET['lang']))
+	$lang = "english";
+else
+	$lang = $_GET['lang'];
+$filename_bridge = "install_bridges.php?lang=".$lang."&";
+
 $wrm_config_file = "../config.php";
 include_once($wrm_config_file);
 include_once ("includes/db/db.php");
@@ -182,7 +188,7 @@ if ($step == 0)
 		
 		$smarty->assign(
 			array(
-				"form_action" => $filename_bridge."?step=1" ,
+				"form_action" => $filename_bridge."step=1" ,
 				"headtitle" => $wrm_install_lang['bridge_step0_titel'],
 				"bridge_type_output" => $bridge_type_output,
 				"bridge_type_values" => $bridge_type_values,
@@ -204,7 +210,7 @@ if ($step == 1)
 {
 	//if unselect jump back
 	if (!$_POST['allfoundbridges'])
-		header("Location: ".$filename_bridge."?step=0");
+		header("Location: ".$filename_bridge."step=0");
 
 
 	$string = $_POST['allfoundbridges'];
@@ -254,7 +260,7 @@ if ($step == 1)
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."?step=2" ,
+			"form_action" => $filename_bridge."step=2" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
 
@@ -326,7 +332,7 @@ if ($step == 2)
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."?step=3" ,
+			"form_action" => $filename_bridge."step=3" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"user_group_01_text" => $wrm_install_lang['step5sub3group01'],
 			"user_group_02_text" => $wrm_install_lang['step5sub3group02'],
@@ -398,7 +404,7 @@ if($step == 3)
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."?step=bridge_done" ,
+			"form_action" => $filename_bridge."step=bridge_done" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 				
 			"bridge_name_text" => "bridge name",

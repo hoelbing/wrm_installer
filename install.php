@@ -34,11 +34,29 @@ $step = 0;
 else
 $step = $_GET['step'];
 
+/*
 //set Lang. Format
 if (!isset($_POST['classlang_type']))
 	$lang = "english";
 else
 	$lang = $_POST['classlang_type'];
+*/
+
+//set Lang. Format
+if (!isset($_GET['lang']))
+	$lang = "english";
+else
+	$lang = $_GET['lang'];
+
+if($_GET['step'] == "2")
+{
+	if (isset($_POST['classlang_type']))
+	{
+		$lang = $_POST['classlang_type'];
+	}
+}
+
+$filename_install = "install.php?lang=".$lang."&";
 
 include_once('language/locale-'.$lang.'.php');
 
@@ -88,7 +106,7 @@ if ($step == "0")
 			exit;
 		}
 	}
-	header("Location: install.php?step=1");
+	header("Location: ".$filename_install."step=1");
 }
 
 /**
@@ -98,7 +116,21 @@ if ($step == "0")
  * */
 
 else if($step == 1) {
-$phpversion = (int)(str_replace(".", "", phpversion()));
+
+	//Language Setttings
+	$lang_dir = 'language';
+	$dh = opendir($lang_dir);
+	while(false != ($filename = readdir($dh))) {
+		$filename = substr($filename, 7);
+		$filename = str_replace('.php','',$filename);
+		$files[] = $filename;
+	}
+	sort($files);
+	array_shift($files);
+	array_shift($files);
+
+
+	$phpversion = (int)(str_replace(".", "", phpversion()));
 
 	if(!isset($_POST['submit']))
 	{
@@ -141,7 +173,7 @@ $phpversion = (int)(str_replace(".", "", phpversion()));
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-					"form_action" => "install.php?step=1",
+					"form_action" => $filename_install."step=1",
 					//table
 					"headtitle" => $wrm_install_lang['headtitle'],
 					"property" => $wrm_install_lang['step0_property'],
@@ -170,7 +202,9 @@ $phpversion = (int)(str_replace(".", "", phpversion()));
 					"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
 					"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
 					"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
-			
+				    "classlang_type_values" => $files,
+				    "classlang_type_selected" => $lang,
+				    "select_lang" => $wrm_install_lang['select_lang'],
 					"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
@@ -180,7 +214,7 @@ $phpversion = (int)(str_replace(".", "", phpversion()));
 	}
 	if(isset($_POST['submit']))
 	{
-		header("Location: install.php?step=2");
+		header("Location: ".$filename_install."step=2");
 	}
 }
 
@@ -192,7 +226,16 @@ $phpversion = (int)(str_replace(".", "", phpversion()));
  * ---------------------
  * */
 else if($step == 2) {
-	$error_msg = "";
+
+	if (isset($_POST['classlang_type']))
+	{
+		$lang = $_POST['classlang_type'];
+	}
+
+	$filename_install = "install.php?lang=".$lang."&";
+echo $_POST['classlang_type'];
+echo $lang;
+$error_msg = "";
 
 	if ( isset($_GET['erro_con']) )
 	{
@@ -232,7 +275,7 @@ else if($step == 2) {
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => "install.php?step=3",
+			"form_action" => $filename_install."step=3",
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"wrm_db_server_hostname_text" => $wrm_install_lang['step2dbserverhostname'],
 			"wrm_db_server_hostname_value" => $wrm_db_server_hostname_value,
@@ -293,7 +336,7 @@ else if($step == 3) {
 	if(!$wrm_install->db_connect_id)
 	{
 		$FOUNDERROR_Connection = TRUE;
-		header("Location: install.php?step=2&erro_con=1");
+		header("Location: ".$filename_install."step=2&erro_con=1");
 	}
 	
 	$error_msg = "";
@@ -333,7 +376,7 @@ else if($step == 3) {
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => "install.php?step=4",
+			"form_action" => $filename_install."step=4",
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"wrm_db_name_text" => $wrm_install_lang['step2dbname'],
 			"wrm_create_db_text" => $wrm_install_lang['step2_create_db'],
@@ -409,7 +452,7 @@ else if($step == 4)
 		else
 		{
 			$wrm_install->sql_close();
-			header("Location: install.php?step=3&db_exist=1");
+			header("Location: ".$filename_install."step=3&db_exist=1");
 		}
 	}
 	
@@ -428,18 +471,18 @@ else if($step == 4)
 		if ($wrm_config_writeable == TRUE)
 		{
 			//go to next step
-			header("Location: install.php?step=5");
+			header("Location: ".$filename_install."step=".$step++);
 		}
 		//config FILE ist NOT writeable
 		else
 		{
-			header("Location: install.php?step=1");
+			header("Location: ".$filename_install."step=1");
 		}
 	}
 
 	if ($FOUNDERROR_Database == TRUE)
 	{
-		header("Location: install.php?step=3&error_db=1");
+		header("Location: ".$filename_install."step=3&error_db=1");
 	}
 }
 /**
@@ -488,8 +531,8 @@ else if($step == 5)
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-				"form_action_bd_next" => "install.php?step=6",
-				"form_action_bd_back" => "install.php?step=3",
+				"form_action_bd_next" => $filename_install."step=".$step++, //5
+				"form_action_bd_back" => $filename_install."step=".$step--, //3
 	
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
 				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
@@ -506,7 +549,7 @@ else if($step == 5)
 	}
 	else
 	{
-		header("Location: install.php?step=6");
+		header("Location: ".$filename_install."step=".$step++);
 	}
 }
 
@@ -545,7 +588,7 @@ else if($step == 6)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: install.php?step=7");
+	header("Location: ".$filename_install."step=".$step++);
 }
 
 /**
@@ -582,7 +625,7 @@ else if($step == 7)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: install.php?step=8");
+	header("Location: ".$filename_install."step=".$step++);
 	exit();
 
 }
@@ -615,7 +658,7 @@ else if($step == 8)
 	}
 
 	$wrm_install->sql_close();
-	header("Location: install.php?step=9");
+	header("Location: ".$filename_install."step=".$step++);
 	exit();
 }
 
@@ -630,7 +673,7 @@ else if($step == 8)
  * */
 else if($step == 9)
 {
-	header("Location: install_bridges.php?step=0");
+	header("Location: install_bridges.php?lang=".$lang."&step=0");
 }
 
 /**
