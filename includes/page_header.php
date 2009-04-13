@@ -13,8 +13,8 @@ $smarty->caching = false;
 $smarty->compile_check = true;
 
 /* Turn on/off Smarty Template Debugging by commenting/uncommenting the lines below. */
-//$smarty->debugging = false;
-$smarty->debugging = true;
+$smarty->debugging = false;
+//$smarty->debugging = true;
 
 $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'cache/templates_c';
@@ -23,6 +23,8 @@ $smarty->cache_dir = 'cache/smarty_cache';
 
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
+
+include_once('language/locale-'.$lang.'.php');
 
 $smarty->assign(
 	array(

@@ -415,7 +415,7 @@ else if($step == 4)
 		$sql_db_name_values = array();
 		$Database_Exist = FALSE;
 		$sql_db_all = "SHOW DATABASES";
-	
+		$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
 		$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
 		while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 		{
@@ -431,7 +431,6 @@ else if($step == 4)
 			$wrm_install = &new sql_db($wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, "");
 			$sql = "CREATE DATABASE ".$wrm_db_name;
 			$wrm_install->sql_query($sql) or print_error($sql, mysql_error() ,1);
-			//echo ;
 		}
 		else
 		{
@@ -455,7 +454,7 @@ else if($step == 4)
 		if ($wrm_config_writeable == TRUE)
 		{
 			//go to next step
-			header("Location: ".$filename_install."step=".$step++);
+			header("Location: ".$filename_install."step=".($step+1) );
 		}
 		//config FILE ist NOT writeable
 		else
@@ -515,8 +514,8 @@ else if($step == 5)
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-				"form_action_bd_next" => $filename_install."step=".$step++, //5
-				"form_action_bd_back" => $filename_install."step=".$step--, //3
+				"form_action_bd_next" => $filename_install."step=".$step+1, //5
+				"form_action_bd_back" => $filename_install."step=".$step-1, //3
 	
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
 				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
@@ -533,7 +532,7 @@ else if($step == 5)
 	}
 	else
 	{
-		header("Location: ".$filename_install."step=".$step++);
+		header("Location: ".$filename_install."step=".($step+1));
 	}
 }
 
@@ -572,7 +571,7 @@ else if($step == 6)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: ".$filename_install."step=".$step++);
+	header("Location: ".$filename_install."step=".($step+1));
 }
 
 /**
@@ -609,7 +608,7 @@ else if($step == 7)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: ".$filename_install."step=".$step++);
+	header("Location: ".$filename_install."step=".($step+1));
 	exit();
 
 }
@@ -642,7 +641,7 @@ else if($step == 8)
 	}
 
 	$wrm_install->sql_close();
-	header("Location: ".$filename_install."step=".$step++);
+	header("Location: ".$filename_install."step=".($step+1));
 	exit();
 }
 

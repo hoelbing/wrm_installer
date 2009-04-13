@@ -16,24 +16,29 @@
         <td width="50%" class="row1"><div align="left"><strong>{$bridge_name_value}</strong></div></td>
       </tr>
       <tr>
-        <td class="row2"><div align="right">{$bridge_prefix_text}</div></td>
-        <td class="row2"><div align="left"><strong>{$bridge_prefix_value}</strong></div></td>
+        <td class="row2"><div align="right">{$bridge_database_name_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_database_name_value}</strong></div></td>
       </tr>
       <tr>
-        <td class="row1"><div align="right">{$bridge_admin_id_text}</div></td>
-        <td class="row1"><div align="left"><strong>{$bridge_admin_id_value}</strong></div></td>
+        <td class="row1"><div align="right">{$bridge_prefix_text}</div></td>
+        <td class="row1"><div align="left"><strong>{$bridge_prefix_value}</strong></div></td>
+      </tr>
+
+      <tr>
+        <td class="row2"><div align="right">{$bridge_admin_id_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_admin_id_value}</strong></div></td>
       </tr>
       <tr>
-        <td class="row2"><div align="right">{$bridge_admin_password_text}</div></td>
-        <td class="row2"><div align="left"><strong>{$bridge_admin_password_value}</strong></div></td>
+        <td class="row1"><div align="right">{$bridge_admin_password_text}</div></td>
+        <td class="row1"><div align="left"><strong>{$bridge_admin_password_value}</strong></div></td>
       </tr>
       <tr>
-        <td class="row1"><div align="right">{$bridge_auth_user_text}</div></td>
-        <td class="row1"><div align="left"><strong>{$bridge_auth_user_group_value}</strong></div></td>
+        <td class="row2"><div align="right">{$bridge_auth_user_text}</div></td>
+        <td class="row2"><div align="left"><strong>{$bridge_auth_user_group_value}</strong></div></td>
       </tr>
       <tr>
-        <td class="row2"><div align="right">{$bridge_auth_user_alt_text}</div></td>
-        <td class="row2"><div align="left"><strong>{$bridge_auth_user_alt_group_value}</strong></div></td>
+        <td class="row1"><div align="right">{$bridge_auth_user_alt_text}</div></td>
+        <td class="row1"><div align="left"><strong>{$bridge_auth_user_alt_group_value}</strong></div></td>
       </tr>
 
     </table></td>
@@ -45,7 +50,15 @@
     <td>
       <div align="center">
 		<input type="submit" name="submit" value="{$bd_submit}" />
-      </div>    </td>
+		<input type="hidden" name="bridge_name" value="{$bridge_name_value}" />
+		<input type="hidden" name="bridge_database_name" value="{$bridge_database_name_value}" />
+		<input type="hidden" name="bridge_prefix" value="{$bridge_prefix_value}" />
+		<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id_value}" />
+		<input type="hidden" name="bridge_admin_password" value="{$bridge_admin_password_value}" />
+		<input type="hidden" name="bridge_auth_user_group" value="{$bridge_auth_user_group_value}" />
+		<input type="hidden" name="bridge_auth_user_alt_group" value="{$bridge_auth_user_alt_group_value}" />
+      </div>
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>

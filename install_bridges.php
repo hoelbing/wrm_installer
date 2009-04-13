@@ -18,6 +18,7 @@ if (!isset($_GET['lang']))
 else
 	$lang = $_GET['lang'];
 $filename_bridge = "install_bridges.php?lang=".$lang."&";
+include_once('language/locale-'.$lang.'.php');
 
 $wrm_config_file = "../config.php";
 include_once($wrm_config_file);
@@ -297,7 +298,14 @@ if ($step == 2)
 
 	$user_group_output = array();
 	$user_group_values = array();
-
+	$user_alt_group_output = array();
+	$user_alt_group_values = array();
+		
+	$user_group_output[] = $wrm_install_lang['step5sub3norest'];
+	$user_group_values[] = "0";
+	$user_alt_group_output[] = $wrm_install_lang['step5sub3noaddus'];
+	$user_alt_group_values[] = "0";
+	
 	include ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
@@ -307,27 +315,20 @@ if ($step == 2)
 	$result_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while ($data_group = $wrm_install->sql_fetchrow($result, true))
 	{
-		$user_group_output[] = $data_group[$bridge_setting['db_allgroups_name']];
-		$user_group_values[] = $data_group[$bridge_setting['db_allgroups_id']];
+		$user_group_output[] = $user_alt_group_output[] = $data_group[$bridge_setting['db_allgroups_name']];
+		$user_group_values[] = $user_alt_group_values[] = $data_group[$bridge_setting['db_allgroups_id']];
 	}
 	$wrm_install->sql_close();
-
-	//add 'No Restrictions', and 'No Additional UserGroup' to cmb_box
-	$user_group_values[] = 0;
-	$user_alt_group_output = $user_group_output;
-	$user_alt_group_values = $user_group_values;
-	$user_group_output[] = $wrm_install_lang['step5sub3norest'];
-	$user_alt_group_output[] = $wrm_install_lang['step5sub3noaddus'];
 
 	if (isset($_POST['user_group']))
 		$user_group_selected = $_POST['user_group'];
 	else
-		$user_group_selected = $user_group_output[count($user_group_output)-1];
+		$user_group_selected = $wrm_install_lang['step5sub3norest'];
 	
 	if (isset($_POST['user_alt_group']))
 		$user_alt_group_selected = $_POST['user_alt_group'];
 	else
-		$user_alt_group_selected = $user_alt_group_output[count($user_alt_group_output)-1];
+		$user_alt_group_selected = $wrm_install_lang['step5sub3noaddus'];
 	
 	include ("includes/page_header.php");
 	$smarty->assign(
@@ -411,6 +412,8 @@ if($step == 3)
 			"bridge_name_value" => $bridge_name,
 			"bridge_prefix_text" => $wrm_install_lang['step2WRMtableprefix'],
 			"bridge_prefix_value" => $bridge_prefix,
+			"bridge_database_name_value" => $bridge_database_name,
+			"bridge_database_name_text" => $wrm_install_lang['database_text'],
 			"bridge_admin_id_text" => $wrm_install_lang['txtusername'],
 			"bridge_admin_id_value" => $bridge_admin_id,
 			"bridge_admin_password_text" => $wrm_install_lang['txtpassword'],
@@ -419,7 +422,6 @@ if($step == 3)
 			"bridge_auth_user_group_value" => $bridge_auth_user_group,
 			"bridge_auth_user_alt_text" => $wrm_install_lang['txt_alt_group'],
 			"bridge_auth_user_alt_group_value" => $bridge_auth_user_alt_group,
-		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
@@ -436,7 +438,8 @@ if($step === "bridge_done")
 	$bridge_admin_password = $_POST['bridge_admin_password'];
 	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
 	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
-
+	$bridge_database_name = $_POST['bridge_database_name'];
+	
 	include ($wrm_config_file);
 	//include ("includes/function.php");
 	include ("auth/install_".$bridge_name.".php");
@@ -447,7 +450,7 @@ if($step === "bridge_done")
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = sprintf(	"SELECT " . $bridge_setting['db_user_id']. " , ". $bridge_setting['db_user_name'] . " , " .	$bridge_setting['db_user_email'] . " , " .$bridge_setting['db_user_password'] .
-					" FROM " . $bridge_prefix . $bridge_setting['db_table_user_name'] . 
+					" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_user_name'] . 
 					" WHERE " . $bridge_setting['db_user_id'] . " = %s", quote_smart($bridge_admin_id)
 			);
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -491,7 +494,7 @@ if($step === "bridge_done")
 	
 	//close connection
 	$wrm_install->sql_close();
-	header("Location: install.php?step=done");
+	header("Location: install.php?lang=".$lang."&step=done");
 }
 
 

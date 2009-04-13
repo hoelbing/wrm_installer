@@ -23,6 +23,7 @@ $wrm_install_lang['no'] = "nein";
 $wrm_install_lang['upgrade'] = 'Upgrade';
 $wrm_install_lang['freshinstall'] = 'Neue Installation';
 $wrm_install_lang['change'] = "aendern";
+$wrm_install_lang['database_text'] = 'Datenbank';
 
 //menu
 $wrm_install_lang['InstallationProgress'] = 'Fortschritt der Installation';

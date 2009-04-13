@@ -1,29 +1,33 @@
-<form method="post" action="{$form_action}">
+<link href="style/stylesheet.css" rel="stylesheet" type="text/css">
 
-{$select_lang}: <select name="classlang_type">
-{html_options values=$classlang_type_values selected=$classlang_type_selected output=$classlang_type_values}
-</select>
-
- <table align="center" width="600">
-  <tr>
-   <td><div align="center"><b>{$headtitle}</b></div></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td><div align="center">{$donesetupcomplete_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center"></div></td>
-  </tr>
-  <tr>
-    <td>
-      <div align="center">{$doneremovedir_text}</div></td>
-  </tr>
-  <tr>
-    <td><div align="center"></div></td>
-  </tr>
- </table>  
-
-</form>
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+   <tr>
+     <td><table width="600" border="0" align="center" cellpadding="0" cellspacing="0">
+       <tr>
+         <td><div align="center" class="rowHover"><b>{$headtitle}</b></div></td>
+       </tr>
+       <tr>
+         <td class="row1">&nbsp;</td>
+       </tr>
+       <tr>
+         <td><div align="center" class="row1">{$donesetupcomplete_text}</div></td>
+       </tr>
+       <tr>
+         <td><div align="center" class="row1"></div></td>
+       </tr>
+       <tr>
+         <td><div align="center" class="row1">{$doneremovedir_text}</div></td>
+       </tr>
+       <tr>
+         <td><div align="center" class="row1"></div></td>
+       </tr>
+     </table></td>
+   </tr>
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+ </table>
+ 
