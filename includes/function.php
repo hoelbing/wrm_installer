@@ -198,4 +198,24 @@ function desanitize($array) {
 
   return $array;
 }
+
+/***
+ *  Get Array with all Langfiles
+ *  * @param BOOL $Suffix
+ */
+function get_language_filename($Suffix = FALSE)
+{
+	$lang_dir = 'language';
+	$dh = opendir($lang_dir);
+	while(false != ($filename = readdir($dh))) {
+		$filename = substr($filename, 7);
+		$filename = str_replace('.php','',$filename);
+		$files[] = $filename;
+	}
+	sort($files);
+	array_shift($files);
+	array_shift($files);
+	return ($files);
+}
+
 ?>

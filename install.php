@@ -17,7 +17,6 @@ $wrm_install_lang['error_found_table_bd_cont'] = "Botton Continue : deletes all 
  * 			lösung finden für x.x.x.x.x evtl mit schleifens
 
  * sprache 
- * 			ändern der Sprache
  * 			files anpassen /löschen und so
  * phpbb 2 und 3 problem
  * 		lsg: $bridge_major_version
@@ -34,13 +33,6 @@ $step = 0;
 else
 $step = $_GET['step'];
 
-/*
-//set Lang. Format
-if (!isset($_POST['classlang_type']))
-	$lang = "english";
-else
-	$lang = $_POST['classlang_type'];
-*/
 
 //set Lang. Format
 if (!isset($_GET['lang']))
@@ -48,7 +40,8 @@ if (!isset($_GET['lang']))
 else
 	$lang = $_GET['lang'];
 
-if($_GET['step'] == "2")
+
+if ($step == 2)
 {
 	if (isset($_POST['classlang_type']))
 	{
@@ -57,7 +50,6 @@ if($_GET['step'] == "2")
 }
 
 $filename_install = "install.php?lang=".$lang."&";
-
 include_once('language/locale-'.$lang.'.php');
 
 
@@ -117,23 +109,14 @@ if ($step == "0")
 
 else if($step == 1) {
 
-	//Language Setttings
-	$lang_dir = 'language';
-	$dh = opendir($lang_dir);
-	while(false != ($filename = readdir($dh))) {
-		$filename = substr($filename, 7);
-		$filename = str_replace('.php','',$filename);
-		$files[] = $filename;
-	}
-	sort($files);
-	array_shift($files);
-	array_shift($files);
-
+	//from /include/function.php
+	//load all lang file in a array
+	$files = get_language_filename();
 
 	$phpversion = (int)(str_replace(".", "", phpversion()));
 
-	if(!isset($_POST['submit']))
-	{
+	//if(!isset($_POST['submit']))
+	//{
 		@chmod("./wowarmory_tooltip/",0775);
 
 		if($phpversion<401)
@@ -173,7 +156,7 @@ else if($step == 1) {
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-					"form_action" => $filename_install."step=1",
+					"form_action" => $filename_install."step=2",
 					//table
 					"headtitle" => $wrm_install_lang['headtitle'],
 					"property" => $wrm_install_lang['step0_property'],
@@ -211,11 +194,11 @@ else if($step == 1) {
 		
 		$smarty->display("step1.tpl.html");
 		include ("includes/page_footer.php");
-	}
-	if(isset($_POST['submit']))
+	//}
+	/*if(isset($_POST['submit']))
 	{
 		header("Location: ".$filename_install."step=2");
-	}
+	}*/
 }
 
 /**
@@ -227,15 +210,16 @@ else if($step == 1) {
  * */
 else if($step == 2) {
 
-	if (isset($_POST['classlang_type']))
+/*	if (isset($_POST['classlang_type']))
 	{
 		$lang = $_POST['classlang_type'];
 	}
 
 	$filename_install = "install.php?lang=".$lang."&";
-echo $_POST['classlang_type'];
-echo $lang;
-$error_msg = "";
+	include_once('language/locale-'.$lang.'.php');
+*/
+	//echo $lang;	
+	$error_msg = "";
 
 	if ( isset($_GET['erro_con']) )
 	{

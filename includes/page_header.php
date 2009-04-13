@@ -24,14 +24,6 @@ $smarty->cache_dir = 'cache/smarty_cache';
 // Set Page content type header:
 header('Content-Type: text/html; charset=utf-8');
 
-//set Lang. Format
-if (!isset($_GET['lang']))
-	$lang = "english";
-else
-	$lang = $_GET['lang'];
-
-include_once ('language/locale-'.$lang.'.php');
-
 $smarty->assign(
 	array(
 		"headtitle" =>  $wrm_install_lang['headtitle'],
