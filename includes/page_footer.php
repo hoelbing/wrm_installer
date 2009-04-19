@@ -1,4 +1,5 @@
 <?php
-$smarty->assign("version", "3");
+include_once("../version.php");
+$smarty->assign("wrm_version", $version);
 $smarty->display('footer.tpl.html');
 ?>
