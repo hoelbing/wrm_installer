@@ -97,7 +97,8 @@ if ($step == 0)
 		$smarty->display("update.tpl.html");
 		include ("includes/page_footer.php");
 	}
-	else if ((str_replace(".", "", $wrm_versions_nr_current_value)) > (str_replace(".","",$versions_nr_install)))
+	//else if (cmp_2_version_nr($wrm_versions_nr_current_value,$versions_nr_install) == 1 )
+	/*else if ((str_replace(".", "", $wrm_versions_nr_current_value)) > (str_replace(".","",$versions_nr_install)))
 	{
 		// "your wrm version is newer as this installation file";
 		include ("includes/page_header.php");
@@ -115,7 +116,7 @@ if ($step == 0)
 		$smarty->display("update.tpl.html");
 		include ("includes/page_footer.php");
 		
-	}
+	}*/
 	else
 	{
 		//upgrade
@@ -137,83 +138,36 @@ if ($step == 0)
 }
 
 /**
- * repeat loop
- * -init. array with all upgrade file
- * -1. compare wrm db version with this array (upgrade files (x.x.x = version nr))
- * -2. sql command
- * -3. compare wrm db version and install file version 1. equal -> upgrade finish 2. not equal jump to step1 (now is the version +1)
  */
 if ($step == 1)
 {
+	//load update infos
+	include_once("database_schema/upgrade/update_files_conf.php");
+	
+	//connect to wrm server
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+
+	$wrm_update_array_y = 0;
+
+	for ($i = 0; $i < count($wrm_update_array);$i++)
+	{
+		if ($wrm_update_array[$i]["update_to_version"] == $wrm_versions_nr_current_value)
+		{
+			$wrm_update_array_y = $i;
+		}
+	}
 	
-	/*
-	 * load all filenname, from dir 'database_schema/upgrade', in array $files
-	 */
-	//array with all filename from the upgrade dir.
-	$files = array();
-	$dir_upgrade = 'database_schema/upgrade';
-	$dh = opendir($dir_upgrade);
-
-	while(($filename = readdir($dh)))
-	{
-		$files[] = str_replace('.sql','',$filename);
-	}
-		
-	sort($files);
-	array_shift($files);
-	array_shift($files);
-
-	//print_r($files);
-	//version nr without point eg: 400 and not 4.0.0
-	$versions_nr_current_wrm_wpoint = str_replace(".","",$wrm_versions_nr_current_value);
-	$versions_nr_install_wpoint = str_replace(".","",$versions_nr_install);
-//	echo $versions_nr_current_wrm_wpoint.">".$versions_nr_install_wpoint."<br>";
-/*
-	//---------------------------------------------------
-	//this is for the problem: if the filename or the install version 4.x.x.x.x.x.x.x and the other 4.x.x.x 
-	$count01 = 0;
-	$count02 = 0;
-	$tmppos = 0;
-	while ($tmppos = strpos($versions_nr_current_wrm, ".", $tmppos))
-		$count01++;
-		
-	$tmppos = 0;
+	//+1
+	$wrm_update_array_y++;
 	
-	while ($tmppos = strpos($versions_nr_install, ".", $tmppos))
-		$count02++;
-
-	if ($count01>$count02)
+	//update from version ($wrm_update_array[ "current version"])
+	//to the last version ($wrm_update_array[ "max" ]) from the array $wrm_update_array
+	//open sql file; do sql; close file;
+	for ($wrm_update_array_y; $wrm_update_array_y < count($wrm_update_array); $wrm_update_array_y++)
 	{
-		while ($count01=$count02)
-		{
-			$versions_nr_current_wrm_wpoint = $versions_nr_current_wrm_wpoint*10;
-		}
-	}
-	if ($count02>$count01)
-	{
-		while ($count01=$count02)
-		{
-			$versions_nr_install_wpoint = $versions_nr_install_wpoint*10;
-		}
-	}
-	//---------------------------------------------------
-*/
-	while ($versions_nr_current_wrm_wpoint > $versions_nr_install_wpoint)
-	//while (str_replace(".","",$wrm_versions_nr_current_value) > str_replace(".","",$versions_nr_install))	
-	{
-		$file_array_index = 0;
-		for ($i=0; $i < count($files)-1; $i++)
-		{
-			if($files[$i] == $versions_nr_current_wrm)
-			{
-				$file_array_index = ((int)$i) + 1;
-			}
-		}
-
-		if(!$fd = fopen('database_schema/upgrade/'.$files[$file_array_index].'.sql', 'r'))
-			die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
-		
+		if(!$fd = fopen('database_schema/upgrade/' . $wrm_update_array[$wrm_update_array_y]["file_name"], 'r'))
+				die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
+			
 		if ($fd) {
 			$sql = '';
 			while (!feof($fd)) {
@@ -229,18 +183,16 @@ if ($step == 1)
 			}
 			fclose($fd);
 		}
-		//----
-		$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
-		echo $sql."<br>";
-		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$data = $wrm_install->sql_fetchrow($result);
-		$versions_nr_current_wrm = $data['version_number'];
-		echo $versions_nr_current_wrm."<br>";
-		
 	}
 	
+	//read new install version from wrm server
+	$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
+	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $wrm_install->sql_fetchrow($result, true);
+	$wrm_versions_nr_current_value = $data['version_number'];
+
 	$wrm_install->sql_close();
-//echo $sql."<br>";
+
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -257,5 +209,4 @@ if ($step == 1)
 	include ("includes/page_footer.php");
 
 }
-
 ?>

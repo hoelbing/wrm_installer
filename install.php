@@ -13,6 +13,9 @@
  * 
  * bride:
  * 			import der user vom bridesystem
+ * nl2br
+ * --
+ * update step 1 geht nicht, führt nicht die richtigen dateien aus
  * 
  */
 if (!isset($_GET['step']))
