@@ -36,8 +36,8 @@ $bridge_setting_value = array(
 	// Column Name for the Groups/Class Name field.
 	'db_allgroups_name' => "group_name",
 
-	//Name from the Config File
-	'DB_configfile_name' => "config.php",
+	//utf8 Support
+	'bridge_utf8_support' => "yes",
 
 	// ------------- Optional -------------
 
@@ -46,21 +46,4 @@ $bridge_setting_value = array(
 	'bridge_major_version' => 3, //only the first nr; 
 );
 
-/**
- * read the config file and load in array with
- * all values
- */
-if ($bridge_configload == true)
-{
-	include ($filepos);
-
-	$bridge_configload_value =
-		array(
-			'DB_host' => $dbhost,
-			'DB_name' => $dbname,
-			'DB_table_prefix' => $table_prefix,
-			'DB_admin_user_name' => $dbuser,
-			'DB_admin_user_password' => $dbpasswd,
-		);
-}
 ?>

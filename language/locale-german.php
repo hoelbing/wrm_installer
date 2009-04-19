@@ -135,4 +135,7 @@ $wrm_install_lang['step5sub1iumsfilladmindesc'] = 'füllen sie alle Werte für d
 //update
 $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
 $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Installation Version Nr";
+
+//install_bridges
+$wrm_install_lang['bridge_step0_titel'] = "Scan Result (@ your Server): Found Bridges ";
 ?>

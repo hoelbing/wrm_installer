@@ -35,17 +35,11 @@
 
 /*
  * todo
- * phpbb 2 und 3 problem
- * 		lsg: $bridge_major_version
- * 
- * überlegung
- * 		install step5: wenn eine datenbank gefunden wurde evtl . updaten?
  * 
  * bride:
  * 			import der user vom bridesystem
  * nl2br
  * --
- * update step 1 geht nicht, führt nicht die richtigen dateien aus
  * 
  */
 if (!isset($_GET['step']))

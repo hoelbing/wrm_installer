@@ -36,26 +36,9 @@ $bridge_setting_value = array(
 	// Column Name for the Groups/Class Name field.
 	'db_allgroups_name' => "name",
 
-	//Name from the Config File
-	'DB_configfile_name' => "configuration.php",
+	//utf8 Support
+	'bridge_utf8_support' => "yes",
+
 );
 
-/**
- * read the config file and load in array with
- * all values
- */
-if ($bridge_configload == true)
-{
-	include ($filepos);
-	$JOOMLACONFIG = new JConfig();
-	
-	$bridge_configload_value =
-		array(
-			'DB_host' => $JOOMLACONFIG->dbprefix,
-			'DB_name' =>  $JOOMLACONFIG->host,
-			'DB_table_prefix' => $JOOMLACONFIG->dbprefix,
-			'DB_admin_user_name' => $JOOMLACONFIG->user,
-			'DB_admin_user_password' => $JOOMLACONFIG->password,
-		);
-}
 ?>

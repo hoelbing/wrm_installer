@@ -36,25 +36,9 @@ $bridge_setting_value = array(
 	// Column Name for the Groups/Class Name field.
 	'db_allgroups_name' => "name",
 
-	//Name from the Config File
-	'DB_configfile_name' => "mainfile.php",
+	//utf8 Support
+	'bridge_utf8_support' => "yes",
+
 );
 
-/**
- * read the config file and load in array with
- * all values
- */
-if ($bridge_configload == true)
-{
-	include ($filepos);
-
-	$bridge_configload_value =
-		array(
-			'DB_host' => XOOPS_DB_HOST,
-			'DB_name' => XOOPS_DB_NAME,
-			'DB_table_prefix' => XOOPS_DB_PREFIX,
-			'DB_admin_user_name' => XOOPS_DB_USER,
-			'DB_admin_user_password' => XOOPS_DB_PASS,
-		);
-}
 ?>

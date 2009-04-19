@@ -33,6 +33,7 @@
 *
 ****************************************************************************/
 
+		
 if (!isset($_GET['step']))
 $step = 0;
 else
@@ -43,7 +44,9 @@ if (!isset($_GET['lang']))
 	$lang = "english";
 else
 	$lang = $_GET['lang'];
+
 $filename_bridge = "install_bridges.php?lang=".$lang."&";
+
 include_once('language/locale-'.$lang.'.php');
 
 $wrm_config_file = "../config.php";
@@ -85,7 +88,6 @@ function scan_dbserver()
 	
 	$sql_db_all = "SHOW DATABASES";
 
-	//$result_db_all = @mysql_query($sql_db_all) or die("Error" . mysql_error()."<br>SQL: ". $sql_db_all);
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
 	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
@@ -197,19 +199,41 @@ function scan_dbserver()
 	
 	$wrm_install->sql_close();
 	
-	//sort and del double entries/ bridges
+	//-----------------------------------------------------------------------//
+	//problem: with bridge phpbb2 and phpbb3
+	//if on the server phpbb3 install, than have this function, after scan: found phpbb2 and phpbb3
+	//-> del phpbb2 in the array
+	$found_double = -1;
 	for ($y=0; $y<count($found_bridge); $y++)
 	{
-		//if (isset($bridge['bridge_major_version']))
-			if (	($found_bridge[$y]['bridge_name'] == $bridge[$i]['auth_type_name']) and
-					($found_bridge[$y]['bridge_database'] == $data_db_all['Database']) and
-					($found_bridge[$y]['bridge_table_prefix'] == $db_temp_prefix) 
-				)
-			
+		//scan after phpbb3
+		if ($found_bridge[$y]['bridge_name'] == "phpbb3")
+		{
+			//scan after phpbb2
+			for ($x=0;$x<count($found_bridge); $x++)
 			{
+				//white the same database and table_prefix
+				if 	(
+						($found_bridge[$x]['bridge_name'] == "phpbb") and
+						($found_bridge[$x]['bridge_database'] == $found_bridge[$y]['bridge_database']) and 
+						($found_bridge[$x]['bridge_table_prefix'] == $found_bridge[$y]['bridge_table_prefix'])
+					)
+				{
+					$found_double = $x;
+				}
 				
 			}
+			
+			//del the found entry
+			if ($found_double != -1)
+			{
+				array_splice($found_bridge, $found_double, 1);
+				$found_double = -1;
+			}
+		}
 	}
+	//-----------------------------------------------------------------------//
+		
 	return $found_bridge;
 }
 
@@ -493,7 +517,7 @@ if($step === "bridge_done")
 	include ("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
-	$bridge_utf8_support = "enabled";//$bridge_setting['bridge_utf8_support'];
+	$bridge_utf8_support = $bridge_setting['bridge_utf8_support'];
 	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
