@@ -405,7 +405,7 @@ if ($step == 2)
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."step=3" ,
+			"form_action" => $filename_bridge."step=5" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"user_group_01_text" => $wrm_install_lang['step5sub3group01'],
 			"user_group_02_text" => $wrm_install_lang['step5sub3group02'],
@@ -436,9 +436,59 @@ if ($step == 2)
 		
 }
 
+//import user from the bridge system
 if($step == 3)
 {
-	
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_bridge."step=4" ,
+			"headtitle" => $wrm_install_lang['headtitle'],
+				
+			"bridge_name" => $_POST['bridge_name'],
+			"bridge_prefix" => $_POST['bridge_prefix'],
+			"bridge_admin_id" => $_POST['bridge_admin_id'],
+			"bridge_admin_password" => $_POST['bridge_database_name'],
+			"bridge_database_name" => $_POST['bridge_admin_password'],
+			"bridge_auth_user_group" => $_POST['bridge_auth_user_group'],
+			"bridge_auth_user_alt_group" => $_POST['bridge_auth_user_alt_group'],
+		
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("bridges.s3.tpl.html");
+	include ("includes/page_footer.php");	
+}
+
+// result from import
+if($step == 4)
+{
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_bridge."step=5" ,
+			"headtitle" => $wrm_install_lang['headtitle'],
+				
+			"bridge_name" => $_POST['bridge_name'],
+			"bridge_prefix" => $_POST['bridge_prefix'],
+			"bridge_admin_id" => $_POST['bridge_admin_id'],
+			"bridge_admin_password" => $_POST['bridge_database_name'],
+			"bridge_database_name" => $_POST['bridge_admin_password'],
+			"bridge_auth_user_group" => $_POST['bridge_auth_user_group'],
+			"bridge_auth_user_alt_group" => $_POST['bridge_auth_user_alt_group'],
+		
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("bridges.s4.tpl.html");
+	include ("includes/page_footer.php");	
+}
+
+//show result from install_bridges (overview)
+if($step == 5)
+{
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_prefix = $_POST['bridge_prefix'];
 	$bridge_admin_id = $_POST['bridge_admin_id'];
@@ -498,7 +548,7 @@ if($step == 3)
 		)
 	);
 
-	$smarty->display("bridges.s3.tpl.html");
+	$smarty->display("bridges.s5.tpl.html");
 	include ("includes/page_footer.php");
 }
 
