@@ -28,10 +28,10 @@ $wrm_update_array[] =
 /*
  * Temp
  * 
-array_push($wrm_update_array,
-	array(
-		'file_name' => "x.x.x.sql",
-		'update_to_version'=> "x.x.x"
-	)
-);*/
+$wrm_update_array[] = 
+						array(
+							'file_name' => "x.x.x.sql",
+							'update_to_version'=> "x.x.x"
+						);
+*/
 ?>

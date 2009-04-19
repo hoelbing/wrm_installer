@@ -132,5 +132,7 @@ $wrm_install_lang['step5iumsdesc'] = 'integrated User Management System';
 $wrm_install_lang['step5iumssub1desc'] = 'You have selected "integrated User Management System" authentication';
 $wrm_install_lang['step5sub1iumsfilladmindesc'] = 'All that is left is to enter your Super Administrator information by filling out the information below.';
 
-
+//update
+$wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
+$wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
 ?>

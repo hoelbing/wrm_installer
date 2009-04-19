@@ -132,5 +132,7 @@ $wrm_install_lang['step5iumsdesc'] = 'Sistema di gestione Utenti integrato';
 $wrm_install_lang['step5iumssub1desc'] = 'Hai selezionato l\'autenticazione attraverso il sistema di gestione Utenti integrato';
 $wrm_install_lang['step5sub1iumsfilladmindesc'] = 'Inserisci i dati per il profilo di Super Admin.';
 
-
+//update
+$wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
+$wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
 ?>

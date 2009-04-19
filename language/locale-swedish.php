@@ -132,5 +132,7 @@ $wrm_install_lang['step5iumsdesc'] = 'Inbyggt Användar Hanterings System';
 $wrm_install_lang['step5iumssub1desc'] = 'Du har valt "Inbyggt Användar Hanterings System" autentisering';
 $wrm_install_lang['step5sub1iumsfilladmindesc'] = 'Allt som kvarstår är att fylla i din information för Super Administratör nedan.';
 
-
+//update
+$wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
+$wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
 ?>

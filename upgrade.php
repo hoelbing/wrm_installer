@@ -1,15 +1,44 @@
 <?php
+/***************************************************************************
+ *                             upgrade.php
+ *                            -------------------
+ *   begin                : Dec 12, 2008
+ *	 Dev                  : Carsten Hölbing
+ *	 email                : hoelbin@gmx.de
+ *
+ *   -- WoW Raid Manager --
+ *   copyright            : (C) 2007-2009 Douglas Wagner
+ *   email                : douglasw0@yahoo.com
+ *   www				  : http://www.wowraidmanager.net
+ *
+ ***************************************************************************/
+
+/***************************************************************************
+*
+*    WoW Raid Manager - Raid Management Software for World of Warcraft
+*    Copyright (C) 2007-2009 Douglas Wagner
+*
+*    This program is free software: you can redistribute it and/or modify
+*    it under the terms of the GNU General Public License as published by
+*    the Free Software Foundation, either version 3 of the License, or
+*    (at your option) any later version.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*    GNU General Public License for more details.
+*
+*    You should have received a copy of the GNU General Public License
+*    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************************/
+
 /*
 *
 * Upgrade file format x.x.x.sql
 * eg: database_schema/upgrade/4.0.0.sql
+* read: file "database_schema/upgrade/update_files_conf.php"
 */
-
-/*-------------------------------*/
-//lang strg
-$wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
-$wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
-/*-------------------------------*/
 
 if (!isset($_GET['step']))
 $step = 0;
@@ -50,15 +79,17 @@ $versions_nr_install = $version;
  * default wrm Table prefix
  * used: database_schema/upgrade/x.x.x.sql
  */
-$default_wrmtable_prefix = "phpraid_";
+$default_wrmtable_prefix = "wrm_";
 
 
-$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 
 /*----------------------------------------------------------------*/
 /**
  * Version from your wrm (Server) Database
  */
+
+//connect 2 wrm server
+$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 //get the last (max) version nr, from wrm db
 $sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
 $result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -97,26 +128,6 @@ if ($step == 0)
 		$smarty->display("update.tpl.html");
 		include ("includes/page_footer.php");
 	}
-	//else if (cmp_2_version_nr($wrm_versions_nr_current_value,$versions_nr_install) == 1 )
-	/*else if ((str_replace(".", "", $wrm_versions_nr_current_value)) > (str_replace(".","",$versions_nr_install)))
-	{
-		// "your wrm version is newer as this installation file";
-		include ("includes/page_header.php");
-		$smarty->assign(
-			array(
-				"form_action" => $filename_upgrade,//"?step=1",
-				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
-				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
-				"wrm_versions_nr_current_text" => $wrm_install_lang['wrm_versions_nr_current_text'],
-				"wrm_versions_nr_from_install_value" => $versions_nr_install, 
-				"wrm_versions_nr_from_install_text" => $wrm_install_lang['wrm_versions_nr_from_install_text'],
-				"bd_start" => $wrm_install_lang['bd_start'],	
-			)
-		);
-		$smarty->display("update.tpl.html");
-		include ("includes/page_footer.php");
-		
-	}*/
 	else
 	{
 		//upgrade
@@ -138,6 +149,8 @@ if ($step == 0)
 }
 
 /**
+ * update from version ($wrm_update_array[ "current version"])
+ * to the last version ($wrm_update_array[ "max" ]) from the array $wrm_update_array
  */
 if ($step == 1)
 {
@@ -207,6 +220,5 @@ if ($step == 1)
 	);
 	$smarty->display("update.tpl.html");
 	include ("includes/page_footer.php");
-
 }
 ?>
