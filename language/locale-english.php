@@ -123,7 +123,7 @@ $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
 $wrm_install_lang['step4unkownauth'] = '(if you are not sure, please select "iUMS")';
 $wrm_install_lang['step4chooseauth'] = 'Please choose an authorization type.';
 
-$wrm_install_lang['question_wantimport'] = 'Do you want to import all users from your CMS/BB?';
+$wrm_install_lang['question_wantimport'] = 'Do you want take over, all users from your CMS/BB System?';
 $wrm_install_lang['import_not_support'] = 'UserDaten Import: not supported';
 $wrm_install_lang['import'] = 'Import';
 

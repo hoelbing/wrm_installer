@@ -142,7 +142,9 @@ function scan_dbserver()
 					if ($counter_valid_column == 4)
 					{
 						//count: avilable user in the bridge system
-						$sql_count_user = "SELECT ".$bridge[$i]['db_user_id']." FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
+						$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
+											" FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
+											" " . $bridge[$i]['db_user_name_filter'];
 						$result_count_user = $wrm_install->sql_query($sql_count_user) or print_error($sql_count_user, mysql_error(), 1);
 						$count_user = $wrm_install->sql_numrows($result_count_user);
 
@@ -362,7 +364,7 @@ if ($step == 2)
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_prefix = $_POST['bridge_prefix'];
 	$bridge_admin_id = $_POST['bridge_admin_id'];
-	$bridge_admin_password = $_POST['user_admin_password'];
+	$bridge_admin_password = $_POST['bridge_admin_password'];
 	$bridge_database_name = $_POST['bridge_database_name'];
 	
 	include("auth/install_".$bridge_name.".php");
@@ -405,7 +407,7 @@ if ($step == 2)
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."step=5" ,
+			"form_action" => $filename_bridge."step=3" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 			"user_group_01_text" => $wrm_install_lang['step5sub3group01'],
 			"user_group_02_text" => $wrm_install_lang['step5sub3group02'],
@@ -436,22 +438,48 @@ if ($step == 2)
 		
 }
 
+$wrm_install_lang['found_user_from_bridge']= "found user from bridge system";
+
 //import user from the bridge system
 if($step == 3)
 {
+	$bridge_name = $_POST['bridge_name'];
+	$bridge_prefix = $_POST['bridge_prefix'];
+	$bridge_admin_id = $_POST['bridge_admin_id'];
+	$bridge_admin_password = $_POST['bridge_admin_password'];
+	$bridge_database_name = $_POST['bridge_database_name'];
+	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
+	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
+	
+	include("auth/install_".$bridge_name.".php");
+	$bridge_setting = $bridge_setting_value;
+	
+	include ($wrm_config_file);
+	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
+
+	$sql = 	"SELECT " .	$bridge_setting['db_user_name'] . 
+			" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_user_name']. " " . $bridge_setting['db_user_name_filter'];
+	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$found_user = $wrm_install->sql_numrows($result);
+
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=4" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
-				
-			"bridge_name" => $_POST['bridge_name'],
-			"bridge_prefix" => $_POST['bridge_prefix'],
-			"bridge_admin_id" => $_POST['bridge_admin_id'],
-			"bridge_admin_password" => $_POST['bridge_database_name'],
-			"bridge_database_name" => $_POST['bridge_admin_password'],
-			"bridge_auth_user_group" => $_POST['bridge_auth_user_group'],
-			"bridge_auth_user_alt_group" => $_POST['bridge_auth_user_alt_group'],
+			"import_user_text" => $wrm_install_lang['question_wantimport'],
+			"yes" => $wrm_install_lang['yes'],
+			"no" => $wrm_install_lang['no'],
+			"found_user_from_bridge_text" => $wrm_install_lang['found_user_from_bridge'],
+			"found_user_from_bridge_value" => $found_user,
+		
+			"bridge_name" => $bridge_name,
+			"bridge_prefix" => $bridge_prefix,
+			"bridge_admin_id" => $bridge_admin_id,
+			"bridge_admin_password" => $bridge_admin_password,
+			"bridge_database_name" => $bridge_database_name,
+			"bridge_auth_user_group" => $bridge_auth_user_group,
+			"bridge_auth_user_alt_group" => $bridge_auth_user_alt_group,
 		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
@@ -464,19 +492,69 @@ if($step == 3)
 // result from import
 if($step == 4)
 {
+	$bridge_name = $_POST['bridge_name'];
+	$bridge_prefix = $_POST['bridge_prefix'];
+	$bridge_admin_id = $_POST['bridge_admin_id'];
+	$bridge_admin_password = $_POST['bridge_admin_password'];
+	$bridge_database_name = $_POST['bridge_database_name'];
+	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
+	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
+	
+	if ($_POST['importUser'] == "yes")
+	{
+		include("auth/install_".$bridge_name.".php");
+		$bridge_setting = $bridge_setting_value;
+	
+		include ($wrm_config_file);
+		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
+		
+		//$sql = "SELECT user_id, user_email, username  FROM " . $phpbb_prefix . "users ORDER BY user_id";
+		$sql = 	"SELECT " . $bridge_setting['db_user_id'] . ", " . 
+					$bridge_setting['db_user_email'] . ", " . 
+					$bridge_setting['db_user_name'] . 
+				"  FROM " . $bridge_prefix . $bridge_setting['db_table_user_name'] . " " . $bridge_setting['db_user_name_filter'];
+		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+		if($wrm_install->sql_numrows($result) == 0)
+		{
+			echo "Failed: no users in phpBB3 tables";
+			exit;
+		}
+		
+		$defaultuserPriv = 0;
+		while ($rows = $wrm_install->sql_fetchrow($result_user_group, true))
+		{
+			if (!$rows[$bridge_setting['db_allgroups_name']])
+			{
+				$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `email`, `password`,`priv`,`username`) " .
+					 			"VALUES(%s,%s,%s,%s,%s)",
+									quote_smart($bridge_setting['db_user_id']),
+									quote_smart($bridge_setting['db_user_email']),
+									quote_smart(""), //password
+									quote_smart($defaultuserPriv),
+									quote_smart($bridge_setting['db_user_name'])
+						);
+				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}		
+		}
+	}
+	
+		
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=5" ,
 			"headtitle" => $wrm_install_lang['headtitle'],
 				
-			"bridge_name" => $_POST['bridge_name'],
-			"bridge_prefix" => $_POST['bridge_prefix'],
-			"bridge_admin_id" => $_POST['bridge_admin_id'],
-			"bridge_admin_password" => $_POST['bridge_database_name'],
-			"bridge_database_name" => $_POST['bridge_admin_password'],
-			"bridge_auth_user_group" => $_POST['bridge_auth_user_group'],
-			"bridge_auth_user_alt_group" => $_POST['bridge_auth_user_alt_group'],
+
+			"bridge_name" => $bridge_name,
+			"bridge_prefix" => $bridge_prefix,
+			"bridge_admin_id" => $bridge_admin_id,
+			"bridge_admin_password" => $bridge_admin_password,
+			"bridge_database_name" => $bridge_database_name,
+		
+			"bridge_auth_user_group" => $bridge_auth_user_group,
+			"bridge_auth_user_alt_group" => $bridge_auth_user_alt_group,
 		
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
@@ -521,7 +599,7 @@ if($step == 5)
 	{
 		$bridge_auth_user_alt_group = $data_user_group[$bridge_setting['db_allgroups_name']];
 	}
-	
+
 	$wrm_install->sql_close();
 
 	include ("includes/page_header.php");
