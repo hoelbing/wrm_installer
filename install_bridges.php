@@ -489,83 +489,9 @@ if($step == 3)
 	include ("includes/page_footer.php");	
 }
 
-// result from import
-if($step == 4)
-{
-	$bridge_name = $_POST['bridge_name'];
-	$bridge_prefix = $_POST['bridge_prefix'];
-	$bridge_admin_id = $_POST['bridge_admin_id'];
-	$bridge_admin_password = $_POST['bridge_admin_password'];
-	$bridge_database_name = $_POST['bridge_database_name'];
-	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
-	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
-	
-	if ($_POST['importUser'] == "yes")
-	{
-		include("auth/install_".$bridge_name.".php");
-		$bridge_setting = $bridge_setting_value;
-	
-		include ($wrm_config_file);
-		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
-		
-		//$sql = "SELECT user_id, user_email, username  FROM " . $phpbb_prefix . "users ORDER BY user_id";
-		$sql = 	"SELECT " . $bridge_setting['db_user_id'] . ", " . 
-					$bridge_setting['db_user_email'] . ", " . 
-					$bridge_setting['db_user_name'] . 
-				"  FROM " . $bridge_prefix . $bridge_setting['db_table_user_name'] . " " . $bridge_setting['db_user_name_filter'];
-		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-		if($wrm_install->sql_numrows($result) == 0)
-		{
-			echo "Failed: no users in phpBB3 tables";
-			exit;
-		}
-		
-		$defaultuserPriv = 0;
-		while ($rows = $wrm_install->sql_fetchrow($result_user_group, true))
-		{
-			if (!$rows[$bridge_setting['db_allgroups_name']])
-			{
-				$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `email`, `password`,`priv`,`username`) " .
-					 			"VALUES(%s,%s,%s,%s,%s)",
-									quote_smart($bridge_setting['db_user_id']),
-									quote_smart($bridge_setting['db_user_email']),
-									quote_smart(""), //password
-									quote_smart($defaultuserPriv),
-									quote_smart($bridge_setting['db_user_name'])
-						);
-				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-			}		
-		}
-	}
-	
-		
-	include ("includes/page_header.php");
-	$smarty->assign(
-		array(
-			"form_action" => $filename_bridge."step=5" ,
-			"headtitle" => $wrm_install_lang['headtitle'],
-				
-
-			"bridge_name" => $bridge_name,
-			"bridge_prefix" => $bridge_prefix,
-			"bridge_admin_id" => $bridge_admin_id,
-			"bridge_admin_password" => $bridge_admin_password,
-			"bridge_database_name" => $bridge_database_name,
-		
-			"bridge_auth_user_group" => $bridge_auth_user_group,
-			"bridge_auth_user_alt_group" => $bridge_auth_user_alt_group,
-		
-			"bd_submit" => $wrm_install_lang['bd_submit'],
-		)
-	);
-
-	$smarty->display("bridges.s4.tpl.html");
-	include ("includes/page_footer.php");	
-}
-
+//import user from bridge system and
 //show result from install_bridges (overview)
-if($step == 5)
+if($step == 4)
 {
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_prefix = $_POST['bridge_prefix'];
@@ -577,10 +503,42 @@ if($step == 5)
 
 	include("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
-
+	
 	include ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
+	if ($_POST['importUser'] == "yes")
+	{
+		
+		//$sql = "SELECT user_id, user_email, username  FROM " . $phpbb_prefix . "users ORDER BY user_id";
+		$sql = 	"SELECT " . $bridge_setting['db_user_id'] . ", " . 
+					$bridge_setting['db_user_email'] . ", " . 
+					$bridge_setting['db_user_name'] . 
+				"  FROM " . $bridge_prefix . $bridge_setting['db_table_user_name'] . " " . $bridge_setting['db_user_name_filter'];
+		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+		if($wrm_install->sql_numrows($result) != 0)
+		{
+
+			$defaultuserPriv = 0;
+			while ($rows = $wrm_install->sql_fetchrow($result_user_group, true))
+			{
+				if (!$rows[$bridge_setting['db_allgroups_name']])
+				{
+					$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile (`profile_id`, `email`, `password`,`priv`,`username`) " .
+						 			"VALUES(%s,%s,%s,%s,%s)",
+										quote_smart($bridge_setting['db_user_id']),
+										quote_smart($bridge_setting['db_user_email']),
+										quote_smart(""), //password
+										quote_smart($defaultuserPriv),
+										quote_smart($bridge_setting['db_user_name'])
+							);
+					$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+				}		
+			}
+		}
+	}
+		
 	$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
 			" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
 			" WHERE  " . $bridge_setting['db_allgroups_id'] . "='" . $bridge_auth_user_group . "'";
@@ -626,7 +584,7 @@ if($step == 5)
 		)
 	);
 
-	$smarty->display("bridges.s5.tpl.html");
+	$smarty->display("bridges.s4.tpl.html");
 	include ("includes/page_footer.php");
 }
 

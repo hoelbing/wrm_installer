@@ -34,12 +34,7 @@
 ****************************************************************************/
 
 /*
- * todo
- * 
- * bride:
- * 			import der user vom bridesystem
- * nl2br
- * --
+ * nl2br == "<br>"
  * 
  */
 if (!isset($_GET['step']))
