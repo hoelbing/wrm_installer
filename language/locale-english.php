@@ -104,11 +104,11 @@ $wrm_install_lang['step5sub3norest'] = 'No Restrictions';
 $wrm_install_lang['step5sub3noaddus'] = 'No Additional UserGroup';
 $wrm_install_lang['step5sub2failfindfile'] = 'Failed to find config file:';
 $wrm_install_lang['step5sub2checkdir'] = 'check the directory again';
-$wrm_install_lang['step5sub3group01'] = 'Select the base user group/class that has access to use WRM';
+$wrm_install_lang['step5sub3group01'] = 'Select the base user group that has access to use WRM';
 $wrm_install_lang['step5sub3group02'] = 'Any user without this group set will not be allowed to log in';
-$wrm_install_lang['step5sub3group03'] = 'Please select "No Restrictios" here if you want all users regardless of group/class to be able to login to WRM';
+$wrm_install_lang['step5sub3group03'] = 'Please select "No Restrictios" here if you want all users regardless of group to be able to login to WRM';
 $wrm_install_lang['step5sub3altgroup01'] = 'Select an alternate user group/class that can access WRM';
-$wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group/class or not';
+$wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 
 //bridge mode
 $wrm_install_lang['step4auttype'] = 'authorization type';
@@ -120,8 +120,9 @@ $wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
 $wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-$wrm_install_lang['step4unkownauth'] = '(if you are not sure, please select "iUMS")';
-$wrm_install_lang['step4chooseauth'] = 'Please choose an authorization type.';
+
+$wrm_install_lang['bridge_step0_unknown_auth'] = '(if you are not sure, please select "iUMS")';
+$wrm_install_lang['bridge_step0_choose_auth'] = 'Please choose an authorization type.';
 
 $wrm_install_lang['question_wantimport'] = 'Do you want take over, all users from your CMS/BB System?';
 $wrm_install_lang['import_not_support'] = 'UserDaten Import: not supported';

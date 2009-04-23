@@ -120,8 +120,9 @@ $wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
 $wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-$wrm_install_lang['step4unkownauth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
-$wrm_install_lang['step4chooseauth'] = 'Seleziona uno dei tipi di autenticazione.';
+
+$wrm_install_lang['bridge_step0_unknown_auth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
+$wrm_install_lang['bridge_step0_choose_auth'] = 'Seleziona uno dei tipi di autenticazione.';
 
 $wrm_install_lang['question_wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
 $wrm_install_lang['import_not_support'] = 'Importazione da phpBB2 non supportata';

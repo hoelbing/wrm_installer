@@ -8,19 +8,28 @@
    <tr>
      <td class="rowHover"><div align="center">{$headtitle}</div></td>
    </tr>
-  <tr>
-   <td>&nbsp;</td>
-  </tr>
+   <tr>
+     <td>&nbsp;</td>
+   </tr>
+   <tr>
+     <td><div align="center" class="row1">{$bridge_step0_choose_auth}</div></td>
+   </tr>
   <tr>
    <td>
     <tr>
 	<td>
-	  <div align="Left" class="row1">
+	  <div align="Left" class="row2">
 		 {html_radios name="allfoundbridges" class="post" values=$bridge_type_values checked=$bridge_type_selected output=$bridge_type_output separator="<br>
 		 <br>"}	  </div>	</td>
   </tr>
   <tr>
 	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="center" class="row1">{$bridge_step0_unknown_auth}</div></td>
   </tr>
   <tr>
 	<td>&nbsp;</td>

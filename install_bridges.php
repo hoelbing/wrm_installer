@@ -265,10 +265,12 @@ if ($step == 0)
 			array(
 				"form_action" => $filename_bridge."step=1" ,
 				"headtitle" => $wrm_install_lang['bridge_step0_titel'],
+				"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
 				"bridge_type_output" => $bridge_type_output,
 				"bridge_type_values" => $bridge_type_values,
 				//last entry are selected (iums)
 				"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
+				"bridge_step0_unknown_auth" => $wrm_install_lang['bridge_step0_unknown_auth'],
 				"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
