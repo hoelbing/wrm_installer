@@ -36,6 +36,9 @@
 /*
  * nl2br == "<br>"
  * 
+ * doto
+ * auswahl table install 
+ *  angewählte tabelle überschrieben ja/nein
  */
 if (!isset($_GET['step']))
 $step = 0;
@@ -116,98 +119,106 @@ if ($step == "0")
  * ---------------------
  * */
 
-else if($step == 1) {
-
+else if($step == 1)
+{
+	$FoundProblem_dir_fp = FALSE;
+	
+	$writable_dir_cache_bgcolor = "green";
+	$writable_dir_cache_value = $wrm_install_lang['yes'];
+	
 	//from /include/function.php
 	//load all lang file in a array
 	$files = get_language_filename();
 
 	$phpversion = (int)(str_replace(".", "", phpversion()));
 
-	//if(!isset($_POST['submit']))
-	//{
-		@chmod("./wowarmory_tooltip/",0775);
-
-		if($phpversion<401)
-		{
-			$phpversion_bgcolor = "red";
-		}
-		else
-		{
-			$phpversion_bgcolor = "green";
-		}
-
-		$gd = get_mysql_version_from_phpinfo();
-		if ($gd < "4.1.0")
-		{
-			$mysqlversion_bgcolor = "red";
-		}
-		else
-		{
-			$mysqlversion_bgcolor = "green";
-		}
-
-		// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
-		if (is_file($wrm_config_file))
-		{
-			if(!is__writeable($wrm_config_file))
-			{
-				$writeable_config_bgcolor = "red";
-				$writeable_config_value = $wrm_install_lang['no'];
-			}
-			else
-			{
-				$writeable_config_bgcolor = "green";
-				$writeable_config_value = $wrm_install_lang['yes'];
-			}
-		}
-		
-		include ("includes/page_header.php");
-		$smarty->assign(
-			array(
-					"form_action" => $filename_install."step=2",
-					//table
-					"headtitle" => $wrm_install_lang['headtitle'],
-					"property" => $wrm_install_lang['step0_property'],
-					"required" => $wrm_install_lang['step0_required'],
-					"exist" => $wrm_install_lang['step0_exist'],
-					"system_requirements" => $wrm_install_lang['step0_system_requirements'],
-					"phpversion_text" => $wrm_install_lang['step0_phpversion_text'],
-					"phpversion_value" => phpversion(),
-					"phpversion_bgcolor" => $phpversion_bgcolor,
-					"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
-					"mysqlversion_value" => $gd,
-					"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
-					"nonactive" => $wrm_install_lang['step0_nonactive'],
-			
-					"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
-					"writeable_config_value" => $writeable_config_value,
-					"yes" => $wrm_install_lang['yes'],
-					"writeable_config_bgcolor" => $writeable_config_bgcolor,
-			
-					"php_variables_text" => $wrm_install_lang['php_variables'],
-					"SERVER_SERVER_SOFTWARE_text" => '_SERVER["SERVER_SOFTWARE"]',
-					"SERVER_SERVER_SOFTWARE_value" => $_SERVER["SERVER_SOFTWARE"],
-					"SERVER_DOCUMENT_ROOT_text" => '_SERVER["DOCUMENT_ROOT"]',
-					"SERVER_DOCUMENT_ROOT_value" => $_SERVER["DOCUMENT_ROOT"],
-					"SERVER_SERVER_NAME_text" => '_SERVER["SERVER_NAME"]',
-					"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
-					"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
-					"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
-				    "classlang_type_values" => $files,
-				    "classlang_type_selected" => $lang,
-				    "select_lang" => $wrm_install_lang['select_lang'],
-					"bd_submit" => $wrm_install_lang['bd_submit'],
-			)
-		);
-		
-		$smarty->display("step1.tpl.html");
-		include ("includes/page_footer.php");
-	//}
-	/*if(isset($_POST['submit']))
+	//fileperm: Returns TRUE on success or FALSE on failure
+	if (!($dir_cache_fp = chmod("./cache/",0775)))
 	{
-		header("Location: ".$filename_install."step=2");
-	}*/
+		$FoundProblem_dir_fp = TRUE;
+		$writable_dir_cache_bgcolor = "red";
+		$writable_dir_cache_value = $wrm_install_lang['no'];
+	}
+
+	if($phpversion<401)
+	{
+		$phpversion_bgcolor = "red";
+	}
+	else
+	{
+		$phpversion_bgcolor = "green";
+	}
+
+	$gd = get_mysql_version_from_phpinfo();
+	if ($gd < "4.1.0")
+	{
+		$mysqlversion_bgcolor = "red";
+	}
+	else
+	{
+		$mysqlversion_bgcolor = "green";
+	}
+
+	// NOTE: BE CAREFUL WITH IS__WRITEABLE, that is NOT the built in is_writeable function. (See Double Underscore)
+	if (is_file($wrm_config_file))
+	{
+		if(!is__writeable($wrm_config_file))
+		{
+			$writeable_config_bgcolor = "red";
+			$writeable_config_value = $wrm_install_lang['no'];
+		}
+		else
+		{
+			$writeable_config_bgcolor = "green";
+			$writeable_config_value = $wrm_install_lang['yes'];
+		}
+	}
+	
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+				"form_action" => $filename_install."step=2",
+				//table
+				"headtitle" => $wrm_install_lang['headtitle'],
+				"property" => $wrm_install_lang['step0_property'],
+				"required" => $wrm_install_lang['step0_required'],
+				"exist" => $wrm_install_lang['step0_exist'],
+				"system_requirements" => $wrm_install_lang['step0_system_requirements'],
+				"phpversion_text" => $wrm_install_lang['step0_phpversion_text'],
+				"phpversion_value" => phpversion(),
+				"phpversion_bgcolor" => $phpversion_bgcolor,
+				"mysqlversion_text" => $wrm_install_lang['step0_mysqlversion'],
+				"mysqlversion_value" => $gd,
+				"mysqlversion_bgcolor" => $mysqlversion_bgcolor,
+				"nonactive" => $wrm_install_lang['step0_nonactive'],
+		
+				"writeable_config_text" => $wrm_install_lang['step0_writeable_config'],
+				"writeable_config_value" => $writeable_config_value,
+				"yes" => $wrm_install_lang['yes'],
+				"writeable_config_bgcolor" => $writeable_config_bgcolor,
+		
+				"writable_dir_cache_text" => $wrm_install_lang['writable_dir_cache_text'],
+				"writable_dir_cache_bgcolor" => $writable_dir_cache_bgcolor,
+				"writable_dir_cache_value" => $writable_dir_cache_value,
+		
+				"php_variables_text" => $wrm_install_lang['php_variables'],
+				"SERVER_SERVER_SOFTWARE_text" => '_SERVER["SERVER_SOFTWARE"]',
+				"SERVER_SERVER_SOFTWARE_value" => $_SERVER["SERVER_SOFTWARE"],
+				"SERVER_DOCUMENT_ROOT_text" => '_SERVER["DOCUMENT_ROOT"]',
+				"SERVER_DOCUMENT_ROOT_value" => $_SERVER["DOCUMENT_ROOT"],
+				"SERVER_SERVER_NAME_text" => '_SERVER["SERVER_NAME"]',
+				"SERVER_SERVER_NAME_value" => $_SERVER["SERVER_NAME"],
+				"SERVER_HTTP_ACCEPT_CHARSET_text" => '_SERVER["HTTP_ACCEPT_CHARSET"]',
+				"SERVER_HTTP_ACCEPT_CHARSET_value" => $_SERVER["HTTP_ACCEPT_CHARSET"],
+			    "classlang_type_values" => $files,
+			    "classlang_type_selected" => $lang,
+			    "select_lang" => $wrm_install_lang['select_lang'],
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+	
+	$smarty->display("step1.tpl.html");
+	include ("includes/page_footer.php");
 }
 
 /**

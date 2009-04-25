@@ -707,8 +707,13 @@ if($step === "bridge_done")
 	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
 					" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_utf8_support)
 			);
+
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
+	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+					" VALUES(%s,%s)", quote_smart($bridge_name . "_database_name"), quote_smart(bridge_database_name)
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		
 	//close connection
 	$wrm_install->sql_close();
 	header("Location: install.php?lang=".$lang."&step=done");

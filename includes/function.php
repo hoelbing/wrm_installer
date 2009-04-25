@@ -18,7 +18,8 @@
  */
 function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_username,$wrm_db_password,$wrm_db_tableprefix,$wrm_db_type="mysql",$eqdkp_db_name = "",$eqdkp_db_host = "",$eqdkp_db_user = "",$eqdkp_db_pass = "",$eqdkp_db_prefix = "")
 {
-	global $wrm_config_file;
+	//global $wrm_config_file;
+	$wrm_config_file = "../config.php";
 	include("../version.php");
 	/**
 	 * write config file (config.php)
@@ -52,7 +53,9 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 	if (!$fd)
 	{
 		echo "can not write this file: ". $wrm_config_file."<br>";
-		fclose($fd);
+		
+		//fclose($fd);
+		
 		return (FALSE);
 	}
 	else
@@ -60,7 +63,7 @@ function write_wrm_configfile($wrm_db_name,$wrm_db_server_hostname,$wrm_db_usern
 		fwrite($fd, $output);
 		fclose($fd);
 
-		@chmod($wrm_config_file,0777);
+		//@chmod($wrm_config_file,0777);
 		
 		return (TRUE);
 	}

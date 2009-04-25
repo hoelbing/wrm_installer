@@ -220,5 +220,9 @@ if ($step == 1)
 	);
 	$smarty->display("update.tpl.html");
 	include ("includes/page_footer.php");
+	
+	// write/replace the "../config.php" file
+	write_wrm_configfile($phpraid_config['db_name'], $phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_prefix'],$phpraid_config['db_type']);
+	
 }
 ?>

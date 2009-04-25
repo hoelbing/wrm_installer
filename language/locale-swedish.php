@@ -15,7 +15,8 @@ $wrm_install_lang['step0_phpversion_text'] = 'PHP Version';//new
 $wrm_install_lang['step0_mysqlversion'] = 'MySQL Version';//new
 $wrm_install_lang['step0_active'] = 'active';//new
 $wrm_install_lang['step0_nonactive'] = 'non active';//new
-$wrm_install_lang['step0_writeable_config'] = 'config.php writeable?';
+$wrm_install_lang['step0_writeable_config'] = 'config.php writeable?';//new
+$wrm_install_lang['writable_dir_cache_text'] = 'directory: "./cache" writable';//new
 
 $wrm_install_lang['yes'] = 'yes';
 $wrm_install_lang['no'] = 'no';
