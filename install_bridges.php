@@ -333,30 +333,66 @@ if ($step == 1)
 		$bridge_admin_id_selected = $_POST['bridge_admin_id'];
 	else
 		$bridge_admin_id_selected = $bridge_admin_id_output[count($bridge_admin_id_output)-1];
+	
+	$form_action_link = "step=2";
+	
+	if ($bridge_name == "iums")
+	{
+		$form_action_link = "step=bridge_done";
 		
-	include ("includes/page_header.php");
-	$smarty->assign(
-		array(
-			"form_action" => $filename_bridge."step=2" ,
-			"headtitle" => $wrm_install_lang['headtitle'],
-			"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action" => $filename_bridge.$form_action_link ,
+				"headtitle" => $wrm_install_lang['headtitle'],
+				"bridge_step1_iumssub1desc" => $wrm_install_lang['bridge_step1_iumssub1desc'],
+				"bridge_step1_iumsfilladmindesc" => $wrm_install_lang['bridge_step1_iumsfilladmindesc'],	
+			
+				"user_admin_username_text" => $wrm_install_lang['txtusername'],
+				"user_admin_username" => "",
+				"user_admin_password_text" => $wrm_install_lang['txtpassword'],
+				"bridge_admin_password" => "",
+				"user_admin_email_text" => $wrm_install_lang['txtemail'],
+				"bridge_admin_email" => "",
+				"bridge_name" => $bridge_name,
+				"bridge_prefix" => $bridge_prefix,
+				"bridge_admin_id" => $bridge_admin_id,
+				"bridge_database_name" => $bridge_database_name,
+				"bridge_auth_user_group" => "0",
+				"bridge_auth_user_alt_group" => "0",
+				"bd_submit" => $wrm_install_lang['bd_submit'],
 
-			"bridge_admin_id_output" => $bridge_admin_id_output,
-			"bridge_admin_id_values" => $bridge_admin_id_values,
-			"bridge_admin_id_selected" => $bridge_admin_id_selected,
-		
-			"user_admin_password_text" => $wrm_install_lang['txtpassword'],
-		
-			"bridge_name" => $bridge_name,
-			"bridge_prefix" => $bridge_prefix,
-			"bridge_admin_id" => $bridge_admin_id,
-			"bridge_database_name" => $bridge_database_name,
-		
-			"bd_submit" => $wrm_install_lang['bd_submit'],
-		)
-	);
+			//<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
+			//<input type="hidden" name="bridge_admin_password" value="{$bridge_admin_password}" />
+			)
+		);
+		$smarty->display("bridges.s1_iums.tpl.html");
+	}
+	else{
+		include ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action" => $filename_bridge.$form_action_link ,
+				"headtitle" => $wrm_install_lang['headtitle'],
+				"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
+	
+				"bridge_admin_id_output" => $bridge_admin_id_output,
+				"bridge_admin_id_values" => $bridge_admin_id_values,
+				"bridge_admin_id_selected" => $bridge_admin_id_selected,
+			
+				"user_admin_password_text" => $wrm_install_lang['txtpassword'],
+			
+				"bridge_name" => $bridge_name,
+				"bridge_prefix" => $bridge_prefix,
+				"bridge_admin_id" => $bridge_admin_id,
+				"bridge_database_name" => $bridge_database_name,
+			
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+			)
+		);
+		$smarty->display("bridges.s1.tpl.html");
+	}
 
-	$smarty->display("bridges.s1.tpl.html");
 	include ("includes/page_footer.php");
 }
 
@@ -609,24 +645,45 @@ if($step === "bridge_done")
 	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
-	$sql = sprintf(	"SELECT " . $bridge_setting['db_user_id']. " , ". $bridge_setting['db_user_name'] . " , " .	$bridge_setting['db_user_email'] . " , " .$bridge_setting['db_user_password'] .
-					" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_user_name'] . 
-					" WHERE " . $bridge_setting['db_user_id'] . " = %s", quote_smart($bridge_admin_id)
+	if ($bridge_name != "iums")
+	{
+		$sql = sprintf(	"SELECT " . $bridge_setting['db_user_id']. " , ". $bridge_setting['db_user_name'] . " , " .	$bridge_setting['db_user_email'] . " , " .$bridge_setting['db_user_password'] .
+						" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_user_name'] . 
+						" WHERE " . $bridge_setting['db_user_id'] . " = %s", quote_smart($bridge_admin_id)
+				);
+		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $wrm_install->sql_fetchrow($result, true);
+		
+		//Now we need to create the users
+		//profile in the WRM database if it does not already exist.
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+						" (`profile_id`, `email`, `password`,`priv`,`username`, `last_login_time`) " .
+						" VALUES (%s, %s, %s, %s, %s, %s)",
+						quote_smart($data[$db_user_id]),quote_smart($data[$db_user_email]),
+						quote_smart($newpassword),	quote_smart($user_priv), 
+						quote_smart(strtolower($data[$db_user_name])), quote_smart(time())
 			);
-	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$data = $wrm_install->sql_fetchrow($result, true);
-	
-	//Now we need to create the users
-	//profile in the WRM database if it does not already exist.
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-					" (`profile_id`, `email`, `password`,`priv`,`username`, `last_login_time`) " .
-					" VALUES (%s, %s, %s, %s, %s, %s)",
-					quote_smart($data[$db_user_id]),quote_smart($data[$db_user_email]),
-					quote_smart($newpassword),	quote_smart($user_priv), 
-					quote_smart(strtolower($data[$db_user_name])), quote_smart(time())
-		);
-	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
 
+	//only for -- iums auth --
+	else
+	{
+		$user_admin_username = $_POST['user_admin_username'];
+		$user_admin_password = $_POST['user_admin_password'];
+		$user_admin_email = $_POST['user_admin_email'];
+		$user_priv = 1;
+		
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+						" (`email`, `password`,`priv`,`username`, `last_login_time`) " .
+						" VALUES ( %s, %s, %s, %s, %s)",
+						quote_smart($user_admin_email),
+						quote_smart($user_admin_password),	quote_smart($user_priv), 
+						quote_smart(strtolower($user_admin_username)), quote_smart(time())
+			);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);		
+	}
+	
 	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
 					" VALUES(%s,%s)",quote_smart("auth_type"), quote_smart($bridge_name)
 			);

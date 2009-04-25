@@ -111,7 +111,7 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Select an alternate user group/class
 $wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 
 //bridge mode
-$wrm_install_lang['step4auttype'] = 'authorization type';
+/*$wrm_install_lang['step4auttype'] = 'authorization type';
 $wrm_install_lang['step4desc'] = 'Description';
 $wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
 $wrm_install_lang['step4desc_phpBB'] = 'phpBB2 or phpBB3';
@@ -120,7 +120,7 @@ $wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
 $wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-
+*/
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(if you are not sure, please select "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Please choose an authorization type.';
 
@@ -130,8 +130,8 @@ $wrm_install_lang['import'] = 'Import';
 
 // iums = integrated User Management System
 $wrm_install_lang['step5iumsdesc'] = 'integrated User Management System';
-$wrm_install_lang['step5iumssub1desc'] = 'You have selected "integrated User Management System" authentication';
-$wrm_install_lang['step5sub1iumsfilladmindesc'] = 'All that is left is to enter your Super Administrator information by filling out the information below.';
+$wrm_install_lang['bridge_step1_iumssub1desc'] = 'You have selected "integrated User Management System" authentication';
+$wrm_install_lang['bridge_step1_iumsfilladmindesc'] = 'All that is left is to enter your Super Administrator information by filling out the information below.';
 
 //update
 $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";

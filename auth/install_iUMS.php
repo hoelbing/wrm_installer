@@ -23,7 +23,7 @@ $bridge_setting_value = array(
 	// Column Name for the User's Password
 	'db_user_password' => "password",
 	
-	'db_table_user_name' => "",
+	'db_table_user_name' => "profile",
 	'db_table_group_name' => "", //only for cross table
 				
 	'auth_user_group_text' => "",//$bridge_type_name . '_auth_user_group',

@@ -111,7 +111,7 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Wählen eine alternative Benutzergru
 $wrm_install_lang['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist es dem Benutzer möglich, sich unabhngig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
 
 //bridge mode
-$wrm_install_lang['step4auttype'] = 'Berechtigungsschema';
+/*$wrm_install_lang['step4auttype'] = 'Berechtigungsschema';
 $wrm_install_lang['step4desc'] = 'Beschreibung';
 $wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
 $wrm_install_lang['step4desc_phpBB'] = 'phpBB2 oder phpBB3';
@@ -120,7 +120,7 @@ $wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
 $wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
 $wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
 $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-
+*/
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wähle bitte "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle deine Berechtigungsschema aus.';
 
@@ -130,8 +130,8 @@ $wrm_install_lang['import'] = 'Import';
 
 // iums = integrated User Management System
 $wrm_install_lang['step5iumsdesc'] = 'integrierte Benutzer Management-System';
-$wrm_install_lang['step5iumssub1desc'] = 'Du hast "integrierte Benutzer Management-System"-Authentifizierung ausgewählt';
-$wrm_install_lang['step5sub1iumsfilladmindesc'] = 'füllen sie alle Werte für denn Benutzter des Super Administrator aus.';
+$wrm_install_lang['bridge_step1_iumssub1desc'] = 'Du hast "integrierte Benutzer Management-System"-Authentifizierung ausgewählt';
+$wrm_install_lang['bridge_step1_iumsfilladmindesc'] = 'füllen sie alle Werte für denn Benutzter des Super Administrator aus.';
 
 //update
 $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
