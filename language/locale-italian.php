@@ -127,6 +127,7 @@ $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(in caso di incertezza, selezionare il sistema di gestione Utenti integrato)';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Seleziona uno dei tipi di autenticazione.';
 
+$wrm_install_lang['found_user_from_bridge']= "found user from bridge system";//new
 $wrm_install_lang['question_wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
 $wrm_install_lang['import_not_support'] = 'Importazione da phpBB2 non supportata';
 $wrm_install_lang['import'] = 'Importa';

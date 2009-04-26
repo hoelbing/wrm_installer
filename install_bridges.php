@@ -361,9 +361,6 @@ if ($step == 1)
 				"bridge_auth_user_group" => "0",
 				"bridge_auth_user_alt_group" => "0",
 				"bd_submit" => $wrm_install_lang['bd_submit'],
-
-			//<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
-			//<input type="hidden" name="bridge_admin_password" value="{$bridge_admin_password}" />
 			)
 		);
 		$smarty->display("bridges.s1_iums.tpl.html");
@@ -396,7 +393,8 @@ if ($step == 1)
 	include ("includes/page_footer.php");
 }
 
-//set group
+//set group and alternative group
+//witch have full acces to wrm
 if ($step == 2)
 {
 	$bridge_name = $_POST['bridge_name'];
@@ -476,8 +474,6 @@ if ($step == 2)
 		
 }
 
-$wrm_install_lang['found_user_from_bridge']= "found user from bridge system";
-
 //import user from the bridge system
 if($step == 3)
 {
@@ -547,8 +543,6 @@ if($step == 4)
 	
 	if ($_POST['importUser'] == "yes")
 	{
-		
-		//$sql = "SELECT user_id, user_email, username  FROM " . $phpbb_prefix . "users ORDER BY user_id";
 		$sql = 	"SELECT " . $bridge_setting['db_user_id'] . ", " . 
 					$bridge_setting['db_user_email'] . ", " . 
 					$bridge_setting['db_user_name'] . 

@@ -25,12 +25,12 @@ $wrm_install_lang['freshinstall'] = 'Neue Installation';
 $wrm_install_lang['change'] = 'aendern';
 $wrm_install_lang['database_text'] = 'Datenbank';
 
-$wrm_install_lang['create_db'] = 'erstelle Datenbank?';
-$wrm_install_lang['default'] = 'default';
-$wrm_install_lang['php_variables'] = 'PHP Variables';
-$wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
-$wrm_install_lang['error_found_table_bd_back'] = 'Botton zurück : verändere Tabellen Prefix oder Databank';
-$wrm_install_lang['error_found_table_bd_cont'] = 'Botton weiter : deletes all existing tables, before the new tables are installed';
+$wrm_install_lang['create_db'] = 'erstelle neue Datenbank?';
+$wrm_install_lang['default'] = 'Voreinstellung';
+$wrm_install_lang['php_variables'] = 'PHP Variablen';
+$wrm_install_lang['error_found_table_titel'] = 'fertig, es wurden existierende Tabellen gefunden';
+$wrm_install_lang['error_found_table_bd_back'] = 'Knopf zurück : verändere Tabellen Prefix oder Databank';
+$wrm_install_lang['error_found_table_bd_cont'] = 'Knopf weiter : löscht alle existierenden Tabellen, bevor sie neu nstalliert werden';
 
 $wrm_install_lang['install_bridge_titel'] = 'Bridge Einstellungen';
 $wrm_install_lang['txt_group'] = 'Gruppe';
@@ -65,7 +65,7 @@ $wrm_install_lang['step3errorversion'] = 'Die Software-Version in version.php en
 //step done
 $wrm_install_lang['stepdonefinished'] = 'Fertig';
 $wrm_install_lang['stepdonesetupcomplete'] = 'Das Setup ist nun komplett.';
-$wrm_install_lang['stepdoneremovedir'] = 'Lschen Sie bitte das "install/" Verzeichnis und klicken sie anschliessend <a href="../index.php">hier</a> drauf wenn sie fertig sind.';
+$wrm_install_lang['stepdoneremovedir'] = 'Loschen Sie bitte das "install/" Verzeichnis und klicken sie anschliessend <a href="../index.php">hier</a> drauf wenn sie fertig sind.';
 
 //stuff
 $wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du auf "weiter" drueckst.';
@@ -127,6 +127,7 @@ $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wÃ¤hle bitte "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wÃ¤hle deine Berechtigungsschema aus.';
 
+$wrm_install_lang['found_user_from_bridge']= "gefundene Benutzer von dem Bridge System";
 $wrm_install_lang['question_wantimport'] = 'mÃ¶chten sie alle Benutzter aus dem phpBB Forum/Board importieren';
 $wrm_install_lang['import_not_support'] = 'Endschuldigung: der Import, der Benutzer aus dem phpBB Forum/Board: wird mit phpBB2 nicht unterstÃ¼tzt';
 $wrm_install_lang['import'] = 'Import';
@@ -141,5 +142,5 @@ $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
 $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Installation Version Nr";
 
 //install_bridges
-$wrm_install_lang['bridge_step0_titel'] = "Scan Result (@ your Server): Found Bridges ";
+$wrm_install_lang['bridge_step0_titel'] = "Scan-Ergebnis (@ dein Server): Gefundene Bridges ";
 ?>

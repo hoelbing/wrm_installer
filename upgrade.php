@@ -35,9 +35,9 @@
 
 /*
 *
-* Upgrade file format x.x.x.sql
-* eg: database_schema/upgrade/4.0.0.sql
-* read: file "database_schema/upgrade/update_files_conf.php"
+* load file "database_schema/upgrade/update_files_conf.php"
+* which include a array with "filename", and (new)"versionsnr"
+* then start the automatic update Process
 */
 
 if (!isset($_GET['step']))

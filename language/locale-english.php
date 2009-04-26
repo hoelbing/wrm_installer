@@ -29,8 +29,8 @@ $wrm_install_lang['create_db'] = 'Create new Database?';
 $wrm_install_lang['default'] = 'default';
 $wrm_install_lang['php_variables'] = 'PHP Variables';
 $wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
-$wrm_install_lang['error_found_table_bd_back'] = 'Botton Back : change Table Prefix or Database';
-$wrm_install_lang['error_found_table_bd_cont'] = 'Botton Continue : deletes all existing tables, before the new tables are installed';
+$wrm_install_lang['error_found_table_bd_back'] = 'Button Back : change Table Prefix or Database';
+$wrm_install_lang['error_found_table_bd_cont'] = 'Button Continue : deletes all existing tables, before the new tables are installed';
 
 $wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';
 $wrm_install_lang['txt_group'] = 'Group';
@@ -127,6 +127,7 @@ $wrm_install_lang['step4desc_xoops'] = 'XOOPS';
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(if you are not sure, please select "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Please choose an authorization type.';
 
+$wrm_install_lang['found_user_from_bridge']= "found user from bridge system";
 $wrm_install_lang['question_wantimport'] = 'Do you want take over, all users from your CMS/BB System?';
 $wrm_install_lang['import_not_support'] = 'UserDaten Import: not supported';
 $wrm_install_lang['import'] = 'Import';

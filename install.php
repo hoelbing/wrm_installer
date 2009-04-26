@@ -33,13 +33,6 @@
 *
 ****************************************************************************/
 
-/*
- * nl2br == "<br>"
- * 
- * todo
- * auswahl table install 
- *  angewählte tabelle überschrieben ja/nein
- */
 
 if (!isset($_GET['step']))
 $step = 0;
@@ -231,15 +224,6 @@ else if($step == 1)
  * */
 else if($step == 2) {
 
-/*	if (isset($_POST['classlang_type']))
-	{
-		$lang = $_POST['classlang_type'];
-	}
-
-	$filename_install = "install.php?lang=".$lang."&";
-	include_once('language/locale-'.$lang.'.php');
-*/
-	//echo $lang;	
 	$error_msg = "";
 
 	if ( isset($_GET['erro_con']) )
@@ -347,10 +331,10 @@ else if($step == 3) {
 	
 	$error_msg = "";
 
-	if ( isset($_GET['erro_con']) /*and ( $_POST['erro_con'] == 1 )*/ )
+	if ( isset($_GET['erro_con']) )
 		$error_msg .= "Error connecting to Server (Servername or Username or Password incorrect) <br/>";//. ;
 
-	if ( isset($_GET['error_db']) /*and ($_POST['error_db'] == 1 )*/ )
+	if ( isset($_GET['error_db']))
 		$error_msg .= $wrm_install_lang['step3errordbcon'];
 
 	if ($error_msg != "")
@@ -511,12 +495,13 @@ else if($step == 5)
 	//load all DATABASES name in a array ($sql_all_dbname)
 	$result_list_tables = array();
 	$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
-	//echo $sql_tables;
+
 	$result_db_all = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
 	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
 		//show all TABLES
-		$result_list_tables[] = $db_table_name['Database'];
+		$result_list_tables[] = $db_table_name[0];
+		//$result_list_tables[] = $db_table_name['Database'];
 	}
 	
 	for($x=0; $x < count($result_list_tables)-1; $x++)
@@ -539,8 +524,8 @@ else if($step == 5)
 			array(
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
 
-				"form_action_bd_next_link" => $filename_install."step=".$step++, //5
-				"form_action_bd_back_link" => $filename_install."step=".$step--, //3
+				"form_action_bd_next_link" => $filename_install."step=".($step+1), //6
+				"form_action_bd_back_link" => $filename_install."step=".($step-1), //3
 	
 
 				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
@@ -687,7 +672,7 @@ else if($step == 9)
 /**
  * --------------------
  * Step 10
- *
+ * tmp
  * ---------------------
  * */
 else if($step == 10)
@@ -699,7 +684,7 @@ else if($step == 10)
  * --------------------
  * Step done
  * 
- * only for dynamic default values
+ * only for dynamic (default) values
  * ---------------------
  * */
 else if($step === "done")
@@ -736,7 +721,6 @@ else if($step === "done")
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			//"form_action" => "install.php?step=".$step,
 			"headtitle" => $wrm_install_lang['stepdonefinished'],
 			"donesetupcomplete_text" => $wrm_install_lang['stepdonesetupcomplete'],
 			"doneremovedir_text" => $wrm_install_lang['stepdoneremovedir'],
