@@ -1,8 +1,9 @@
 .gitignore
 .buildpath
 .settings/*.*
+.config.php
 install_settings.php
-cache/templates_c/*
-cache/smarty_cache/*
-cache/raid_lua/*
-cache/armory_log/*
+install/cache/templates_c/*
+install/cache/smarty_cache/*
+install/cache/raid_lua/*
+install/cache/armory_log/*
