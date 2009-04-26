@@ -25,7 +25,7 @@ $wrm_install_lang['freshinstall'] = 'Fresh Install';
 $wrm_install_lang['change'] = 'change';
 $wrm_install_lang['database_text'] = 'Database';
 
-$wrm_install_lang['create_db'] = 'Create Database?';
+$wrm_install_lang['create_db'] = 'Create new Database?';
 $wrm_install_lang['default'] = 'default';
 $wrm_install_lang['php_variables'] = 'PHP Variables';
 $wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
@@ -38,12 +38,14 @@ $wrm_install_lang['txt_alt_group'] = 'Alternative Group';
 $wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';
 
 //botton
-$wrm_install_lang['bd_submit'] = 'Continue';
+$wrm_install_lang['bd_continue'] = 'Continue';
+$wrm_install_lang['bd_submit'] = 'Submit';
 $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
 
 //step 2
+$wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Preferences';
 $wrm_install_lang['step2upgradefrom'] = 'Upgrade to';
 $wrm_install_lang['step2dbname'] = 'SQL Database';
 $wrm_install_lang['step2dbserverhostname'] = 'SQL Hostname';

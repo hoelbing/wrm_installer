@@ -36,10 +36,11 @@
 /*
  * nl2br == "<br>"
  * 
- * doto
+ * todo
  * auswahl table install 
  *  angewählte tabelle überschrieben ja/nein
  */
+
 if (!isset($_GET['step']))
 $step = 0;
 else
@@ -290,7 +291,8 @@ else if($step == 2) {
 			"wrm_db_create_name" => $_POST['wrm_db_create_name'],
 			"wrm_db_tableprefix" => $_POST['wrm_db_tableprefix'],
 			"error_msg" => $error_msg,
-		
+			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
+			"step2_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
@@ -395,7 +397,8 @@ else if($step == 3) {
 			"wrm_db_username" => $wrm_db_username,
 			"wrm_db_password" => $wrm_db_password,		
 			"error_msg" => $error_msg,
-		
+			"step3_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
+			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
@@ -534,10 +537,12 @@ else if($step == 5)
 		include ("includes/page_header.php");
 		$smarty->assign(
 			array(
-				"form_action_bd_next" => $filename_install."step=".$step+1, //5
-				"form_action_bd_back" => $filename_install."step=".$step-1, //3
-	
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
+
+				"form_action_bd_next_link" => $filename_install."step=".$step++, //5
+				"form_action_bd_back_link" => $filename_install."step=".$step--, //3
+	
+
 				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
 				"error_found_table_bd_cont_text" => $wrm_install_lang['error_found_table_bd_cont'],
 			

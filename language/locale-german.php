@@ -25,25 +25,27 @@ $wrm_install_lang['freshinstall'] = 'Neue Installation';
 $wrm_install_lang['change'] = 'aendern';
 $wrm_install_lang['database_text'] = 'Datenbank';
 
-$wrm_install_lang['create_db'] = 'Create Database?';
+$wrm_install_lang['create_db'] = 'erstelle Datenbank?';
 $wrm_install_lang['default'] = 'default';
 $wrm_install_lang['php_variables'] = 'PHP Variables';
 $wrm_install_lang['error_found_table_titel'] = 'already, existing tables were found';
-$wrm_install_lang['error_found_table_bd_back'] = 'Botton Back : change Table Prefix or Database';
-$wrm_install_lang['error_found_table_bd_cont'] = 'Botton Continue : deletes all existing tables, before the new tables are installed';
+$wrm_install_lang['error_found_table_bd_back'] = 'Botton zurück : verändere Tabellen Prefix oder Databank';
+$wrm_install_lang['error_found_table_bd_cont'] = 'Botton weiter : deletes all existing tables, before the new tables are installed';
 
-$wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';
-$wrm_install_lang['txt_group'] = 'Group';
-$wrm_install_lang['txt_alt_group'] = 'Alternative Group';
+$wrm_install_lang['install_bridge_titel'] = 'Bridge Einstellungen';
+$wrm_install_lang['txt_group'] = 'Gruppe';
+$wrm_install_lang['txt_alt_group'] = 'Alternative Gruppe';
 $wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';
 
 //botton
+$wrm_install_lang['bd_continue'] = 'weiter';
 $wrm_install_lang['bd_submit'] = 'weiter';
 $wrm_install_lang['bd_reset'] = 'zuruecksetzen';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
 
 //step 2
+$wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Einstellungen';
 $wrm_install_lang['step2upgradefrom'] = 'Upgrade zur';
 $wrm_install_lang['step2dbname'] = 'SQL Datenbank';
 $wrm_install_lang['step2dbserverhostname'] = 'SQL Hostname';
