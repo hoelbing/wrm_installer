@@ -143,4 +143,8 @@ $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Install Version Nr";
 
 //install_bridges
 $wrm_install_lang['bridge_step0_titel'] = "Scan Result (@ your Server): Found Bridges ";
+
+//Default armory language, link
+$wrm_install_lang['default_armory_language_value'] = "en";
+$wrm_install_lang['default_armory_link_value'] = "http://eu.wowarmory.com";
 ?>

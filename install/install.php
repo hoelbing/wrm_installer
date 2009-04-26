@@ -703,6 +703,10 @@ else if($step === "done")
 	
 	$sql = "SELECT * FROM " . $phpraid_config['db_prefix']. "config WHERE config_name = 'header_link'";
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	
+	$eqdkp_url_link = $wrmserverfile."/eqdkp";
+	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
+	
 	if($wrm_install->sql_numrows($result) == 0)
 	{
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('header_link','$wrmserver')";
@@ -710,6 +714,10 @@ else if($step === "done")
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_site_url', '$wrmserverfile')";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('rss_export_url', '$wrmserverfile')";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('eqdkp_url', '$eqdkp_url_link')";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('armory_language', '$default_armory_language_value')";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else{
@@ -719,8 +727,12 @@ else if($step === "done")
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserverfile' WHERE config_name='rss_export_url'";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
+		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$eqdkp_url_link' WHERE config_name='eqdkp_url'";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$default_armory_language_value' WHERE config_name='armory_language'";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
+	
 	$wrm_install->sql_close();
 	include ("includes/page_header.php");
 	$smarty->assign(
