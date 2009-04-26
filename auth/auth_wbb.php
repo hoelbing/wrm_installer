@@ -95,8 +95,8 @@ $db_user_salt = "salt";
 $db_table_user_name = "user";
 $db_table_group_name = "user_to_groups";
 $table_prefix = $phpraid_config['wbb_table_prefix'];
-$auth_user_class = $phpraid_config['wbb_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['wbb_alt_auth_user_class'];
+$auth_user_class = $phpraid_config['wbb_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['wbb_auth_user_alt_group'];
 
 function encrypt($value) {
 	if (defined('ENCRYPTION_METHOD')) {

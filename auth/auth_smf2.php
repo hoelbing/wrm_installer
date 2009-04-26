@@ -59,9 +59,9 @@ $db_user_password = "passwd";
 
 $db_table_user_name = "members";
 $db_table_group_name = "members";
-$table_prefix = $phpraid_config['smf_table_prefix'];
-$auth_user_class = $phpraid_config['smf_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['smf_alt_auth_user_class'];
+$table_prefix = $phpraid_config['smf2_table_prefix'];
+$auth_user_class = $phpraid_config['smf2_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['smf2_auth_user_alt_group'];
 
 //change password in WRM DB
 

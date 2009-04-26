@@ -56,9 +56,9 @@ $db_user_email = "user_email";
 $db_user_password = "user_password";
 $db_table_user_name = "users";
 $db_table_group_name = "user_group";
-$table_prefix = $phpraid_config['phpbb_prefix'];
-$auth_user_class = $phpraid_config['phpBB_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['phpBB_alt_auth_user_class'];
+$table_prefix = $phpraid_config['phpbb3_prefix'];
+$auth_user_class = $phpraid_config['phpbb3_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['phpbb3_auth_user_alt_group'];
 
 //change password in WRM DB
 

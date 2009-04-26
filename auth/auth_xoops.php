@@ -58,8 +58,8 @@ $db_user_password = "pass";
 $db_table_user_name = "users";
 $db_table_group_name = "groups_users_link";
 $table_prefix = $phpraid_config['xoops_table_prefix']."_";
-$auth_user_class = $phpraid_config['xoops_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['xoops_alt_auth_user_class'];
+$auth_user_class = $phpraid_config['xoops_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['xoops_auth_user_alt_group'];
 
 //change password in WRM DB
 

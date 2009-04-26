@@ -58,8 +58,8 @@ $db_user_password = "password";
 $db_table_user_name = "users";
 $db_table_group_name = "users";
 $table_prefix = $phpraid_config['joomla_table_prefix'];
-$auth_user_class = $phpraid_config['joomla_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['joomla_auth_alt_user_class'];
+$auth_user_class = $phpraid_config['joomla_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['joomla_auth_user_alt_group'];
 
 //change password in WRM DB
 

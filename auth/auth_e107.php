@@ -58,8 +58,8 @@ $db_user_password = "user_password";
 $db_table_user_name = "user";
 $db_table_group_name = "user";
 $table_prefix = $phpraid_config['e107_table_prefix'];
-$auth_user_class = $phpraid_config['e107_auth_user_class'];
-$auth_alt_user_class = $phpraid_config['alt_auth_user_class'];
+$auth_user_class = $phpraid_config['e107_auth_user_group'];
+$auth_alt_user_class = $phpraid_config['e107_auth_user_alt_group'];
 
 //change password in WRM DB
 
