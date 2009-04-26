@@ -12,7 +12,7 @@ $wrm_update_array[] =
 //from 3.6.1 to 4.0.0
 $wrm_update_array[] = 
 						array(
-							'file_name' => "4.0.0.sql",
+							'file_name' => "3.6.1_4.0.0.sql",
 							'update_to_version'=> "4.0.0"
 						);
 

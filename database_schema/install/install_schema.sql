@@ -25,9 +25,35 @@ CREATE TABLE  `wrm_chars` (
   `frost` int(5) NOT NULL default '0',
   `nature` int(5) NOT NULL default '0',
   `shadow` int(5) NOT NULL default '0',
-  `role` varchar(255) NOT NULL default '',
+  `pri_spec` varchar(255) NOT NULL default '',
+  `sec_spec` varchar(255) default '',  
   PRIMARY KEY  (`char_id`)
 ) ;
+
+-- Class Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_classes` (
+  `class_id` varchar(100) NOT NULL,
+  `class_code` varchar(2) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`class_id`)
+);
+
+-- Race/Class Link Table Creation
+CREATE TABLE `wrm_class_race` (
+`race_id` VARCHAR( 100 ) NOT NULL ,
+`class_id` VARCHAR( 100 ) NOT NULL ,
+PRIMARY KEY ( `race_id` , `class_id` )
+);
+
+-- Class and Role Linking Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_class_role` (
+  `class_id` varchar(100) NOT NULL,
+  `subclass` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
+  PRIMARY KEY  (`class_id`,`subclass`)
+);
 
 -- Column Header Creation
 DROP TABLE IF EXISTS `wrm_column_headers`;
@@ -38,7 +64,9 @@ CREATE TABLE `wrm_column_headers` (
 `visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
 `position` TINYINT( 2 ) NOT NULL ,
 `img_url` VARCHAR( 100 ) DEFAULT NULL,
+`lang_idx_hdr` VARCHAR ( 50 ) DEFAULT NULL,
 `format_code` VARCHAR ( 25 ) DEFAULT NULL,
+`default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0',
 INDEX ( `view_name` )
 ) ;
 
@@ -48,6 +76,46 @@ CREATE TABLE  `wrm_config` (
   `config_name` varchar(255) NOT NULL default '',
   `config_value` varchar(255) NOT NULL default ''
 ) ;
+
+-- Events Table Creation
+DROP TABLE IF EXISTS `wrm_events`;
+CREATE TABLE `wrm_events` (
+  `event_id` int(10) NOT NULL auto_increment,
+  `zone_desc` varchar(50) NOT NULL,
+  `max` tinyint(2) NOT NULL,
+  `exp_id` tinyint(2) NOT NULL,
+  `event_type_id` tinyint(2) NOT NULL,
+  `wow_name` varchar(50) NOT NULL,
+  `icon_path` varchar(100) NOT NULL,
+  PRIMARY KEY  (`event_id`)
+) ;
+
+-- Event Type Table Creation
+DROP TABLE IF EXISTS `wrm_event_type`;
+CREATE TABLE `wrm_event_type` (
+  `event_type_id` tinyint(2) NOT NULL auto_increment,
+  `event_type_name` varchar(50) NOT NULL,
+  `event_type_lang_id` varchar(50) NOT NULL,
+  `def` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`event_type_id`)
+) ;
+
+-- Expansion Table Creation
+DROP TABLE IF EXISTS `wrm_expansion`;
+CREATE TABLE `wrm_expansion` (
+  `exp_id` tinyint(2) NOT NULL auto_increment,
+  `exp_name` varchar(50) NOT NULL,
+  `exp_lang_id` varchar(50) NOT NULL,
+  `def` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`exp_id`)
+) ;
+
+-- Gender Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_gender` (
+  `gender_id` varchar(10) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`gender_id`)
+);
 
 -- Guilds Table Creation
 DROP TABLE IF EXISTS `wrm_guilds`;
@@ -67,29 +135,30 @@ CREATE TABLE  `wrm_locations` (
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `dk` int(2) NOT NULL default '0',
-  `dr` int(2) NOT NULL default '0',
-  `hu` int(2) NOT NULL default '0',
-  `ma` int(2) NOT NULL default '0',
-  `pa` int(2) NOT NULL default '0',
-  `pr` int(2) NOT NULL default '0',
-  `ro` int(2) NOT NULL default '0',
-  `sh` int(2) NOT NULL default '0',
-  `wk` int(2) NOT NULL default '0',
-  `wa` int(2) NOT NULL default '0',
-  `role1` int(2) NOT NULL default '0',
-  `role2` int(2) NOT NULL default '0',
-  `role3` int(2) NOT NULL default '0',
-  `role4` int(2) NOT NULL default '0',
-  `role5` int(2) NOT NULL default '0',
-  `role6` int(2) NOT NULL default '0',
   `max` int(2) NOT NULL default '0',
   `locked` tinyint(1) NOT NULL default '0',
-  `event_type` tinyint(1) NOT NULL default '1',
+  `event_type` tinyint(2) NOT NULL default '1',
+  `event_id` int(10) NOT NULL default '119',
   PRIMARY KEY  (`location_id`)
 ) ;
 
 -- Locations Data
+
+-- Location / Class Limit Link Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
+  `location_id` int(10) NOT NULL,
+  `class_id` varchar(100) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`location_id`,`class_id`)
+);
+
+-- Location / Role Limit Link Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
+  `location_id` int(10) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`location_id`,`role_id`)
+);
 
 -- Log Create Table Creation
 DROP TABLE IF EXISTS `wrm_logs_create`;
@@ -169,6 +238,22 @@ CREATE TABLE  `wrm_profile` (
   PRIMARY KEY  (`profile_id`)
 ) ;
 
+-- Race Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_races` (
+  `race_id` varchar(100) NOT NULL,
+  `faction` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  PRIMARY KEY  (`race_id`)
+);
+
+-- Race/Gender Link Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
+  `race_id` varchar(100) NOT NULL,
+  `gender_id` varchar(10) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`race_id`,`gender_id`)
+);
+
 -- Raid Table Creation
 DROP TABLE IF EXISTS `wrm_raids`;
 CREATE TABLE  `wrm_raids` (
@@ -180,28 +265,38 @@ CREATE TABLE  `wrm_raids` (
   `officer` varchar(255) NOT NULL default '',
   `old` tinyint(1) NOT NULL default '0',
   `start_time` varchar(255) NOT NULL default '',
-  `dk_lmt` int(2) NOT NULL default '0',
-  `dr_lmt` int(2) NOT NULL default '0',
-  `hu_lmt` int(2) NOT NULL default '0',
-  `ma_lmt` int(2) NOT NULL default '0',
-  `pa_lmt` int(2) NOT NULL default '0',
-  `pr_lmt` int(2) NOT NULL default '0',
-  `sh_lmt` int(2) NOT NULL default '0',
-  `ro_lmt` int(2) NOT NULL default '0',
-  `wk_lmt` int(2) NOT NULL default '0',
-  `wa_lmt` int(2) NOT NULL default '0',
-  `role1_lmt` int(2) NOT NULL default '0',
-  `role2_lmt` int(2) NOT NULL default '0',
-  `role3_lmt` int(2) NOT NULL default '0',
-  `role4_lmt` int(2) NOT NULL default '0',
-  `role5_lmt` int(2) NOT NULL default '0',
-  `role6_lmt` int(2) NOT NULL default '0',
   `min_lvl` int(2) NOT NULL default '0',
   `max_lvl` int(2) NOT NULL default '0',
   `max` varchar(255) NOT NULL default '',
   `event_type` tinyint(1) NOT NULL default '1',
+  `event_id` int(10) NOT NULL default '119',
   PRIMARY KEY  (`raid_id`)
 ) ;
+
+-- Class Limits per Raid Table
+CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
+  `raid_id` int(10) NOT NULL,
+  `class_id` varchar(100) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`raid_id`,`class_id`)
+);
+
+-- Role Limits per Raid Table
+CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
+  `raid_id` int(10) NOT NULL,
+  `role_id` varchar(10) NOT NULL,
+  `lmt` int(2) NOT NULL,
+  PRIMARY KEY  (`raid_id`,`role_id`)
+);
+
+-- Role Table Creation
+CREATE TABLE IF NOT EXISTS `wrm_roles` (
+  `role_id` varchar(10) NOT NULL,
+  `role_name` varchar(100) NOT NULL,
+  `lang_index` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY  (`role_id`)
+);
 
 -- Signup Table Creation
 DROP TABLE IF EXISTS `wrm_signups`;
@@ -214,6 +309,7 @@ CREATE TABLE  `wrm_signups` (
   `cancel` int(1) NOT NULL default '0',
   `queue` int(1) NOT NULL default '0',
   `timestamp` varchar(255) NOT NULL default '',
+  `selected_spec` varchar(100) NOT NULL,
   PRIMARY KEY  (`signup_id`)
 ) ;
 
