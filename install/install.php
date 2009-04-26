@@ -33,7 +33,11 @@
 *
 ****************************************************************************/
 
-
+/*
+ * todo
+ * update, kleiner < 4 bridge veränderungen abfragen
+ * hinweiss hinzufügen in install, step4
+ */
 if (!isset($_GET['step']))
 $step = 0;
 else
