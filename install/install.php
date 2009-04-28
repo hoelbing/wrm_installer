@@ -36,7 +36,6 @@
 /*
  * todo
  * update, kleiner < 4 bridge veränderungen abfragen
- * hinweiss hinzufügen in install, step4
  * 
  * update
  * bei alter version <3.6.1 zu install zurück springen
@@ -510,8 +509,8 @@ else if($step == 5)
 	while ($db_table_name = $wrm_install->sql_fetchrow($result_db_all,true))
 	{
 		//show all TABLES
-		$result_list_tables[] = $db_table_name[0];
-		//$result_list_tables[] = $db_table_name['Database'];
+		//$result_list_tables[] = $db_table_name[0];
+		$result_list_tables[] = $db_table_name['Database'];
 	}
 	
 	for($x=0; $x < count($result_list_tables)-1; $x++)
@@ -535,7 +534,7 @@ else if($step == 5)
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
 
 				"form_action_bd_next_link" => $filename_install."step=".($step+1), //6
-				"form_action_bd_back_link" => $filename_install."step=".($step-1), //3
+				"form_action_bd_back_link" => $filename_install."step=".($step-2), //3
 	
 
 				"error_found_table_bd_back_text" => $wrm_install_lang['error_found_table_bd_back'],
@@ -568,8 +567,17 @@ else if($step == 6)
 	include($wrm_config_file);
 	include("install_settings.php");
 
-
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	
+	//check
+	//DROP TABLE IF EXISTS
+	for ($i=0; $i<count($wrm_tables);$i++)
+	{
+		//DROP TABLE IF EXISTS `wrm_chars`;
+		$sql_del_tab = "DROP TABLE IF EXISTS ".$phpraid_config['db_prefix'].$wrm_tables[$i];
+		$wrm_install->sql_query($sql_del_tab) or print_error($sql_del_tab, mysql_error(), 1);
+	}
+
 
 	//install schema
 	if(!$fd = fopen('database_schema/install/install_schema.sql', 'r'))
@@ -712,6 +720,7 @@ else if($step === "done")
 	
 	$eqdkp_url_link = $wrmserverfile."/eqdkp";
 	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
+	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
 	
 	if($wrm_install->sql_numrows($result) == 0)
 	{
@@ -725,6 +734,8 @@ else if($step === "done")
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('armory_language', '$default_armory_language_value')";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = "INSERT INTO " .$phpraid_config['db_prefix'] ."config VALUES ('armory_link', '$default_armory_link_value')";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else{
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$wrmserver' WHERE config_name='header_link'";
@@ -736,6 +747,8 @@ else if($step === "done")
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$eqdkp_url_link' WHERE config_name='eqdkp_url'";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$default_armory_language_value' WHERE config_name='armory_language'";
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = "UPDATE " .$phpraid_config['db_prefix'] ."config SET config_value='$default_armory_link_value' WHERE config_name='armory_link'";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	

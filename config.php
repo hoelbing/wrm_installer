@@ -4,7 +4,7 @@
 #                                              #
 #     auto-generated configuration file        #
 #     WoW Raid Manager 4.0.1                   #
-#     date: 2009-04-26 - 11:31:27              #
+#     date: 2009-04-28 - 18:20:10              #
 #   Do not change anything in this file!       #
 #                                              #
 #**********************************************#

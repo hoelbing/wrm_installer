@@ -106,7 +106,7 @@ function scan_dbserver()
 			{
 				$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
 				
-				if ( strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0)
+				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_group_name'] != ""))
 				{
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
@@ -139,7 +139,7 @@ function scan_dbserver()
 						}
 					}
 
-					if ($counter_valid_column == 4)
+					if (($counter_valid_column == 4)  )
 					{
 						//count: avilable user in the bridge system
 						$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
@@ -150,8 +150,9 @@ function scan_dbserver()
 
 						//-----------------------------------------------------------------------//
 						// check table : db_table_group_name
+							
 						$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
-						$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns);
+						$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
 						while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 						{
 							if (strcmp($data_columns['Field'],$bridge[$i]['db_group_id']) == 0 )
@@ -577,7 +578,7 @@ if($step == 4)
 	$result_user_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while ($data_user_group = $wrm_install->sql_fetchrow($result_user_group, true))
 	{
-		$bridge_auth_user_group = $data_user_group[$bridge_setting['db_allgroups_name']];
+		$bridge_auth_user_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
 	}
 
 	$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
@@ -587,7 +588,7 @@ if($step == 4)
 	$result_user_alt_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	while ($data_user_group = $wrm_install->sql_fetchrow($result_user_alt_group, true))
 	{
-		$bridge_auth_user_alt_group = $data_user_group[$bridge_setting['db_allgroups_name']];
+		$bridge_auth_user_alt_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
 	}
 
 	$wrm_install->sql_close();
@@ -609,10 +610,18 @@ if($step == 4)
 			"bridge_admin_password_text" => $wrm_install_lang['txtpassword'],
 			"bridge_admin_password_value" => $bridge_admin_password,
 			"bridge_auth_user_text" => $wrm_install_lang['txt_group'],
-			"bridge_auth_user_group_value" => $bridge_auth_user_group,
+			"bridge_auth_user_group_value" => $bridge_auth_user_group_value,
 			"bridge_auth_user_alt_text" => $wrm_install_lang['txt_alt_group'],
-			"bridge_auth_user_alt_group_value" => $bridge_auth_user_alt_group,
+			"bridge_auth_user_alt_group_value" => $bridge_auth_user_alt_group_value,
 			"bd_submit" => $wrm_install_lang['bd_submit'],
+		
+			"bridge_name" => $bridge_name,
+			"bridge_prefix" => $bridge_prefix,
+			"bridge_admin_id" => $bridge_admin_id,
+			"bridge_admin_password" => $bridge_admin_password,
+			"bridge_database_name" => $bridge_database_name,
+			"bridge_auth_user_group" => $bridge_auth_user_group,
+			"bridge_auth_user_alt_group" => $bridge_auth_user_alt_group,
 		)
 	);
 
