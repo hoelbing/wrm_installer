@@ -90,13 +90,50 @@ $default_wrmtable_prefix = "wrm_";
 
 //connect 2 wrm server
 $wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
-//get the last (max) version nr, from wrm db
-$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
-$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-$data = $wrm_install->sql_fetchrow($result, true);
+$table_version_available = FALSE;
 
-$wrm_versions_nr_current_value = $data['version_number'];
-$wrm_install->sql_close();
+//check if table "version" available
+//result ($table_version_available)
+//true -> from 3.5.0 to 4.x.x
+//false -> older 3.5.0
+$sql_tables = "SHOW TABLES FROM ".$phpraid_config['db_name'];
+$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
+while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+{
+	if ($data_tables["Tables_in_version"])
+	{
+		$table_version_available = TRUE;
+	}
+}
+
+if ($table_version_available == TRUE)
+{
+	//get the last (max) version nr, from wrm db
+	$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
+	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $wrm_install->sql_fetchrow($result, true);
+	
+	$wrm_versions_nr_current_value = $data['version_number'];
+	$wrm_install->sql_close();
+}
+
+//older 3.5.0 and older 3.6.1 not support 
+if (($table_version_available == FALSE) or ((str_replace(".","",$versions_nr_current_wrm)) < "361"))
+{
+	//hinweiss: es werden alle tabellen gelöscht und danach neu installiert
+	$wrm_install_lang['error_install_version_to_old_text'] = "install version is to old for Upgrade";
+	include ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"error_install_version_to_old_titel" => $wrm_install_lang['error_found_table_titel'],
+			"form_action_bd_next_link" => "install.php?lang=".$lang."&step=6",
+			"error_install_version_to_old_text" => $wrm_install_lang['error_install_version_to_old_text'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+	$smarty->display("update_toold.tpl.html");
+	include ("includes/page_footer.php");
+}
 /*----------------------------------------------------------------*/
 
 /* 

@@ -36,11 +36,11 @@
 /*
  * todo
  * update, kleiner < 4 bridge veränderungen abfragen
- * 
+ * line 125 noch nicht fertig, add more info text
  * update
- * bei alter version <3.6.1 zu install zurück springen
  * und bei install; gefundene datei nachfragen ob gelöscht geupdatet oder neu eingegeben werden soll
  */
+
 if (!isset($_GET['step']))
 $step = 0;
 else
@@ -85,33 +85,40 @@ $wrm_config_file = "../config.php";
  * no -> jump to step1 (installation)
  * ---------------------
  * */
-
-if ($step == "0")
+if ($step == 0)
 {
+
 	if(is_file($wrm_config_file))
 	{
-		include($wrm_config_file);
 			
-		$FOUNDERROR = FALSE;
+		include_once($wrm_config_file);
+
+		$FOUND_ERROR = FALSE;
 		
 		// database connection
 		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 		
 		if($wrm_install->db_connect_id)
 		{
-			$FOUNDERROR = TRUE;
+			$FOUND_ERROR = TRUE;
 		}
 
 		$wrm_install->sql_close();
 		
-		if ($FOUNDERROR == FALSE)
+		if ($FOUND_ERROR == TRUE)
 		{
 			//upgrade now
 			header("Location: upgrade.php");
-			exit;
+		}
+		else
+		{
+			header("Location: ".$filename_install."step=1");
 		}
 	}
-	header("Location: ".$filename_install."step=1");
+	else
+	{
+		header("Location: ".$filename_install."step=1");
+	}
 }
 
 /**
