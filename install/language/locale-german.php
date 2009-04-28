@@ -26,6 +26,7 @@ $wrm_install_lang['change'] = 'aendern';
 $wrm_install_lang['database_text'] = 'Datenbank';
 
 $wrm_install_lang['create_db'] = 'erstelle neue Datenbank?';
+$wrm_install_lang['only_if_create_new_tab'] = 'nur, wenn sie : "erstelle neue Datenbank?" angegeben haben';
 $wrm_install_lang['default'] = 'Voreinstellung';
 $wrm_install_lang['php_variables'] = 'PHP Variablen';
 $wrm_install_lang['error_found_table_titel'] = 'fertig, es wurden existierende Tabellen gefunden';

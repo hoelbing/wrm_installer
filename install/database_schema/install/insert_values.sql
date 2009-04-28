@@ -448,8 +448,6 @@ INSERT INTO `wrm_config` VALUES ('header_logo','templates/default/images/logo_ph
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
-INSERT INTO `wrm_config` VALUES ('armory_link','http://www.wowarmory.com');
-INSERT INTO `wrm_config` VALUES ('armory_language','us');
 INSERT INTO `wrm_config` VALUES ('register_url','register.php');
 INSERT INTO `wrm_config` VALUES ('roster_integration','0');
 INSERT INTO `wrm_config` VALUES ('show_id','0');

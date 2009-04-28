@@ -37,6 +37,10 @@
  * todo
  * update, kleiner < 4 bridge veränderungen abfragen
  * hinweiss hinzufügen in install, step4
+ * 
+ * update
+ * bei alter version <3.6.1 zu install zurück springen
+ * und bei install; gefundene datei nachfragen ob gelöscht geupdatet oder neu eingegeben werden soll
  */
 if (!isset($_GET['step']))
 $step = 0;
@@ -367,6 +371,7 @@ else if($step == 3) {
 	$sql_db_name_values[] = " - ".$wrm_install_lang['create_db']." - ";
 	$wrm_install->sql_close();
 	
+
 	include ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -385,6 +390,7 @@ else if($step == 3) {
 			"wrm_db_username" => $wrm_db_username,
 			"wrm_db_password" => $wrm_db_password,		
 			"error_msg" => $error_msg,
+			"only_if_create_new_tab_text" => $wrm_install_lang['only_if_create_new_tab'],
 			"step3_sql_server_pref" => $wrm_install_lang['step2_sql_server_pref'],
 			"hittingsubmit" => $wrm_install_lang['hittingsubmit'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
