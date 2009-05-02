@@ -1,7 +1,7 @@
 .gitignore
 .buildpath
 .settings/*.*
-.config.php
+config.php
 install_settings.php
 install/cache/templates_c/*
 install/cache/smarty_cache/*

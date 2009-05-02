@@ -4,14 +4,14 @@
 #                                              #
 #     auto-generated configuration file        #
 #     WoW Raid Manager 4.0.1                   #
-#     date: 2009-04-28 - 18:20:10              #
+#     date: 2009-05-03 - 00:38:37              #
 #   Do not change anything in this file!       #
 #                                              #
 #**********************************************#
 */
 
 global $phpraid_config;
-$phpraid_config['db_name'] = 'usr_web9_2';
+$phpraid_config['db_name'] = 'usr_web9_3';
 $phpraid_config['db_host'] = 'localhost';
 $phpraid_config['db_user'] = 'root';
 $phpraid_config['db_pass'] = 'geheim';

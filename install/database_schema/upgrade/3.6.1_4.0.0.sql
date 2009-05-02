@@ -4,12 +4,14 @@
 -- *****   YOU WILL LOSE DATA IF YOU DO SO
 -- *********************************************************
 -- *********************************************************
-die, and do not progress past this line!!!!; -- Added to cause the SQL interpreter to blow up if this file is directly executed.
+-- die, and do not progress past this line!!!!;
+-- Added to cause the SQL interpreter to blow up if this file is directly executed.
 
-------------------------------------------------------------------
+-- ----------------------------------------------------------------
 -- Safe Execution - These lines are SAFE to run at ANY point.
-------------------------------------------------------------------
+-- ----------------------------------------------------------------
 -- Manage Primary and Secondary Spec instead of Role.
+;
 ALTER TABLE `wrm_chars` CHANGE `role` `pri_spec` VARCHAR( 255 ) NOT NULL;
 ALTER TABLE `wrm_chars` ADD `sec_spec` VARCHAR( 255 ) ;
 
@@ -556,10 +558,10 @@ UPDATE `wrm_config` SET `config_value` = 'default' WHERE `config_name` = 'templa
 INSERT INTO `wrm_events` VALUES (122, 'Ulduar', 10, 3, 1, 'Ulduar', 'images/instances/WotLK_Icons/10-Ulduar.jpg');
 INSERT INTO `wrm_events` VALUES (123, 'Ulduar - Heroic', 25, 3, 1, 'Ulduar (Heroic)', 'images/instances/WotLK_Icons/25-Ulduar.jpg');
 
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Manual Changes - The lines below MUST be modified manually to make
 --    sense for YOUR environment.
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Edit Role Names (middle column) below for roles you support.  Remove/Blank roles you 
 --  do not need. (i.e. Role 5 and 6 below can be removed if not needed).  Add lines for 
 --  roles you need to add (more than 6 supported).  First column MUST be role# where # is
@@ -631,10 +633,10 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissi
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
 
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Data Migration Prior to Run - DO NOT RUN these lines till you have
 --    executed "migrate.php" from your web browser.
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Take all xx_lmt values from location table and expand into wrm_loc_class_lmt.
 -- Take all roleX_lmt values from location table and expand into wrm_loc_role_lmt.
 -- Take all xx_lmt values from raid table and expand into wrm_raid_class_lmt.
@@ -652,10 +654,10 @@ ALTER TABLE `wrm_raids`
   DROP `sh_lmt`, DROP `ro_lmt`, DROP `wk_lmt`, DROP `wa_lmt`, DROP `role1_lmt`, 
   DROP `role2_lmt`, DROP `role3_lmt`, DROP `role4_lmt`, DROP `role5_lmt`, DROP `role6_lmt`;  
 
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- Other Migration Notes - These are things that MUST be done by your
 --    users.
--------------------------------------------------------------------
+-- -----------------------------------------------------------------
 -- 1) All Characters must be edited and re-roled.
 -- 2) All Roles must be gone back over to check for proper location limit data.
 -- 3) All Raids must be gone back over to check for proper limit data.
