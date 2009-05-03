@@ -45,8 +45,8 @@ $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
 
-$wrm_install_lang['configuration_version_current'] = 'You are running the latest version of WoW Raid Manager';
-$wrm_install_lang['configuration_version_info_header'] = 'Version Information';
+$wrm_install_lang['install_version_current'] = 'Installation files are up to date';
+$wrm_install_lang['install_version_info_header'] = 'Version Information';
 $wrm_install_lang['configuration_version_outdated_header'] = 'WoW Raid Manager update available!';
 $wrm_install_lang['configuration_version_outdated_message'] = 'Your version of WoW Raid Manager is out of date. Updating is strongly recommended.<br>
 													   The latest version is %s and you are running version %s.<br>

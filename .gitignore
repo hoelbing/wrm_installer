@@ -1,9 +1,7 @@
 .gitignore
 .buildpath
 .settings/*.*
-config.php
-version.php
-install_settings.php
+/config.php
 install/cache/templates_c/*
 install/cache/smarty_cache/*
 install/cache/raid_lua/*

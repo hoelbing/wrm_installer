@@ -45,8 +45,8 @@ $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';//new
 $wrm_install_lang['bd_start'] = 'Start';//new
 
-$wrm_install_lang['configuration_version_current'] = 'Si sta utilizzando l\'ultima versione di WowRaidManager';
-$wrm_install_lang['configuration_version_info_header'] = 'Informazioni sulla versione di WRM';
+$wrm_install_lang['install_version_current'] = 'Installation files are up to date';//new
+$wrm_install_lang['install_version_info_header'] = 'Informazioni sulla versione di WRM';
 $wrm_install_lang['configuration_version_outdated_header'] = 'E\' disponibile una nuova versione di WowRaidManager!';
 $wrm_install_lang['configuration_version_outdated_message'] = 'La versione in uso di WowRaidManager non è l\'ultima disponibile: si consiglia vivamente di aggiornarla.<br>
 													   L\'ultima versione è %s, mentre quella in uso è %s.<br>

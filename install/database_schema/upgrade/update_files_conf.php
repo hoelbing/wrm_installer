@@ -16,15 +16,18 @@ $wrm_update_array[] =
 							'update_to_version'=> "4.0.0"
 						);
 
-//only for testing
 //4.0.0 to 4.0.1
 $wrm_update_array[] =
 						array(
 							'file_name' => "4.0.1.sql",
 							'update_to_version'=> "4.0.1"
 						);
-
-
+//4.0.1_4.0.2.sql
+$wrm_update_array[] =
+						array(
+							'file_name' => "4.0.1_4.0.2.sql",
+							'update_to_version'=> "4.0.2"
+						);
 /*
  * Temp
  * 

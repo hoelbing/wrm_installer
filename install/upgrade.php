@@ -139,6 +139,8 @@ if ($step === 0)
 		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
+				"version_info" => checking_onlineversion(),
+				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
 				"error_install_version_to_old_titel" => $wrm_install_lang['error_install_version_to_old_text'],
 				"form_action" => "install.php?lang=".$lang."&step=6",
 				"error_found_table_bd_cont" => $wrm_install_lang['error_found_table_bd_cont'],
@@ -158,7 +160,7 @@ if ($step === 0)
 		$smarty->assign(
 			array(
 				"version_info" => checking_onlineversion(),
-				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
+				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
 				"form_action" => "install.php?lang=".$lang."&step=done",
 				"upgrade_headtitle" => $wrm_install_lang['wrm_up_to_date'],
 				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
@@ -178,7 +180,7 @@ if ($step === 0)
 		$smarty->assign(
 			array(
 				"version_info" => checking_onlineversion(),
-				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
+				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
 				"form_action" => $filename_upgrade."step=1",
 				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
 				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,

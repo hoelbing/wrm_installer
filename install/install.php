@@ -173,7 +173,7 @@ else if($step == "1")
 		array(
 				"form_action" => $filename_install."step=2",
 				"version_info" => checking_onlineversion(),
-				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
+				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
 				//table
 				"headtitle" => $wrm_install_lang['headtitle'],
 				"property" => $wrm_install_lang['step0_property'],
