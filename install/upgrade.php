@@ -82,14 +82,13 @@ $versions_nr_install = $version;
 $default_wrmtable_prefix = "wrm_";
 
 
-
-/*----------------------------------------------------------------*/
-/**
- * Version from your wrm (Server) Database
- */
-
 //connect 2 wrm server
 $wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+if($wrm_install->db_connect_id == FALSE)
+{
+	header("Location: install.php");
+}
+
 $table_version_available = FALSE;
 
 //check if table "version" available
@@ -106,7 +105,11 @@ while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
 	}
 }
 
-if ($table_version_available == TRUE)
+/*----------------------------------------------------------------*/
+/**
+ * Version from your wrm (Server) Database
+ */
+if ($table_version_available != FALSE)
 {
 	//get the last (max) version nr, from wrm db
 	$sql = "SELECT version_number FROM ".$phpraid_config['db_prefix']."version ORDER BY version_number DESC LIMIT 0,1";
@@ -121,8 +124,6 @@ else
 	$wrm_versions_nr_current_value = "0.0.0";
 }
 
-
-/*----------------------------------------------------------------*/
 
 /* 
  * * check version nr
@@ -156,6 +157,8 @@ if ($step === 0)
 
 		$smarty->assign(
 			array(
+				"version_info" => checking_onlineversion(),
+				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
 				"form_action" => "install.php?lang=".$lang."&step=done",
 				"upgrade_headtitle" => $wrm_install_lang['wrm_up_to_date'],
 				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
@@ -174,6 +177,8 @@ if ($step === 0)
 		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
+				"version_info" => checking_onlineversion(),
+				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
 				"form_action" => $filename_upgrade."step=1",
 				"upgrade_headtitle" => $wrm_install_lang['upgrade_headtitle'],
 				"wrm_versions_nr_current_value" => $wrm_versions_nr_current_value,
@@ -283,11 +288,6 @@ if ($step == 1)
 		
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
 						" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_setting['bridge_utf8_support'])
-				);
-	
-		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-						" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart("")
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}

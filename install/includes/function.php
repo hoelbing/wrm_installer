@@ -222,4 +222,269 @@ function get_language_filename($Suffix = FALSE)
 	return ($files);
 }
 
+//scan the server after Bridges
+function scan_dbserver()
+{
+	
+	global $wrm_config_file;
+	global $phpraid_config;
+	global $lang;
+	
+	
+//load all auth briges settings
+	$bridge = array();
+	$found_bridge = array();
+	
+	$dir_brige = "auth";
+	//load all available files, from "auth" dir in a array
+	$dh = opendir($dir_brige);
+	while(false != ($filename = readdir($dh)))
+	{
+		$files[] = $filename;
+	}
+	
+	//sort and cut/del "." and ".." from array
+	sort($files);
+	array_shift($files);
+	array_shift($files);
+	
+	//include and load ALL briges settings
+	for ($i=0; $i<count($files); $i++)
+	{
+		include ($dir_brige."/".$files[$i]);
+		array_push($bridge, $bridge_setting_value);
+	}
+
+	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	
+	$sql_db_all = "SHOW DATABASES";
+
+	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
+	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
+	{
+		$count_user = 0;
+		
+		//show all , from the (selected) DATABASES, all TABLES
+		$sql_tables = "SHOW TABLES FROM ".$data_db_all['Database'];
+		$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
+		while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
+		{
+
+			$db_table_name = $data_tables["Tables_in_".$data_db_all['Database']];
+			
+			//check line: with all bridges
+			for ($i=0; $i < count($bridge); $i++)
+			{
+				$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+				$counter_valid_column = 0;
+				
+				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_group_name'] != ""))
+				{
+					//set table prefix
+					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+
+					//-----------------------------------------------------------------------//
+					// check table : db_table_user_name
+					$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
+					//echo $sql_columns;
+					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
+					//$counter_valid_column = 0;
+					
+					while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
+					{
+						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_id']) == 0 )
+						{
+							$counter_valid_column++;
+						}
+
+						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_name']) == 0 )
+						{
+							$counter_valid_column++;
+						}
+						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_email']) == 0 )
+						{
+							$counter_valid_column++;
+						}
+						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_password']) == 0 )
+						{
+							$counter_valid_column++;
+						}
+					}
+
+					if (($counter_valid_column == 4)  )
+					{
+						//count: avilable user in the bridge system
+						$sql_count_user = 	"SELECT ".$bridge[$i]['db_user_id'].
+											" FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name']. 
+											" " . $bridge[$i]['db_user_name_filter'];
+						$result_count_user = $wrm_install->sql_query($sql_count_user) or print_error($sql_count_user, mysql_error(), 1);
+						$count_user = $wrm_install->sql_numrows($result_count_user);
+
+						//-----------------------------------------------------------------------//
+						// check table : db_table_group_name
+							
+						$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
+						$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
+						while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+						{
+							if (strcmp($data_columns['Field'],$bridge[$i]['db_group_id']) == 0 )
+							{
+								$counter_valid_column++;
+							}
+						}
+
+						//-----------------------------------------------------------------------//
+						// check table : db_table_allgroups
+						$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_allgroups'];
+						$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
+						while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+						{
+							if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_id']) == 0 )
+							{
+								$counter_valid_column++;
+							}
+							if (strcmp($data_columns['Field'],$bridge[$i]['db_allgroups_name']) == 0 )
+							{
+								$counter_valid_column++;
+							}
+						}
+					}
+				}
+				
+				//-----------------------------------------------------------------------//
+				//add bridge to array
+				//-----------------------------------------------------------------------//
+				if ($counter_valid_column == 7)
+				{
+					//add new bridge to array
+					array_push($found_bridge,
+						array(
+							'bridge_name' => $bridge[$i]['auth_type_name'],
+							'bridge_database' => $data_db_all['Database'],
+							'bridge_table_prefix' => $db_temp_prefix,
+							'bridge_founduser' => $count_user,
+						)
+					);
+					
+					$counter_valid_column = 0;
+				}
+			}
+		}
+	}
+		//print_r($found_bridge);	
+	$wrm_install->sql_close();
+	
+	//-----------------------------------------------------------------------//
+	//problem: with bridge phpbb2 and phpbb3
+	//if on the server phpbb3 install, than have this function, after scan: found phpbb2 and phpbb3
+	//-> del phpbb2 in the array
+	$found_double = -1;
+	for ($y=0; $y<count($found_bridge); $y++)
+	{
+		//scan after phpbb3
+		if ($found_bridge[$y]['bridge_name'] == "phpbb3")
+		{
+			//scan after phpbb2
+			for ($x=0;$x<count($found_bridge); $x++)
+			{
+				//white the same database and table_prefix
+				if 	(
+						($found_bridge[$x]['bridge_name'] == "phpbb") and
+						($found_bridge[$x]['bridge_database'] == $found_bridge[$y]['bridge_database']) and 
+						($found_bridge[$x]['bridge_table_prefix'] == $found_bridge[$y]['bridge_table_prefix'])
+					)
+				{
+					$found_double = $x;
+				}
+				
+			}
+			
+			//del the found entry
+			if ($found_double != -1)
+			{
+				array_splice($found_bridge, $found_double, 1);
+				$found_double = -1;
+			}
+		}
+	}
+	//-----------------------------------------------------------------------//
+	
+	return $found_bridge;
+
+}
+
+/*------------------------- online Version Check --------------------------------------------------*/
+/* check for new version
+ * primarily stripped from phpBB version checking
+ * ingenious ;)
+ */
+function checking_onlineversion()
+{
+	global $wrm_install_lang;
+	include("../version.php");
+	
+	$current_version = explode('.', $version);
+	$minor_revision = (int) $current_version[2];
+	$sub_head_revision = (int) $current_version[3];
+	$sub_middle_revision = (int) $current_version[4];
+	$sub_minor_revision = (int) $current_version[5];
+	
+	$errno = 0;
+	$errstr = $version_info = '';
+	
+	if ($fsock = @fsockopen('www.wowraidmanager.net', 80, $errno, $errstr, 10))
+	{
+		@fputs($fsock, "GET /vercheck/ver_check_40.txt HTTP/1.1\r\n");
+		@fputs($fsock, "HOST: www.wowraidmanager.net\r\n");
+		@fputs($fsock, "Connection: close\r\n\r\n");
+	
+		$get_info = false;
+		while (!@feof($fsock))
+		{
+			if ($get_info)
+			{
+				$version_info .= @fread($fsock, 1024);
+			}
+			else
+			{
+				if (@fgets($fsock, 1024) == "\r\n")
+				{
+					$get_info = true;
+				}
+			}
+		}
+		@fclose($fsock);
+		$version_info = explode("\n", $version_info);
+		$latest_head_revision = (int) $version_info[0];
+		$latest_minor_revision = (int) $version_info[2];
+		$sub_latest_head_revision = (int) $version_info[4];
+		$sub_latest_middle_revision = (int) $version_info[5];
+		$sub_latest_minor_revision = (int) $version_info[6];
+		$latest_version = (int) $version_info[0] . '.' . (int) $version_info[1] . '.' . (int) $version_info[2] . ' subversion ' . (int) $version_info[4] . '.' . (int) $version_info[5] . '.' . (int) $version_info[6];
+	
+		if ($latest_head_revision == 3 && $minor_revision == $latest_minor_revision && $sub_head_revision  == $sub_latest_head_revision && $sub_middle_revision == $sub_latest_middle_revision && $sub_minor_revision == $sub_latest_minor_revision)
+		{
+			$version_info = '<p style="color:green">' . $wrm_install_lang['configuration_version_current'] . '</p>';
+		}
+		else
+		{
+			$version_info = '<br><div class="errorHeader">' . $wrm_install_lang['configuration_version_outdated_header'] . '</div>';
+			$version_info .= '<div class="errorBody">' . sprintf($wrm_install_lang['configuration_version_outdated_message'], $latest_version, $version) . '</div><br>';
+		}
+	}
+	else
+	{
+		if ($errstr)
+		{
+			$version_info = '<p style="color:red">' . sprintf($wrm_install_lang['connect_socket_error'], $errstr) . '</p>';
+		}
+		else
+		{
+			$version_info = '<p style="color:red">' . $wrm_install_lang['socket_functions_disabled'] . '</p>';
+		}
+	}
+	return $version_info;
+}
+/*----------------------------------------------------------------------------------------------*/
+
 ?>

@@ -45,6 +45,13 @@ $wrm_install_lang['bd_reset'] = 'Ã…terstÃ¤ll';
 $wrm_install_lang['bd_back'] = 'Back';//new
 $wrm_install_lang['bd_start'] = 'Start';//new
 
+$wrm_install_lang['configuration_version_current'] = 'Du har nyaste versionen av WoW Raid Manager';
+$wrm_install_lang['configuration_version_info_header'] = 'Versions Information';
+$wrm_install_lang['configuration_version_outdated_header'] = 'WoW Raid Manager uppdatering tillgänglig!';
+$wrm_install_lang['configuration_version_outdated_message'] = 'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
+													   Den senaste versionen är %s och du använder för närvarande version %s.<br>
+													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.';
+
 //step 2
 $wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Preferences';//new
 $wrm_install_lang['step2upgradefrom'] = 'Uppgradera till';

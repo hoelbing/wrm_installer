@@ -42,7 +42,7 @@
  */
 
 if (!isset($_GET['step']))
-$step = 0;
+$step = "0";
 else
 $step = $_GET['step'];
 
@@ -84,7 +84,7 @@ $wrm_config_file = "../config.php";
  * no -> jump to step1 (installation)
  * ---------------------
  * */
-if ($step === 0)
+if ($step == "0")
 {
 
 	if(is_file($wrm_config_file))
@@ -95,9 +95,11 @@ if ($step === 0)
 		// database connection
 		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 		
-		if($wrm_install->db_connect_id == TRUE)
+		//if connection available -> goto upgrade.php
+		if( ($wrm_install->db_connect_id) == TRUE)
 		{
 			header("Location: upgrade.php");
+			exit;
 		}
 	}
 
@@ -111,7 +113,7 @@ if ($step === 0)
  * ---------------------
  * */
 
-else if($step == 1)
+else if($step == "1")
 {
 	$FoundProblem_dir_fp = FALSE;
 	
@@ -170,6 +172,8 @@ else if($step == 1)
 	$smarty->assign(
 		array(
 				"form_action" => $filename_install."step=2",
+				"version_info" => checking_onlineversion(),
+				"version_info_header" =>$wrm_install_lang['configuration_version_info_header'],
 				//table
 				"headtitle" => $wrm_install_lang['headtitle'],
 				"property" => $wrm_install_lang['step0_property'],
