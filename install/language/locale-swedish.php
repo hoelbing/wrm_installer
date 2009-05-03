@@ -48,7 +48,7 @@ $wrm_install_lang['bd_start'] = 'Start';//new
 $wrm_install_lang['install_version_current'] = 'Installation files are up to date';//new
 $wrm_install_lang['install_version_info_header'] = 'Versions Information';
 $wrm_install_lang['configuration_version_outdated_header'] = 'WoW Raid Manager uppdatering tillgänglig!';
-$wrm_install_lang['configuration_version_outdated_message'] = 'Din version av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
+$wrm_install_lang['configuration_version_outdated_message'] = 'Din Installation files av WoW Raid Manager är gammal. Du rekommenderas starkt att uppdatera.<br>
 													   Den senaste versionen är %s och du använder för närvarande version %s.<br>
 													   För att ladda ner, besök <a href="http://www.wowraidmanager.net">WoW Raid Manager</a>.';
 
