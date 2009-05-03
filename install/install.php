@@ -646,20 +646,24 @@ else if($step == 8)
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
-	$gd = get_mysql_version_from_phpinfo();
-	if ($gd >= "4.1.0")
+	//if db_type == mysql
+	if ( ($phpraid_config['db_type'] == "mysql") or (!isset($phpraid_config['db_type'])) )
 	{
-		include_once("install_settings.php");
-
-		for ($i=0; $i <count($wrm_tables); $i++)
+		$gd = get_mysql_version_from_phpinfo();
+		if ($gd >= "4.1.0")
 		{
-			$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
-							" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
-//			$sql = "ALTER TABLE `".$phpraid_config['db_prefix'].$wrm_tables[$i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
-			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			include_once("install_settings.php");
+	
+			for ($i=0; $i <count($wrm_tables); $i++)
+			{
+				$sql = 	sprintf("ALTER TABLE " .$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'].$wrm_tables[$i] .
+								" DEFAULT CHARACTER SET %s COLLATE=utf8_bin", quote_smart("UTF8") );
+	//			$sql = "ALTER TABLE `".$phpraid_config['db_prefix'].$wrm_tables[$i]."` DEFAULT CHARACTER SET 'UTF8' COLLATE=utf8_bin";
+				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+			}
 		}
 	}
-
+	
 	$wrm_install->sql_close();
 
 	header("Location: ".$filename_install."step=".($step+1));
