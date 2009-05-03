@@ -383,24 +383,37 @@ else if($step == 4)
 			}
 		}
 	}
-		
-	$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
-			" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
-			" WHERE  " . $bridge_setting['db_allgroups_id'] . "='" . $bridge_auth_user_group . "'";
-	$result_user_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while ($data_user_group = $wrm_install->sql_fetchrow($result_user_group, true))
+	if ($bridge_auth_user_group != 0)
 	{
-		$bridge_auth_user_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
+		$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
+				" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
+				" WHERE  " . $bridge_setting['db_allgroups_id'] . "='" . $bridge_auth_user_group . "'";
+		$result_user_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while ($data_user_group = $wrm_install->sql_fetchrow($result_user_group, true))
+		{
+			$bridge_auth_user_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
+		}		
+	}
+	else
+	{
+		$bridge_auth_user_group_value = $wrm_install_lang['step5sub3norest'];
 	}
 
-	$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
-			" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
-			" WHERE  " . $bridge_setting['db_allgroups_id'] . "='" . $bridge_auth_user_alt_group . "'";
-	
-	$result_user_alt_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while ($data_user_group = $wrm_install->sql_fetchrow($result_user_alt_group, true))
+	if ($bridge_auth_user_alt_group != 0)
 	{
-		$bridge_auth_user_alt_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
+		$sql = 	"SELECT " . $bridge_setting['db_allgroups_name'] .
+				" FROM " . 	$bridge_database_name . "." . $bridge_prefix . $bridge_setting['db_table_allgroups'] .
+				" WHERE  " . $bridge_setting['db_allgroups_id'] . "='" . $bridge_auth_user_alt_group . "'";
+		
+		$result_user_alt_group = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while ($data_user_group = $wrm_install->sql_fetchrow($result_user_alt_group, true))
+		{
+			$bridge_auth_user_alt_group_value = $data_user_group[$bridge_setting['db_allgroups_name']];
+		}		
+	}
+	else
+	{
+		$bridge_auth_user_alt_group_value = $wrm_install_lang['step5sub3noaddus'];
 	}
 
 	$wrm_install->sql_close();
