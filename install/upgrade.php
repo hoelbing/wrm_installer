@@ -121,41 +121,38 @@ else
 	$wrm_versions_nr_current_value = "0.0.0";
 }
 
-//older 3.5.0 and older 3.6.1 not support 
-if (($table_version_available == FALSE) or ((str_replace(".","",$wrm_versions_nr_current_value)) < "361"))
-{
-	//hinweiss: es werden alle tabellen gelöscht und danach neu installiert
-	$wrm_install_lang['error_install_version_to_old_text'] = "install version is to old for Upgrade";
-	include ("includes/page_header.php");
-	$smarty->assign(
-		array(
-			"error_install_version_to_old_titel" => $wrm_install_lang['error_found_table_titel'],
-			"form_action_bd_next_link" => "install.php?lang=".$lang."&step=6",
-			"error_install_version_to_old_text" => $wrm_install_lang['error_install_version_to_old_text'],
-			"bd_submit" => $wrm_install_lang['bd_submit'],
-		)
-	);
-	$smarty->display("update_toold.tpl.html");
-	include ("includes/page_footer.php");
-}
+
 /*----------------------------------------------------------------*/
 
 /* 
  * * check version nr
  *
 */
-if ($step == 0)
+if ($step === 0)
 {	
-	/*if ((str_replace(".","",$versions_nr_current_wrm)) < "400")
+	//older 3.5.0 and older 3.6.1 not support 
+	if (($table_version_available == FALSE) or ((str_replace(".","",$wrm_versions_nr_current_value)) < "361"))
 	{
-		//"your wrm version is to old, for upgrade"
-		header("Location: install.php?lang=".$lang."&step=done");
-	}*/
+		//hinweiss: es werden alle tabellen gelöscht und danach neu installiert
+		$wrm_install_lang['error_install_version_to_old_text'] = "install version is to old for Upgrade";
+		include_once ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"error_install_version_to_old_titel" => $wrm_install_lang['error_found_table_titel'],
+				"form_action" => "install.php?lang=".$lang."&step=6",
+				"error_install_version_to_old_text" => $wrm_install_lang['error_install_version_to_old_text'],
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+			)
+		);
+		$smarty->display("update_toold.tpl.html");
+		include_once ("includes/page_footer.php");
+	}
 	
-	if ($wrm_versions_nr_current_value == $versions_nr_install)
+	//install (@wrm server) and the new install version are equal
+	else if ($wrm_versions_nr_current_value == $versions_nr_install)
 	{
 		// "your wrm is up to date";		
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 
 		$smarty->assign(
 			array(
@@ -169,12 +166,12 @@ if ($step == 0)
 			)
 		);
 		$smarty->display("update.tpl.html");
-		include ("includes/page_footer.php");
+		include_once ("includes/page_footer.php");
 	}
 	else
 	{
 		//upgrade
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
 				"form_action" => $filename_upgrade."step=1",
@@ -187,7 +184,7 @@ if ($step == 0)
 			)
 		);
 		$smarty->display("update.tpl.html");
-		include ("includes/page_footer.php");
+		include_once ("includes/page_footer.php");
 	}
 }
 
@@ -252,6 +249,7 @@ if ($step == 1)
 
 	//--------------------------------------------------------------------------------------------------------
 	// update bridge setting only if not exist
+	
 	// read auth_type from wrm db
 	$sql = 	sprintf("SELECT * "  .
 					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
@@ -261,7 +259,7 @@ if ($step == 1)
 	$data = $wrm_install->sql_fetchrow($result, true);
 	$bridge_name = $data['config_value'];
 	
-	include("auth/install_".$bridge_name.".php");
+	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 		
 
@@ -274,7 +272,7 @@ if ($step == 1)
 	if ($wrm_install->sql_numrows() == 0)
 	{
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_group"), quote_smart("0")
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_group"), quote_smart("0")
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	
@@ -296,7 +294,7 @@ if ($step == 1)
 	//--------------------------------------------------------------------------------------------------------
 		$wrm_install->sql_close();
 		
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => "install.php?lang=".$lang."&step=done",
@@ -309,6 +307,6 @@ if ($step == 1)
 		)
 	);
 	$smarty->display("update.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 ?>

@@ -79,11 +79,11 @@ function scan_dbserver()
 	//include and load ALL briges settings
 	for ($i=0; $i<count($files); $i++)
 	{
-		include ($dir_brige."/".$files[$i]);
+		include_once ($dir_brige."/".$files[$i]);
 		array_push($bridge, $bridge_setting_value);
 	}
 
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql_db_all = "SHOW DATABASES";
@@ -260,7 +260,7 @@ if ($step == 0)
 		$bridge_type_output[]=" Name: iums ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: 0";
 		$bridge_type_output[]=" Name: iums ; ". $array_bridge_db[$i]["bridge_name"].": ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix']."; Found User: "."0";
 		$bridge_type_values[]="iums:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'].":0:";
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 		
 		$smarty->assign(
 			array(
@@ -277,7 +277,7 @@ if ($step == 0)
 		);
 		
 		$smarty->display('bridges.s0.tpl.html');
-		include ("includes/page_footer.php");
+		include_once ("includes/page_footer.php");
 	}
 
 }
@@ -306,14 +306,14 @@ if ($step == 1)
 	$pos_new = strpos($string, ':', $pos);
 	$bridge_prefix = substr($string, $pos, $pos_new - $pos);
 	
-	include("auth/install_".$bridge_name.".php");
+	include_once("auth/install_".$bridge_name.".php");
 	
 	$bridge_setting = $bridge_setting_value;
 
 	$bridge_admin_id_output = array();
 	$bridge_admin_id_values = array();
 	
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
@@ -341,7 +341,7 @@ if ($step == 1)
 	{
 		$form_action_link = "step=bridge_done";
 		
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
 				"form_action" => $filename_bridge.$form_action_link ,
@@ -367,7 +367,7 @@ if ($step == 1)
 		$smarty->display("bridges.s1_iums.tpl.html");
 	}
 	else{
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
 				"form_action" => $filename_bridge.$form_action_link ,
@@ -391,7 +391,7 @@ if ($step == 1)
 		$smarty->display("bridges.s1.tpl.html");
 	}
 
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 //set group and alternative group
@@ -404,7 +404,7 @@ if ($step == 2)
 	$bridge_admin_password = $_POST['bridge_admin_password'];
 	$bridge_database_name = $_POST['bridge_database_name'];
 	
-	include("auth/install_".$bridge_name.".php");
+	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 
 	$user_group_output = array();
@@ -417,7 +417,7 @@ if ($step == 2)
 	$user_alt_group_output[] = $wrm_install_lang['step5sub3noaddus'];
 	$user_alt_group_values[] = "0";
 	
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	$sql = 	"SELECT " . $bridge_setting['db_allgroups_id'] . " , " . $bridge_setting['db_allgroups_name'] .
@@ -441,7 +441,7 @@ if ($step == 2)
 	else
 		$user_alt_group_selected = $wrm_install_lang['step5sub3noaddus'];
 	
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=3" ,
@@ -471,7 +471,7 @@ if ($step == 2)
 	);
 
 	$smarty->display("bridges.s2.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 		
 }
 
@@ -486,10 +486,10 @@ if($step == 3)
 	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
 	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
 	
-	include("auth/install_".$bridge_name.".php");
+	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 
 	$sql = 	"SELECT " .	$bridge_setting['db_user_name'] . 
@@ -497,7 +497,7 @@ if($step == 3)
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$found_user = $wrm_install->sql_numrows($result);
 
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=4" ,
@@ -521,7 +521,7 @@ if($step == 3)
 	);
 
 	$smarty->display("bridges.s3.tpl.html");
-	include ("includes/page_footer.php");	
+	include_once ("includes/page_footer.php");	
 }
 
 //import user from bridge system and
@@ -536,10 +536,10 @@ if($step == 4)
 	$bridge_auth_user_group = $_POST['bridge_auth_user_group'];
 	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
 
-	include("auth/install_".$bridge_name.".php");
+	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
 	
 	if ($_POST['importUser'] == "yes")
@@ -593,7 +593,7 @@ if($step == 4)
 
 	$wrm_install->sql_close();
 
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=bridge_done" ,
@@ -626,7 +626,7 @@ if($step == 4)
 	);
 
 	$smarty->display("bridges.s4.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 if($step === "bridge_done")
@@ -639,9 +639,9 @@ if($step === "bridge_done")
 	$bridge_auth_user_alt_group = $_POST['bridge_auth_user_alt_group'];
 	$bridge_database_name = $_POST['bridge_database_name'];
 	
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 	//include ("includes/function.php");
-	include ("auth/install_".$bridge_name.".php");
+	include_once ("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 	
 	$bridge_utf8_support = $bridge_setting['bridge_utf8_support'];

@@ -166,7 +166,7 @@ else if($step == 1)
 		}
 	}
 	
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 				"form_action" => $filename_install."step=2",
@@ -210,7 +210,7 @@ else if($step == 1)
 	);
 	
 	$smarty->display("step1.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 /**
@@ -249,7 +249,7 @@ else if($step == 2) {
 
 	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
 	{
-		include($wrm_config_file);
+		include_once($wrm_config_file);
 		
 		if (isset($phpraid_config['db_name']))
 		{
@@ -259,7 +259,7 @@ else if($step == 2) {
 		}
 	}
 	 
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_install."step=3",
@@ -280,7 +280,7 @@ else if($step == 2) {
 	);
 
 	$smarty->display("step2.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 /**
@@ -306,7 +306,7 @@ else if($step == 3) {
 	
 	if(is_file($wrm_config_file) and !isset($_POST['wrm_db_server_hostname']))
 	{
-		include($wrm_config_file);
+		include_once($wrm_config_file);
 		
 		if (isset($phpraid_config['db_name']))
 		{
@@ -362,7 +362,7 @@ else if($step == 3) {
 	$wrm_install->sql_close();
 	
 
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"form_action" => $filename_install."step=4",
@@ -388,7 +388,7 @@ else if($step == 3) {
 	);
 
 	$smarty->display("step3.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 /**
@@ -519,7 +519,7 @@ else if($step == 5)
 
 	if($foundtable == TRUE)
 	{
-		include ("includes/page_header.php");
+		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
 				"error_found_table_titel" => $wrm_install_lang['error_found_table_titel'],
@@ -537,7 +537,7 @@ else if($step == 5)
 		);
 	
 		$smarty->display("step5.tpl.html");
-		include ("includes/page_footer.php");
+		include_once ("includes/page_footer.php");
 
 	}
 	else
@@ -555,8 +555,8 @@ else if($step == 5)
  * */
 else if($step == 6)
 {
-	include($wrm_config_file);
-	include("install_settings.php");
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
@@ -602,8 +602,8 @@ else if($step == 6)
  * */
 else if($step == 7)
 {
-	include($wrm_config_file);
-	include("install_settings.php");
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
@@ -627,9 +627,8 @@ else if($step == 7)
 	}
 	
 	$wrm_install->sql_close();
-	header("Location: ".$filename_install."step=".($step+1));
-	exit();
 
+	header("Location: ".$filename_install."step=".($step+1));
 }
 
 /**
@@ -642,15 +641,15 @@ else if($step == 7)
  * */
 else if($step == 8)
 {
-	include($wrm_config_file);
-	include("install_settings.php");
+	include_once($wrm_config_file);
+	include_once("install_settings.php");
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	$gd = get_mysql_version_from_phpinfo();
 	if ($gd >= "4.1.0")
 	{
-		include("install_settings.php");
+		include_once("install_settings.php");
 
 		for ($i=0; $i <count($wrm_tables); $i++)
 		{
@@ -702,7 +701,7 @@ else if($step == 10)
 
 else if($step === "done")
 {
-	include ($wrm_config_file);
+	include_once ($wrm_config_file);
 
 	//insert default values
 	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
@@ -765,7 +764,7 @@ else if($step === "done")
 	}
 	
 	$wrm_install->sql_close();
-	include ("includes/page_header.php");
+	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
 			"headtitle" => $wrm_install_lang['stepdonefinished'],
@@ -776,7 +775,7 @@ else if($step === "done")
 	);
 
 	$smarty->display("done.tpl.html");
-	include ("includes/page_footer.php");
+	include_once ("includes/page_footer.php");
 }
 
 ?>
