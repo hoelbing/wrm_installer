@@ -138,10 +138,10 @@ if ($step === 0)
 		include_once ("includes/page_header.php");
 		$smarty->assign(
 			array(
-				"error_install_version_to_old_titel" => $wrm_install_lang['error_found_table_titel'],
+				"error_install_version_to_old_titel" => $wrm_install_lang['error_install_version_to_old_text'],
 				"form_action" => "install.php?lang=".$lang."&step=6",
-				"error_install_version_to_old_text" => $wrm_install_lang['error_install_version_to_old_text'],
-				"bd_submit" => $wrm_install_lang['bd_submit'],
+				"error_found_table_bd_cont" => $wrm_install_lang['error_found_table_bd_cont'],
+				"bd_submit" => $wrm_install_lang['bd_continue'],
 			)
 		);
 		$smarty->display("update_toold.tpl.html");

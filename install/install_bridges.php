@@ -50,18 +50,24 @@ $filename_bridge = "install_bridges.php?lang=".$lang."&";
 include_once('language/locale-'.$lang.'.php');
 
 $wrm_config_file = "../config.php";
-include_once($wrm_config_file);
+include_once ($wrm_config_file);
 include_once ("includes/db/db.php");
 include_once ("includes/function.php");
 
 function scan_dbserver()
 {
+	
+	global $wrm_config_file;
+	global $phpraid_config;
+	global $lang;
+	
+	//include("includes/db/db.php");
+	//include ("includes/function.php");	
+
+	
 //load all auth briges settings
 	$bridge = array();
 	$found_bridge = array();
-	
-	global $wrm_config_file;
-	global $lang;
 	
 	$dir_brige = "auth";
 	//load all available files, from "auth" dir in a array
@@ -79,24 +85,23 @@ function scan_dbserver()
 	//include and load ALL briges settings
 	for ($i=0; $i<count($files); $i++)
 	{
-		include_once ($dir_brige."/".$files[$i]);
+		include ($dir_brige."/".$files[$i]);
 		array_push($bridge, $bridge_setting_value);
 	}
 
-	include_once ($wrm_config_file);
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql_db_all = "SHOW DATABASES";
 
 	$result_db_all = $wrm_install->sql_query($sql_db_all) or print_error($sql_db_all, mysql_error(), 1);
-	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all,true))
+	while ($data_db_all = $wrm_install->sql_fetchrow($result_db_all, true))
 	{
 		$count_user = 0;
 		
 		//show all , from the (selected) DATABASES, all TABLES
 		$sql_tables = "SHOW TABLES FROM ".$data_db_all['Database'];
 		$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
-		while ($data_tables = $wrm_install->sql_fetchrow($result_tables,true))
+		while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
 		{
 
 			$db_table_name = $data_tables["Tables_in_".$data_db_all['Database']];
@@ -105,20 +110,21 @@ function scan_dbserver()
 			for ($i=0; $i < count($bridge); $i++)
 			{
 				$tmp_user_name = substr($db_table_name, strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
+				$counter_valid_column = 0;
 				
 				if ( (strcmp( $tmp_user_name ,$bridge[$i]['db_table_user_name']) == 0) and ($bridge[$i]['db_table_group_name'] != ""))
 				{
 					//set table prefix
 					$db_temp_prefix = substr($db_table_name, 0 ,strlen($db_table_name) - strlen($bridge[$i]['db_table_user_name']));
-					
-					
+
 					//-----------------------------------------------------------------------//
 					// check table : db_table_user_name
 					$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_user_name'];
+					//echo $sql_columns;
 					$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
-					$counter_valid_column = 0;
+					//$counter_valid_column = 0;
 					
-					while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+					while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
 					{
 						if (strcmp($data_columns['Field'],$bridge[$i]['db_user_id']) == 0 )
 						{
@@ -199,7 +205,7 @@ function scan_dbserver()
 			}
 		}
 	}
-	
+		//print_r($found_bridge);	
 	$wrm_install->sql_close();
 	
 	//-----------------------------------------------------------------------//
@@ -236,49 +242,47 @@ function scan_dbserver()
 		}
 	}
 	//-----------------------------------------------------------------------//
-		
+	
 	return $found_bridge;
+
 }
 
-if ($step == 0)
+if ($step === 0)
 {
-	if ( !isset($_POST['submit']))
-	{
-		$array_bridge_db = array();
-		$array_bridge_db = scan_dbserver();
-		$bridge_type_output = array();
-		$bridge_type_values = array();
-		
-		for ($i=0;$i<count($array_bridge_db);$i++)
-		{
 
-			$bridge_type_output[]=" Name: ". $array_bridge_db[$i]["bridge_name"]." ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: ".$array_bridge_db[$i]["bridge_founduser"];
-			$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":";
-			//$bridge_type_values[]=array ($array_bridge_db[$i]["bridge_name"],$array_bridge_db[$i]["bridge_databbase"],$array_bridge_db[$i]["bridge_table_prefix"]);
-		}
-		
-		$bridge_type_output[]=" Name: iums ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: 0";
-		$bridge_type_output[]=" Name: iums ; ". $array_bridge_db[$i]["bridge_name"].": ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix']."; Found User: "."0";
-		$bridge_type_values[]="iums:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'].":0:";
-		include_once ("includes/page_header.php");
-		
-		$smarty->assign(
-			array(
-				"form_action" => $filename_bridge."step=1" ,
-				"headtitle" => $wrm_install_lang['bridge_step0_titel'],
-				"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
-				"bridge_type_output" => $bridge_type_output,
-				"bridge_type_values" => $bridge_type_values,
-				//last entry are selected (iums)
-				"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
-				"bridge_step0_unknown_auth" => $wrm_install_lang['bridge_step0_unknown_auth'],
-				"bd_submit" => $wrm_install_lang['bd_submit'],
-			)
-		);
-		
-		$smarty->display('bridges.s0.tpl.html');
-		include_once ("includes/page_footer.php");
+	$array_bridge_db = array();
+	$array_bridge_db = scan_dbserver();
+	$bridge_type_output = array();
+	$bridge_type_values = array();
+	
+	for ($i=0;$i<count($array_bridge_db);$i++)
+	{
+
+		$bridge_type_output[]=" Name: ". $array_bridge_db[$i]["bridge_name"]." ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: ".$array_bridge_db[$i]["bridge_founduser"];
+		$bridge_type_values[]=$array_bridge_db[$i]["bridge_name"].":".$array_bridge_db[$i]["bridge_database"].":".$array_bridge_db[$i]["bridge_table_prefix"].":";
 	}
+	
+	$bridge_type_output[]=" Name: iums ; ".$wrm_install_lang['step2dbname'].": ". $array_bridge_db[$i]["bridge_database"]."; ".$wrm_install_lang['step2WRMtableprefix'].": ".$array_bridge_db[$i]["bridge_table_prefix"]."; Found User: 0";
+	$bridge_type_output[]=" Name: iums ; ". $array_bridge_db[$i]["bridge_name"].": ".$phpraid_config['db_name']." dbsuffix: ".$phpraid_config['db_prefix']."; Found User: "."0";
+	$bridge_type_values[]="iums:".$phpraid_config['db_name'].":".$phpraid_config['db_prefix'].":0:";
+	include_once ("includes/page_header.php");
+	
+	$smarty->assign(
+		array(
+			"form_action" => $filename_bridge."step=1" ,
+			"headtitle" => $wrm_install_lang['bridge_step0_titel'],
+			"bridge_step0_choose_auth" => $wrm_install_lang['bridge_step0_choose_auth'],
+			"bridge_type_output" => $bridge_type_output,
+			"bridge_type_values" => $bridge_type_values,
+			//last entry are selected (iums)
+			"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
+			"bridge_step0_unknown_auth" => $wrm_install_lang['bridge_step0_unknown_auth'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+	
+	$smarty->display('bridges.s0.tpl.html');
+	include_once ("includes/page_footer.php");
 
 }
 
