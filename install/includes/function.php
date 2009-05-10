@@ -483,6 +483,81 @@ function get_last_onlineversion_nr()
 	}
 	
 }
+
+function schow_online_versionnr()
+{
+
+	global $smarty, $wrm_install_lang, $version;
+/*
+ * ----------------------- (Online) Version Check -------------------------------------------------------
+ */	
+	$errstr = $latest_version_info = '';
+	
+	$latest_version_info = get_last_onlineversion_nr();
+	if ($latest_version_info == false)
+	{
+		$smarty->assign(
+			array(
+					"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+					"install_connect_socked_error_header" => $wrm_install_lang['install_connect_socked_error_header'],
+					"install_connect_socked_error" => $wrm_install_lang['install_connect_socked_error'],
+			)
+		);
+		$smarty->display("version_nr_error_socket.html");
+	}
+	else
+	{
+		$installfiles_ver = explode('.', $version);
+		$latest_version_info = explode("\n", $latest_version_info);
+		
+		if ($installfiles_ver[3] == "")
+				$installfiles_ver[3]= (int) 0;
+		if ($installfiles_ver[4] == "")
+				$installfiles_ver[4]= (int) 0;
+		if ($installfiles_ver[5] == "")
+				$installfiles_ver[5]= (int) 0;
+		if ($installfiles_ver[6] == "")
+				$installfiles_ver[6]= (int) 0;
+
+		$installfiles_ver_text = $installfiles_ver[0].".".$installfiles_ver[1].".".$installfiles_ver[2]." ".$latest_version_info[3];
+		$installfiles_ver_text = $installfiles_ver_text." ".$installfiles_ver[3].".".$installfiles_ver[4].".".$installfiles_ver[5];
+		
+		$latest_version_info_text = $latest_version_info[0].".".$latest_version_info[1].".".$latest_version_info[2]." ".$latest_version_info[3];
+		$latest_version_info_text = $latest_version_info_text." ".$latest_version_info[4].".".$latest_version_info[5].".".$latest_version_info[6];
+
+		if (($installfiles_ver[0] == $latest_version_info[0]) and ($installfiles_ver[1] == $latest_version_info[1]) and ($installfiles_ver[2] == $latest_version_info[2]))
+		{
+			//versionsnr are equal
+			$smarty->assign(
+				array(
+						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+						"info_Body" => $wrm_install_lang['install_version_current'],
+				
+				)
+			);
+			$smarty->display("version_nr_ok.html");
+		}
+		else
+		{
+			$smarty->assign(
+				array(
+						"install_version_info_header" => $wrm_install_lang['install_version_info_header'],
+						"install_version_header" => $wrm_install_lang['install_version_header'],
+						"install_version_text" => $wrm_install_lang['install_version_text'],
+						"install_version_message01" => $wrm_install_lang['install_version_message01'],
+						"install_version_message02" => $wrm_install_lang['install_version_message02'],
+						"latest_version_value" => $latest_version_info_text,
+						"install_version_message03" => $wrm_install_lang['install_version_message03'],
+						"install_version_value" => $installfiles_ver_text,
+						"install_version_message04" => $wrm_install_lang['install_version_message04'],
+						"install_version_message05" => $wrm_install_lang['install_version_message05'],
+				)
+			);
+			$smarty->display("version_nr_error.html");
+		}
+	}
+
+}
 /*----------------------------------------------------------------------------------------------*/
 
 ?>

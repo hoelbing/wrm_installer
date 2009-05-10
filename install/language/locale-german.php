@@ -141,8 +141,8 @@ $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher si
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle deine Berechtigungsschema aus.';
 
 $wrm_install_lang['found_user_from_bridge']= "gefundene Benutzer von dem Bridge System";
-$wrm_install_lang['question_wantimport'] = 'möchten sie alle Benutzter aus dem phpBB Forum/Board importieren';
-$wrm_install_lang['import_not_support'] = 'Endschuldigung: der Import, der Benutzer aus dem phpBB Forum/Board: wird mit phpBB2 nicht unterstützt';
+$wrm_install_lang['question_wantimport'] = 'möchten sie alle Benutzter aus dem Forum/Board importieren';
+$wrm_install_lang['import_not_support'] = 'Endschuldigung: der Import, der Benutzer aus dem Forum/Board: wird nicht unterstützt';
 $wrm_install_lang['import'] = 'Import';
 
 // iums = integrated User Management System

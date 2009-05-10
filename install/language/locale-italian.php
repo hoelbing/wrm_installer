@@ -141,8 +141,8 @@ $wrm_install_lang['bridge_step0_unknown_auth'] = '(in caso di incertezza, selezi
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Seleziona uno dei tipi di autenticazione.';
 
 $wrm_install_lang['found_user_from_bridge']= "found user from bridge system";//new
-$wrm_install_lang['question_wantimport'] = 'Vuoi importare tutti gli Utenti di phpBB?';
-$wrm_install_lang['import_not_support'] = 'Importazione da phpBB2 non supportata';
+$wrm_install_lang['question_wantimport'] = 'Vuoi importare tutti gli Utenti di?';
+$wrm_install_lang['import_not_support'] = 'Importazione da non supportata';
 $wrm_install_lang['import'] = 'Importa';
 
 // iums = integrated User Management System
