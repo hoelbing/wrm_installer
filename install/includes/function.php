@@ -445,32 +445,14 @@ function scan_dbserver()
 
 }
 
-/*------------------------- online Version Check --------------------------------------------------*/
+/*------------------------- Get Last Online Version Nr --------------------------------------------------*/
 /* check for new version
  * based on code from phpBB version checking
  */
-function checking_onlineversion()
+function get_last_onlineversion_nr()
 {
-	global $wrm_install_lang;
-	include_once("../version.php");
-	
-	$current_version = explode('.', $version);
-	$install_head_revision = (int) $current_version[0];
-	$install_minor_revision = (int) $current_version[2];
-	$install_sub_head_revision = (int) $current_version[3];
-	$install_sub_middle_revision = (int) $current_version[4];
-	$install_sub_minor_revision = (int) $current_version[5];
-	
-	if ($sub_head_revision == "")
-			$sub_head_revision = "0";
-	if ($sub_middle_revision == "")
-			$sub_middle_revision = "0";
-	if ($sub_minor_revision == "")
-			$sub_minor_revision = "0";
-
 	$errno = 0;
 	$errstr = $version_info = '';
-	
 	if ($fsock = @fsockopen('www.wowraidmanager.net', 80, $errno, $errstr, 10))
 	{
 		@fputs($fsock, "GET /vercheck/ver_check_40.txt HTTP/1.1\r\n");
@@ -493,40 +475,13 @@ function checking_onlineversion()
 			}
 		}
 		@fclose($fsock);
-		$version_info = explode("\n", $version_info);
-		$latest_head_revision = (int) $version_info[0];
-		$latest_minor_revision = (int) $version_info[2];
-		$sub_latest_head_revision = (int) $version_info[4];
-		$sub_latest_middle_revision = (int) $version_info[5];
-		$sub_latest_minor_revision = (int) $version_info[6];
-		$latest_version = (int) $version_info[0] . '.' . (int) $version_info[1] . '.' . (int) $version_info[2] . ' subversion ' . (int) $version_info[4] . '.' . (int) $version_info[5] . '.' . (int) $version_info[6];
-
-		if (($latest_head_revision == $install_head_revision) && ($install_minor_revision == $latest_minor_revision) && 
-			($install_sub_head_revision == $sub_latest_head_revision) && ($install_sub_middle_revision == $sub_latest_middle_revision) &&
-			($install_sub_minor_revision == $sub_latest_minor_revision)			
-			)
-		//if ($latest_head_revision == 3 && $minor_revision == $latest_minor_revision && $sub_head_revision  == $sub_latest_head_revision && $sub_middle_revision == $sub_latest_middle_revision && $sub_minor_revision == $sub_latest_minor_revision)
-		{
-			$version_info = '<p style="color:green">' . $wrm_install_lang['install_version_current'] . '</p>';
-		}
-		else
-		{
-			$version_info = '<br><div class="errorHeader">' . $wrm_install_lang['configuration_version_outdated_header'] . '</div>';
-			$version_info .= '<div class="errorBody">' . sprintf($wrm_install_lang['configuration_version_outdated_message'], $latest_version, $version) . '</div><br>';
-		}
+		return $version_info;
 	}
 	else
 	{
-		if ($errstr)
-		{
-			$version_info = '<p style="color:red">' . sprintf($wrm_install_lang['connect_socket_error'], $errstr) . '</p>';
-		}
-		else
-		{
-			$version_info = '<p style="color:red">' . $wrm_install_lang['socket_functions_disabled'] . '</p>';
-		}
+		return (false);
 	}
-	return $version_info;
+	
 }
 /*----------------------------------------------------------------------------------------------*/
 

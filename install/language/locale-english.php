@@ -45,12 +45,17 @@ $wrm_install_lang['bd_reset'] = 'Reset';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
 
+$wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installation files are up to date';
 $wrm_install_lang['install_version_info_header'] = 'Version Information';
-$wrm_install_lang['configuration_version_outdated_header'] = 'WoW Raid Manager update available!';
-$wrm_install_lang['configuration_version_outdated_message'] = 'Your Installation files of WoW Raid Manager is out of date. Updating is strongly recommended.<br>
-													   The latest version is %s and you are running version %s.<br>
-													   To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager download</a> section.';
+$wrm_install_lang['install_version_header'] = 'WoW Raid Manager update available!';
+$wrm_install_lang['install_version_message01'] = 'Your Installation files of WoW Raid Manager is out of date.';
+$wrm_install_lang['install_version_message02'] = 'Updating is strongly recommended.';
+$wrm_install_lang['install_version_message03'] = 'the latest/new version is';
+$wrm_install_lang['install_version_message04'] = 'this Installation files';												   
+$wrm_install_lang['install_version_message05'] = 'To download, visit the <a href="http://www.wowraidmanager.net">WoW Raid Manager download</a> section.';
+$wrm_install_lang['install_connect_socked_error_header'] = 'Failed to connect';
+$wrm_install_lang['install_connect_socked_error'] = 'Cannot recieve version Nr from "www.wowraidmanager.net" Server';
 
 //step 2
 $wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Preferences';

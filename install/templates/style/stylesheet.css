@@ -144,7 +144,7 @@ input.liteoption {
 	padding: 3px;
 	text-align:left;
 	text-transform:uppercase;
-	width:450px;
+	width:650px;
 }
 
 .errorBody {
@@ -158,7 +158,6 @@ input.liteoption {
 	text-align:center;
 	width:450px;
 }
-
 /* header for data output */
 .listHeader {
 	background-image:url('../images/banner_bg.jpg');

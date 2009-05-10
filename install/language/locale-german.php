@@ -45,12 +45,17 @@ $wrm_install_lang['bd_reset'] = 'zuruecksetzen';
 $wrm_install_lang['bd_back'] = 'Back';
 $wrm_install_lang['bd_start'] = 'Start';
 
+$wrm_install_lang['install_version_text'] = 'Version';
 $wrm_install_lang['install_version_current'] = 'Installations-Dateien sind auf dem Neuesten Stand';
 $wrm_install_lang['install_version_info_header'] = 'Version Information';
-$wrm_install_lang['configuration_version_outdated_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
-$wrm_install_lang['configuration_version_outdated_message'] = 'Deine Installations-Dateien von WoW Raid Manager ist nicht aktuell. Ein Update wird empfohlen.<br>
-													   Die aktuellste Version ist %s, und du benutzt Version %s.<br>
-													   Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offiziellen WRM - Downloadbereich</a>.';
+$wrm_install_lang['install_version_header'] = 'Eine neuere Version von WoW Raid Manager ist verfügbar!';
+$wrm_install_lang['install_version_message01'] = 'Deine Installations-Dateien von WoW Raid Manager ist nicht aktuell.';
+$wrm_install_lang['install_version_message02'] = 'Ein Update wird empfohlen';
+$wrm_install_lang['install_version_message03'] = 'die letzte/neueste Version ist';
+$wrm_install_lang['install_version_message04'] = 'diese Installationsversion';												   
+$wrm_install_lang['install_version_message05'] = 'Zum Herunterladen besuche bitte den <a href="http://www.wowraidmanager.net/">offiziellen WRM - Downloadbereich</a>.';
+$wrm_install_lang['install_connect_socked_error_header'] = 'Problem beim Verbindungsaufbau';
+$wrm_install_lang['install_connect_socked_error'] = 'Es konnten keine Versionsdaten, vom "www.wowraidmanager.net" Server, empfangen werden';
 
 //step 2
 $wrm_install_lang['step2_sql_server_pref'] = 'SQL Server Einstellungen';

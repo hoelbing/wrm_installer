@@ -5,7 +5,7 @@
 
 //Load Smarty Library
 define('SMARTY_DIR', dirname(__FILE__).'/smarty/libs/');
-require('smarty/libs/Smarty.class.php');
+include_once('smarty/libs/Smarty.class.php');
 
 $smarty = new Smarty();
 // Turning on Caching will cause many pages not to display dynamic changes properly.
