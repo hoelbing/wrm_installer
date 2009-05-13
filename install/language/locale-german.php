@@ -64,7 +64,7 @@ $wrm_install_lang['step2dbname'] = 'SQL Datenbank';
 $wrm_install_lang['step2dbserverhostname'] = 'SQL Hostname';
 $wrm_install_lang['step2dbserverusername'] = 'SQL Server Benutzername';
 $wrm_install_lang['step2dbserverpwd'] = 'SQL Server Passwort';
-$wrm_install_lang['step2WRMtableprefix'] = 'WRM Table Prefix';
+$wrm_install_lang['step2WRMtableprefix'] = 'WRM Tabellen Prefix';
 $wrm_install_lang['step2installtype'] = 'Art der Installation';
 $wrm_install_lang['step2error01'] = 'Bei falschen Eingaben knnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
 
@@ -127,16 +127,9 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Wählen eine alternative Benutzergru
 $wrm_install_lang['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist es dem Benutzer möglich, sich unabhngig davon anzumelden, ob sie in der oben genannten Benutzergruppe sind oder nicht ';
 
 //bridge mode
-/*$wrm_install_lang['step4auttype'] = 'Berechtigungsschema';
-$wrm_install_lang['step4desc'] = 'Beschreibung';
-$wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
-$wrm_install_lang['step4desc_phpBB'] = 'phpBB2 oder phpBB3';
-$wrm_install_lang['step4desc_iums'] = 'integrierte Benutzer Management-System';
-$wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
-$wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
-$wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
-$wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-*/
+$wrm_install_lang['db_name_text'] = 'SQL Datenbank';
+$wrm_install_lang['table_prefix_text'] = 'Tabellen Prefix';
+
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wähle bitte "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle deine Berechtigungsschema aus.';
 

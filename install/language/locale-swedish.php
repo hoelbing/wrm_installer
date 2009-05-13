@@ -127,16 +127,9 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Välj en alternativ grupp/klass som 
 $wrm_install_lang['step5sub3altgroup02'] = 'Alla användare i denna grupp kommer att tillåtas att logga in, oavsett om de är i ovanstående grupp/klass eller inte';
 
 //bridge mode
-/*$wrm_install_lang['step4auttype'] = 'Autentisering sätt';
-$wrm_install_lang['step4desc'] = 'Beskrivning';
-$wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
-$wrm_install_lang['step4desc_phpBB'] = 'phpBB2 eller phpBB3';
-$wrm_install_lang['step4desc_iums'] = 'Inbyggt Användar Hanterings System';
-$wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
-$wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
-$wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
-$wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-*/
+$wrm_install_lang['db_name_text'] = 'SQL Database';
+$wrm_install_lang['table_prefix_text'] = 'Table Prefix';
+
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(om du är osäker, vänligen välj "IAHS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Vänligen välj ett autentisering sätt.';
 

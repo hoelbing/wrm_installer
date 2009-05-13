@@ -263,7 +263,7 @@ function scan_dbserver()
 	global $lang;
 	
 	
-//load all auth briges settings
+//load all auth bridges settings
 	$bridge = array();
 	$found_bridge = array();
 	

@@ -206,6 +206,52 @@ else if ($step == 1)
 	include_once ("includes/page_footer.php");
 }
 
+//expert mode bridge step1
+else if ($step == "epbrgstep1")
+{
+//load all auth bridges names
+	$files = array();
+	
+	$dir_brige = "auth";
+	//load all available files, from "auth" dir in a array
+	$dh = opendir($dir_brige);
+	while(false != ($filename = readdir($dh)))
+	{
+		$filename = substr($filename, 8);//cut from position 7 to filename.lenght end
+		$files[] = str_replace('.php','',$filename);
+	}
+	
+	//sort and cut/del "." and ".." from array
+	sort($files);
+	array_shift($files);
+	array_shift($files);
+	
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_bridge."step=3" ,
+			//"headtitle" => $wrm_install_lang['headtitle'],
+			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
+			"bridge_db_name_text" => $wrm_install_lang['db_name_text'],
+			"bridge_db_tableprefix_text" => $wrm_install_lang['table_prefix_text'],
+
+			"bridge_type_output" => $files,
+			"bridge_type_values" => $files,
+			"bridge_type_selected" => "",
+
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("bridges.ep01.tpl.html");
+	include_once ("includes/page_footer.php");
+}
+//expert mode bridge step2
+else if ($step == "epbrgstep2")
+{
+	
+}
+
 //set group and alternative group
 //witch have full acces to wrm
 else if ($step == 2)

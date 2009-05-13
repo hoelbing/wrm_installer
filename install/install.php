@@ -35,10 +35,10 @@
 
 /*
  * todo
- * update, kleiner < 4 bridge veränderungen abfragen
- * line 125 noch nicht fertig, add more info text
- * update
- * und bei install; gefundene datei nachfragen ob gelöscht geupdatet oder neu eingegeben werden soll
+ * install_bridges
+ * expert modus
+ * erste seite steht
+ * ep_step2 connect. test and jump to step1
  */
 
 if (!isset($_GET['step']))

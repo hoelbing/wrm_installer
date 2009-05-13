@@ -127,16 +127,9 @@ $wrm_install_lang['step5sub3altgroup01'] = 'Select an Additional user group/clas
 $wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 
 //bridge mode
-/*$wrm_install_lang['step4auttype'] = 'authorization type';
-$wrm_install_lang['step4desc'] = 'Description';
-$wrm_install_lang['step4desc_e107'] = 'e107 CMS System';
-$wrm_install_lang['step4desc_phpBB'] = 'phpBB2 or phpBB3';
-$wrm_install_lang['step4desc_iums'] = 'integrated User Management System';
-$wrm_install_lang['step4desc_smf'] = 'Simple Machines Forum 1.x';
-$wrm_install_lang['step4desc_smf2'] = 'Simple Machines Forum 2.x';
-$wrm_install_lang['step4desc_wbb'] = 'WoltLab Burning Board Lite 1.x.x';
-$wrm_install_lang['step4desc_xoops'] = 'XOOPS';
-*/
+$wrm_install_lang['db_name_text'] = 'SQL Database';
+$wrm_install_lang['table_prefix_text'] = 'Table Prefix';
+
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(if you are not sure, please select "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Please choose an authorization type.';
 
