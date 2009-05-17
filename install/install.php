@@ -39,6 +39,8 @@
  * expert modus
  * erste seite steht
  * ep_step2 connect. test and jump to step1
+ * 
+ * install_bridge - bridge_done: updateable sql
  */
 
 if (!isset($_GET['step']))

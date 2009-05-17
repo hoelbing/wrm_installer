@@ -56,7 +56,7 @@ $db_user_email = "user_email";
 $db_user_password = "user_password";
 $db_table_user_name = "users";
 $db_table_group_name = "user_group";
-$table_prefix = $phpraid_config['phpbb3_prefix'];
+$table_prefix = $phpraid_config['phpbb3_db_name'] . ".". $phpraid_config['phpbb3_table_prefix'];
 $auth_user_class = $phpraid_config['phpbb3_auth_user_group'];
 $auth_alt_user_class = $phpraid_config['phpbb3_auth_user_alt_group'];
 

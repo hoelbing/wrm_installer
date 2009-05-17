@@ -558,6 +558,18 @@ function schow_online_versionnr()
 	}
 
 }
-/*----------------------------------------------------------------------------------------------*/
+/*----------------- End Online Check -------------------------------------------------------------------------*/
 
+/*
+ * return values
+ * 1  = all ok
+ * 0  = connection failed
+ * -1 = bride_type not correct 
+ */
+function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix)
+{
+	//include bridge file
+	include_once("auth/install_".$bridge_name.".php");
+	return (0);
+}
 ?>
