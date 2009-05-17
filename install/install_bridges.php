@@ -32,7 +32,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-
+$wrm_install_lang['expert_modus'] = "Expert Modus";
 		
 if (!isset($_GET['step']))
 $step = "0";
@@ -85,6 +85,7 @@ if (($step == "0"))
 			//last entry are selected (iums)
 			"bridge_type_selected" => $bridge_type_output[(count($bridge_type_output))-1],
 			"bridge_step0_unknown_auth" => $wrm_install_lang['bridge_step0_unknown_auth'],
+			"expertmodus_link" => '<a href="'.$filename_bridge.'step=epbrgstep1">'.$wrm_install_lang['expert_modus'].'</a>',
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
@@ -196,7 +197,6 @@ else if ($step == 1)
 				"bridge_db_table_prefix" => $bridge_db_table_prefix,
 				"bridge_admin_id" => $bridge_admin_id,
 				"bridge_database_name" => $bridge_database_name,
-			
 				"bd_submit" => $wrm_install_lang['bd_submit'],
 			)
 		);
@@ -207,9 +207,9 @@ else if ($step == 1)
 }
 
 //expert mode bridge step1
-else if ($step == "epbrgstep1")
+else if ($step === "epbrgstep1")
 {
-//load all auth bridges names
+	//load all auth bridges names
 	$files = array();
 	
 	$dir_brige = "auth";
@@ -229,7 +229,7 @@ else if ($step == "epbrgstep1")
 	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
-			"form_action" => $filename_bridge."step=3" ,
+			"form_action" => $filename_bridge."step=epbrgstep2" ,
 			//"headtitle" => $wrm_install_lang['headtitle'],
 			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
 			"bridge_db_name_text" => $wrm_install_lang['db_name_text'],
@@ -237,8 +237,7 @@ else if ($step == "epbrgstep1")
 
 			"bridge_type_output" => $files,
 			"bridge_type_values" => $files,
-			"bridge_type_selected" => "",
-
+			"bridge_type_selected" => "iums",
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
@@ -249,28 +248,40 @@ else if ($step == "epbrgstep1")
 
 //check values from epbrgstep1
 //expert mode bridge step2
-else if ($step == "epbrgstep2")
+else if ($step === "epbrgstep2")
 {
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_db_table_prefix = $_POST['$bridge_db_table_prefix'];
-
-	$ret_value = test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix);
+	$bridge_database_name = $_POST['bridge_database_name'];
 	
-	if ($ret_value == 1)
+	if ( ($bridge_name != "") or ($bridge_database_name != "") or ($bridge_db_table_prefix != ""))
+	{
+		$ret_value = test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix);
+	}
+	else 
+	{
+		header("Location: ".$filename_bridge."step=epbrgstep1&values=0");
+		exit;
+	}
+	//all ok
+	if ($ret_value == 0)
 	{
 		header("Location: ".$filename_bridge."step=2");
+		exit;
 	}
 
 	//problem: connection fail
-	if ($ret_value == 0)
+	if ($ret_value == 1)
 	{
 		header("Location: ".$filename_bridge."step=epbrgstep1&fail_con=1");
+		exit;
 	}
 	
 	//problem: wrong bridge type
-	if ($ret_value == -1)
+	if ($ret_value == 2)
 	{
 		header("Location: ".$filename_bridge."step=epbrgstep1&fail_bridge=1");
+		exit;
 	}
 }
 

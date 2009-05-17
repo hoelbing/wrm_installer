@@ -35,12 +35,9 @@
 
 /*
  * todo
- * install_bridges
- * expert modus
- * erste seite steht
- * ep_step2 connect. test and jump to step1
- * 
- * install_bridge - bridge_done: untestet
+ * install_bridge - bridge_done untestet 
+ * function - test_bridge_connection (epbrgstep2)untestet
+ * add info text epbrgstep1
  */
 
 if (!isset($_GET['step']))

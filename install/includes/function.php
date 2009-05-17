@@ -356,7 +356,8 @@ function scan_dbserver()
 						// check table : db_table_group_name
 							
 						$sql_columns = "SHOW COLUMNS FROM ".$data_db_all['Database'].".".$db_temp_prefix.$bridge[$i]['db_table_group_name'];
-						$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
+						//$result_columns = @mysql_query($sql_columns) or die("Error" . mysql_error()."<br>SQL: ". $sql_columns."<br>bridge:".$db_temp_prefix.$bridge[$i]['auth_type_name']);
+						$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
 						while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
 						{
 							if (strcmp($data_columns['Field'],$bridge[$i]['db_group_id']) == 0 )
@@ -562,9 +563,9 @@ function schow_online_versionnr()
 
 /*
  * return values
- * 1  = all ok
- * 0  = connection failed
- * -1 = bride_type not correct 
+ * 0 = all ok
+ * 1 = connection failed
+ * 2 = bride_type not correct 
  * 
  * check alle tablename, spalten
  */
@@ -573,16 +574,91 @@ function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_
 	global $wrm_config_file;
 	global $phpraid_config;
 	
+
+	$column_counter = 0;
+	
+	$found_db_table_name = array();
+	
 	$bridge_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $bridge_database_name);
 
 	//if not connection available -> goto step epbrgstep1
 	if( ($bridge_install->db_connect_id) == TRUE)
 	{
-		
-		exit;
+		return (1);
 	}
 	//include bridge file
 	include_once("auth/install_".$bridge_name.".php");
-	return (0);
+	
+	//load all table, from the selected database, in a array
+	$sql_tables = "SHOW TABLES FROM ".$bridge_database_name;
+	$result_tables = $wrm_install->sql_query($sql_tables) or print_error($sql_tables, mysql_error(), 1);
+	while ($data_tables = $wrm_install->sql_fetchrow($result_tables, true))
+	{
+		$found_db_table_name[] = $data_tables["Tables_in_".$bridge_database_name];
+	}
+	
+	//infos
+	//tablename: 	db_table_user_name (db_user_id,db_group_id,db_user_name,db_user_email,db_user_password),
+	//				db_table_allgroups (db_allgroups_id,db_allgroups_name), db_table_group_name
+	for ($y=0; $y<count($db_table_name); $y++)
+	{
+		if ($found_db_table_name[$y] == $bridge_db_table_prefix.$bridge_setting_value['db_table_user_name'])
+		{
+			$sql_columns = "SHOW COLUMNS FROM ".$bridge_database_name.".".$bridge_db_table_prefix.$bridge[$i]['db_table_user_name'];
+			$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
+			while ($data_columns = $wrm_install->sql_fetchrow($result_columns, true))
+			{
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_user_id']) == 0 )
+				{
+					$column_counter++;
+				}
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_group_id']) == 0 )
+				{
+					$column_counter++;
+				}
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_user_name']) == 0 )
+				{
+					$column_counter++;
+				}
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_user_email']) == 0 )
+				{
+					$column_counter++;
+				}
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_user_password']) == 0 )
+				{
+					$column_counter++;
+				}
+			}
+		}
+		if ($found_db_table_name[$y] == $bridge_db_table_prefix.$bridge_setting_value['db_table_allgroups'])
+		{
+			$sql_columns = "SHOW COLUMNS FROM ".$bridge_database_name.".".$bridge_db_table_prefix.$bridge[$i]['db_table_allgroups'];
+			$result_columns = $wrm_install->sql_query($sql_columns) or print_error($sql_columns, mysql_error(), 1);
+			while ($data_columns = $wrm_install->sql_fetchrow($result_columns,true))
+			{
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_allgroups_id']) == 0 )
+				{
+					$column_counter++;
+				}
+				if (strcmp($data_columns['Field'],$bridge_db_table_prefix.$bridge_setting_value['db_allgroups_name']) == 0 )
+				{
+					$column_counter++;
+				}
+			}
+		}
+		if ($found_db_table_name[$y] == $bridge_db_table_prefix.$bridge_setting_value['db_table_group_name'])
+		{
+			$column_counter++;
+		}
+		
+	}
+	if ($column_counter == 7)
+	{
+			return (0);
+	}
+	else
+	{
+		return (2);
+	}
 }
 ?>
