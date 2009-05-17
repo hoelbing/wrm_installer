@@ -230,7 +230,7 @@ else if ($step === "epbrgstep1")
 	$smarty->assign(
 		array(
 			"form_action" => $filename_bridge."step=epbrgstep2" ,
-			//"headtitle" => $wrm_install_lang['headtitle'],
+			"headtitle" => $wrm_install_lang['expert_modus'],
 			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
 			"bridge_db_name_text" => $wrm_install_lang['db_name_text'],
 			"bridge_db_table_prefix_text" => $wrm_install_lang['table_prefix_text'],
@@ -238,6 +238,8 @@ else if ($step === "epbrgstep1")
 			"bridge_type_output" => $files,
 			"bridge_type_values" => $files,
 			"bridge_type_selected" => "iums",
+		
+			"bridge_ep01_info_text" => $wrm_install_lang['hittingsubmit'],
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);

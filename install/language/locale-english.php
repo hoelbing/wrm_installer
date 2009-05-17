@@ -37,6 +37,8 @@ $wrm_install_lang['install_bridge_titel'] = 'Bridge Preferences';
 $wrm_install_lang['txt_group'] = 'Group';
 $wrm_install_lang['txt_alt_group'] = 'Alternative Group';
 $wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';
+$wrm_install_lang['expert_modus'] = 'Expert Modus';
+$wrm_install_lang['hittingsubmit'] = 'Please verify all information before hitting submit!';
 
 //botton
 $wrm_install_lang['bd_continue'] = 'Continue';

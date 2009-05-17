@@ -5,17 +5,17 @@
   <tr>
    <td>&nbsp;</td>
   </tr>
+   <tr>
+     <td class="rowHover"><div align="center">{$headtitle}</div></td>
+   </tr>
   <tr>
     <td>&nbsp;</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-  </tr>
-  <tr>
-    <td><table width="95%" border="0" align="center" cellpadding="2" cellspacing="2">
+    <td><table width="100%" border="0" align="center" cellpadding="2" cellspacing="2">
       <tr>
-        <td width="40%" class="row1">{$bridge_type_text}</td>
-        <td width="30%"><select name="bridge_type" class="post">
+        <td width="60%" class="row1">{$bridge_type_text}</td>
+        <td width="40%"><select name="bridge_type" class="post">
           
 		 {html_options values=$bridge_type_values selected=$bridge_type_selected output=$bridge_type_output}
         
@@ -39,6 +39,9 @@
   </tr>
   <tr>
     <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="row1"><div align="center">{$bridge_ep01_info_text}</div></td>
   </tr>
   <tr>
     <td>&nbsp;</td>

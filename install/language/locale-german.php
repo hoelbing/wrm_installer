@@ -37,6 +37,8 @@ $wrm_install_lang['install_bridge_titel'] = 'Bridge Einstellungen';
 $wrm_install_lang['txt_group'] = 'Gruppe';
 $wrm_install_lang['txt_alt_group'] = 'Alternative Gruppe';
 $wrm_install_lang['upgrade_headtitle'] = 'Upgrade Modus';
+$wrm_install_lang['expert_modus'] = 'Experten-Modus';
+$wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingaben bevor du auf "weiter" klickst.';
 
 //botton
 $wrm_install_lang['bd_continue'] = 'weiter';
@@ -66,7 +68,7 @@ $wrm_install_lang['step2dbserverusername'] = 'SQL Server Benutzername';
 $wrm_install_lang['step2dbserverpwd'] = 'SQL Server Passwort';
 $wrm_install_lang['step2WRMtableprefix'] = 'WRM Tabellen Prefix';
 $wrm_install_lang['step2installtype'] = 'Art der Installation';
-$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben knnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
+$wrm_install_lang['step2error01'] = 'Bei falschen Eingaben k�nnte es zu unvorhersehbaren Auswirkungen kommen, eine Hilfe wird nicht angeboten!';
 
 //step 3
 $wrm_install_lang['step3errordbcon'] = 'Fehler: konnte keine Verbindung zur angegeben Datenbank herstellen.<br>';
@@ -131,9 +133,9 @@ $wrm_install_lang['db_name_text'] = 'SQL Datenbank';
 $wrm_install_lang['table_prefix_text'] = 'Tabellen Prefix';
 
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wähle bitte "iUMS")';
-$wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle deine Berechtigungsschema aus.';
+$wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle dein Berechtigungssystem aus.';
 
-$wrm_install_lang['found_user_from_bridge']= "gefundene Benutzer von dem Bridge System";
+$wrm_install_lang['found_user_from_bridge']= "gefundene Benutzer von dem Berechtigungssystem";
 $wrm_install_lang['question_wantimport'] = 'möchten sie alle Benutzter aus dem Forum/Board importieren';
 $wrm_install_lang['import_not_support'] = 'Endschuldigung: der Import, der Benutzer aus dem Forum/Board: wird nicht unterstützt';
 $wrm_install_lang['import'] = 'Import';
