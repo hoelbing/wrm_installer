@@ -40,7 +40,7 @@
  * erste seite steht
  * ep_step2 connect. test and jump to step1
  * 
- * install_bridge - bridge_done: updateable sql
+ * install_bridge - bridge_done: untestet
  */
 
 if (!isset($_GET['step']))

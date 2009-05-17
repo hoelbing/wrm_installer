@@ -565,9 +565,22 @@ function schow_online_versionnr()
  * 1  = all ok
  * 0  = connection failed
  * -1 = bride_type not correct 
+ * 
+ * check alle tablename, spalten
  */
 function test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix)
 {
+	global $wrm_config_file;
+	global $phpraid_config;
+	
+	$bridge_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $bridge_database_name);
+
+	//if not connection available -> goto step epbrgstep1
+	if( ($bridge_install->db_connect_id) == TRUE)
+	{
+		
+		exit;
+	}
 	//include bridge file
 	include_once("auth/install_".$bridge_name.".php");
 	return (0);

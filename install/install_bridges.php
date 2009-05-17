@@ -252,11 +252,26 @@ else if ($step == "epbrgstep1")
 else if ($step == "epbrgstep2")
 {
 	$bridge_name = $_POST['bridge_name'];
-	$bridge_database_name = $_POST['bridge_database_name'];
 	$bridge_db_table_prefix = $_POST['$bridge_db_table_prefix'];
 
-	
 	$ret_value = test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix);
+	
+	if ($ret_value == 1)
+	{
+		header("Location: ".$filename_bridge."step=2");
+	}
+
+	//problem: connection fail
+	if ($ret_value == 0)
+	{
+		header("Location: ".$filename_bridge."step=epbrgstep1&fail_con=1");
+	}
+	
+	//problem: wrong bridge type
+	if ($ret_value == -1)
+	{
+		header("Location: ".$filename_bridge."step=epbrgstep1&fail_bridge=1");
+	}
 }
 
 //set group and alternative group
@@ -519,8 +534,8 @@ else if($step === "bridge_done")
 	//include ("includes/function.php");
 	include_once ("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
-	
-	$bridge_utf8_support = $bridge_setting['bridge_utf8_support'];
+
+	//default user_priv for the admin
 	$user_priv = 1;
 	
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
@@ -534,16 +549,28 @@ else if($step === "bridge_done")
 		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $wrm_install->sql_fetchrow($result, true);
 		
-		//Now we need to create the users
-		//profile in the WRM database if it does not already exist.
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-						" (`profile_id`, `email`, `password`,`priv`,`username`, `last_login_time`) " .
-						" VALUES (%s, %s, %s, %s, %s, %s)",
-						quote_smart($data[$db_user_id]),quote_smart($data[$db_user_email]),
-						quote_smart($newpassword),	quote_smart($user_priv), 
-						quote_smart(strtolower($data[$db_user_name])), quote_smart(time())
-			);
-		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		if ($wrm_install->sql_numrows() == 0 )
+		{
+			//Now we need to create the users
+			//profile in the WRM database if it does not already exist.
+			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+							" (`profile_id`, `email`, `password`,`priv`,`username`, `last_login_time`) " .
+							" VALUES (%s, %s, %s, %s, %s, %s)",
+							quote_smart($data[$db_user_id]),quote_smart($data[$db_user_email]),
+							quote_smart($newpassword),	quote_smart($user_priv), 
+							quote_smart(strtolower($data[$db_user_name])), quote_smart(time())
+					);
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
+		else
+		{
+			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
+							" SET `email` = %s, `priv` = %s, `username` = %s, `last_login_time` = %s WHERE %s = `profile_id`",
+							 quote_smart($data[$db_user_email]),quote_smart($user_priv),quote_smart(strtolower($data[$db_user_name])),
+							 quote_smart(time()), quote_smart($bridge_setting['db_user_id'])
+					);
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
 	}
 
 	//only for -- iums auth --
@@ -552,46 +579,169 @@ else if($step === "bridge_done")
 		$user_admin_username = $_POST['user_admin_username'];
 		$user_admin_password = $_POST['user_admin_password'];
 		$user_admin_email = $_POST['user_admin_email'];
-				
-		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
-						" (`email`, `password`,`priv`,`username`, `last_login_time`) " .
-						" VALUES ( %s, %s, %s, %s, %s)",
-						quote_smart($user_admin_email),
-						quote_smart($user_admin_password),	quote_smart($user_priv), 
-						quote_smart(strtolower($user_admin_username)), quote_smart(time())
-			);
-		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);		
+		
+		$sql = sprintf(	"SELECT username " .
+						" FROM " . 	$phpraid_config['db_prefix'] . "profile " . 
+						" WHERE `username` = %s", quote_smart($user_admin_username)
+				);
+		$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$data = $wrm_install->sql_fetchrow($result, true);
+		
+		if ($wrm_install->sql_numrows() == 0 )
+		{	
+			$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "profile " .
+							" (`email`, `password`,`priv`,`username`, `last_login_time`) " .
+							" VALUES ( %s, %s, %s, %s, %s)",
+							quote_smart($user_admin_email),
+							quote_smart($user_admin_password),	quote_smart($user_priv), 
+							quote_smart(strtolower($user_admin_username)), quote_smart(time())
+				);
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}
+		else
+		{
+			$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "profile" .
+							" SET `email` = %s, `priv` = %s, `username` = %s, `last_login_time` = %s, WHERE %s = `profile_id`",
+							 quote_smart($user_admin_email),quote_smart($user_priv),quote_smart(strtolower($user_admin_username)),
+							 quote_smart(time()), quote_smart($bridge_setting['db_user_id'])
+					);
+			$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		}		
 	}
 	
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)",quote_smart("auth_type"), quote_smart($bridge_name)
+	/*
+	 * $bridge_name . auth_type
+	 */
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name)
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_db_table_prefix)
-			);
-	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_group"), quote_smart($bridge_auth_user_group)
+	if ($wrm_install->sql_numrows() != 0 )
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_name), quote_smart("auth_type"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}		
+	else
+	{	
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("auth_type"), quote_smart($bridge_name)
 				);
-	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_alt_group"), quote_smart($bridge_auth_user_alt_group)
-			);
-	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
 	
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_utf8_support)
+	/*
+	 * $bridge_name . _table_prefix
+	 */
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_table_prefix")
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if ($wrm_install->sql_numrows() != 0 )
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_table_prefix), quote_smart($bridge_name . "_table_prefix"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}		
+	else
+	{	
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_table_prefix)
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+		
+	/*
+	 * $bridge_name . _db_name
+	 */
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_db_name")
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $wrm_install->sql_fetchrow($result, true);
+	if ($wrm_install->sql_numrows() != 0 )
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_db_name), quote_smart($bridge_name . "_db_name"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	else
+	{
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_db_name)
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);	
+	}
+	
+	/*
+	 * $bridge_name . _auth_user_group
+	 */
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", ("config_name"), quote_smart($bridge_name."_auth_user_group")
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if ($wrm_install->sql_numrows() == 0)
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_auth_user_group), quote_smart($bridge_name . "_auth_user_group"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	else
+	{
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_group"), quote_smart($bridge_auth_user_group)
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	
+	/*
+	 * $bridge_name . _auth_user_alt_group
+	 */
+	$sql = 	sprintf("SELECT * "  .
+				" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+				" WHERE  `%s` = %s", ("config_name"), quote_smart($bridge_name."_auth_user_alt_group")
+		);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if ($wrm_install->sql_numrows() != 0)
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_auth_user_alt_group), quote_smart($bridge_name . "_auth_user_alt_group"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	else
+	{	
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_auth_user_alt_group"), quote_smart($bridge_auth_user_alt_group)
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	
+	/*
+	 * $bridge_name . _utf8_support
+	 */
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_utf8_support")
 			);
 
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-					" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_database_name)
-			);
-	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	if ($wrm_install->sql_numrows() != 0)
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_setting['bridge_utf8_support']), quote_smart($bridge_name . "_utf8_support"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	else
+	{
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_utf8_support"), quote_smart($bridge_setting['bridge_utf8_support'])
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
 		
 	//close connection
 	$wrm_install->sql_close();
