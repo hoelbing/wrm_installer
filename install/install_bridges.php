@@ -94,63 +94,213 @@ if (($step == "0"))
 	include_once ("includes/page_footer.php");
 
 }
+//expert mode bridge step1
+else if ($step === "epbrgstep1")
+{
+	//$_POST
+	if (isset($_POST['bridge_type']))
+	{
+			$bridge_name = $_POST['bridge_type'];
+	}
+	else
+	{
+		$bridge_name = "iums";
+	}
+	if (isset($_POST['bridge_db_table_prefix']))
+	{
+		$bridge_db_table_prefix = $_POST['bridge_db_table_prefix'];
+	}
+	else
+	{
+		$bridge_db_table_prefix = "";
+	}
+	if (isset($_POST['bridge_database_name']))
+	{
+		$bridge_database_name = $_POST['bridge_database_name'];
+	}
+	else
+	{
+		$bridge_database_name = "";
+	}
+	
+	//$_GET
+	if (isset($_GET['connection']))
+	{
+		
+	}
+	if (isset($_GET['bridge']))
+	{
+		
+	}
+	//load all auth bridges names
+	$files = array();
+	
+	$dir_brige = "auth";
+	//load all available files, from "auth" dir in a array
+	$dh = opendir($dir_brige);
+	while(false != ($filename = readdir($dh)))
+	{
+		$filename = substr($filename, 8);//cut from position 7 to filename.lenght end
+		$files[] = str_replace('.php','',$filename);
+	}
+	
+	//sort and cut/del "." and ".." from array
+	sort($files);
+	array_shift($files);
+	array_shift($files);
+	
+	include_once ("includes/page_header.php");
+	$smarty->assign(
+		array(
+			"form_action" => $filename_bridge."step=epbrgstep2" ,
+			"headtitle" => $wrm_install_lang['expert_modus'],
+			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
+			"bridge_database_name_text" => $wrm_install_lang['db_name_text'],
+			"bridge_database_name_value" => $bridge_database_name,
+			"bridge_db_table_prefix_text" => $wrm_install_lang['table_prefix_text'],
+			"bridge_db_table_prefix_value" => $bridge_db_table_prefix,
+			"bridge_type_output" => $files,
+			"bridge_type_values" => $files,
+			"bridge_type_selected" => $bridge_name,
+		
+			"bridge_ep01_info_text" => $wrm_install_lang['hittingsubmit'],
+			"bd_submit" => $wrm_install_lang['bd_submit'],
+		)
+	);
+
+	$smarty->display("bridges.ep01.tpl.html");
+	include_once ("includes/page_footer.php");
+}
+
+//check values from epbrgstep1
+//expert mode bridge step2
+else if ($step === "epbrgstep2")
+{
+	$bridge_name = $_POST['bridge_type'];
+	
+	if ($bridge_name != "iums")
+	{
+		$bridge_db_table_prefix = $_POST['bridge_db_table_prefix'];
+		$bridge_database_name = $_POST['bridge_database_name'];
+		
+		if ( ($bridge_database_name != "") and ($bridge_db_table_prefix != "") )
+		{
+			$ret_value = test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix);
+		}
+		else 
+		{
+			header("Location: ".$filename_bridge."step=epbrgstep1&values=0");
+			exit;
+		}
+	
+		//all ok
+		if ($ret_value == 0)
+		{
+			$step = 1;
+			$tmp_value = 1;
+		}
+	
+		//problem: connection fail
+		if ($ret_value == 1)
+		{
+			header("Location: ".$filename_bridge."step=epbrgstep1&connection=error");
+			exit;
+		}
+		
+		//problem: wrong bridge type
+		if ($ret_value == 2)
+		{
+			header("Location: ".$filename_bridge."step=epbrgstep1&bridge=wrong_bridge_type");
+			exit;
+		}
+	}
+	else
+	{
+		$step = 1;
+		$tmp_value = 1;	
+	}
+}
 
 //get all username's from the bridge
 //set password for selected user
-else if ($step == 1)
+if ($step == 1)
 {
 	//if unselect jump back
-	if (!$_POST['allfoundbridges'])
+	if ((!$_POST['allfoundbridges'])and !isset($tmp_value))
 		header("Location: ".$filename_bridge."step=0");
 
-
-	$string = $_POST['allfoundbridges'];
-	$pos = 0 ;
-	$pos_new = 0;
-	
-	$pos_new = strpos($string, ':', 0); 
-	$bridge_name = substr($string, 0, $pos_new); 
-	$pos = $pos_new + 1;
-		
-	$pos_new = strpos($string, ':', $pos);
-	$bridge_database_name = substr($string, $pos , $pos_new - $pos);
-	$pos = $pos_new + 1;
-			
-	$pos_new = strpos($string, ':', $pos);
-	$bridge_db_table_prefix = substr($string, $pos, $pos_new - $pos);
-	
-	include_once("auth/install_".$bridge_name.".php");
-	
-	$bridge_setting = $bridge_setting_value;
-
-	$bridge_admin_id_output = array();
-	$bridge_admin_id_values = array();
-	
-	include_once ($wrm_config_file);
-	
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
-	
-	$sql = 	"SELECT " . $bridge_setting['db_user_name'] . " , ". $bridge_setting['db_user_email'] ." , ". $bridge_setting['db_user_id'].
-			" FROM " . 	$bridge_database_name  ."." . $bridge_db_table_prefix . $bridge_setting['db_table_user_name'] .
-			" " . $bridge_setting['db_user_name_filter'];
-	
-	$result_admin = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	while ($data_admin = $wrm_install->sql_fetchrow($result_admin,true))
+	if ($bridge_name != "iums")
 	{
-		$bridge_admin_id_output[] = $wrm_install_lang['txtusername'].": ".utf8_encode($data_admin[$bridge_setting['db_user_name']]).";  ".$wrm_install_lang['txtemail'].": ".$data_admin[$bridge_setting['db_user_email']];
-		$bridge_admin_id_values[] = $data_admin[$bridge_setting['db_user_id']];
+		//echo "step1".$bridge_name;
+		if (isset($_POST['allfoundbridges']))
+		{
+			$string = $_POST['allfoundbridges'];
+			$pos = 0 ;
+			$pos_new = 0;
+			
+			$pos_new = strpos($string, ':', 0); 
+			$bridge_name = substr($string, 0, $pos_new); 
+			$pos = $pos_new + 1;
+				
+			$pos_new = strpos($string, ':', $pos);
+			$bridge_database_name = substr($string, $pos , $pos_new - $pos);
+			$pos = $pos_new + 1;
+					
+			$pos_new = strpos($string, ':', $pos);
+			$bridge_db_table_prefix = substr($string, $pos, $pos_new - $pos);
+		}
+		
+		include("auth/install_".$bridge_name.".php");
+	
+		$bridge_admin_id_output = array();
+		$bridge_admin_id_values = array();
+		
+		include_once ($wrm_config_file);
+		
+		$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name'], $phpraid_config['db_name']);
+		
+		$sql = 	"SELECT " . $bridge_setting_value['db_user_name'] . " , ". $bridge_setting_value['db_user_email'] ." , ". $bridge_setting_value['db_user_id'].
+				" FROM " . 	$bridge_database_name  ."." . $bridge_db_table_prefix . $bridge_setting_value['db_table_user_name'] .
+				" " . $bridge_setting_value['db_user_name_filter'];
+		$result_admin = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		while ($data_admin = $wrm_install->sql_fetchrow($result_admin,true))
+		{
+			$bridge_admin_id_output[] = $wrm_install_lang['txtusername'].": ".utf8_encode($data_admin[$bridge_setting_value['db_user_name']]).";  ".$wrm_install_lang['txtemail'].": ".$data_admin[$bridge_setting_value['db_user_email']];
+			$bridge_admin_id_values[] = $data_admin[$bridge_setting_value['db_user_id']];
+		}
+		
+		$wrm_install->sql_close();
+	
+		if (isset($_POST['bridge_admin_id']))
+			$bridge_admin_id_selected = $_POST['bridge_admin_id'];
+		else
+			$bridge_admin_id_selected = $bridge_admin_id_output[count($bridge_admin_id_output)-1];
+		
+		$form_action_link = "step=2";
+	
+		include_once ("includes/page_header.php");
+		$smarty->assign(
+			array(
+				"form_action" => $filename_bridge.$form_action_link ,
+				"headtitle" => $wrm_install_lang['headtitle'],
+				"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
+	
+				"bridge_admin_id_output" => $bridge_admin_id_output,
+				"bridge_admin_id_values" => $bridge_admin_id_values,
+				"bridge_admin_id_selected" => $bridge_admin_id_selected,
+			
+			//	"user_admin_password_text" => $wrm_install_lang['txtpassword'],
+			
+				"bridge_name" => $bridge_name,
+				"bridge_db_table_prefix" => $bridge_db_table_prefix,
+				"bridge_admin_id" => $bridge_admin_id,
+				"bridge_database_name" => $bridge_database_name,
+				"bd_submit" => $wrm_install_lang['bd_submit'],
+			)
+		);
+		$smarty->display("bridges.s1.tpl.html");	
 	}
-	
-	$wrm_install->sql_close();
-
-	if (isset($_POST['bridge_admin_id']))
-		$bridge_admin_id_selected = $_POST['bridge_admin_id'];
 	else
-		$bridge_admin_id_selected = $bridge_admin_id_output[count($bridge_admin_id_output)-1];
-	
-	$form_action_link = "step=2";
-	
-	if ($bridge_name == "iums")
 	{
 		$form_action_link = "step=bridge_done";
 		
@@ -179,113 +329,11 @@ else if ($step == 1)
 		);
 		$smarty->display("bridges.s1_iums.tpl.html");
 	}
-	else{
-		include_once ("includes/page_header.php");
-		$smarty->assign(
-			array(
-				"form_action" => $filename_bridge.$form_action_link ,
-				"headtitle" => $wrm_install_lang['headtitle'],
-				"user_admin_01_text" => $wrm_install_lang['step5sub2usernamefullperm'],
-	
-				"bridge_admin_id_output" => $bridge_admin_id_output,
-				"bridge_admin_id_values" => $bridge_admin_id_values,
-				"bridge_admin_id_selected" => $bridge_admin_id_selected,
-			
-				"user_admin_password_text" => $wrm_install_lang['txtpassword'],
-			
-				"bridge_name" => $bridge_name,
-				"bridge_db_table_prefix" => $bridge_db_table_prefix,
-				"bridge_admin_id" => $bridge_admin_id,
-				"bridge_database_name" => $bridge_database_name,
-				"bd_submit" => $wrm_install_lang['bd_submit'],
-			)
-		);
-		$smarty->display("bridges.s1.tpl.html");
-	}
 
 	include_once ("includes/page_footer.php");
 }
 
-//expert mode bridge step1
-else if ($step === "epbrgstep1")
-{
-	//load all auth bridges names
-	$files = array();
-	
-	$dir_brige = "auth";
-	//load all available files, from "auth" dir in a array
-	$dh = opendir($dir_brige);
-	while(false != ($filename = readdir($dh)))
-	{
-		$filename = substr($filename, 8);//cut from position 7 to filename.lenght end
-		$files[] = str_replace('.php','',$filename);
-	}
-	
-	//sort and cut/del "." and ".." from array
-	sort($files);
-	array_shift($files);
-	array_shift($files);
-	
-	include_once ("includes/page_header.php");
-	$smarty->assign(
-		array(
-			"form_action" => $filename_bridge."step=epbrgstep2" ,
-			"headtitle" => $wrm_install_lang['expert_modus'],
-			"bridge_type_text" => $wrm_install_lang['bridge_step0_choose_auth'],
-			"bridge_db_name_text" => $wrm_install_lang['db_name_text'],
-			"bridge_db_table_prefix_text" => $wrm_install_lang['table_prefix_text'],
 
-			"bridge_type_output" => $files,
-			"bridge_type_values" => $files,
-			"bridge_type_selected" => "iums",
-		
-			"bridge_ep01_info_text" => $wrm_install_lang['hittingsubmit'],
-			"bd_submit" => $wrm_install_lang['bd_submit'],
-		)
-	);
-
-	$smarty->display("bridges.ep01.tpl.html");
-	include_once ("includes/page_footer.php");
-}
-
-//check values from epbrgstep1
-//expert mode bridge step2
-else if ($step === "epbrgstep2")
-{
-	$bridge_name = $_POST['bridge_name'];
-	$bridge_db_table_prefix = $_POST['$bridge_db_table_prefix'];
-	$bridge_database_name = $_POST['bridge_database_name'];
-	
-	if ( ($bridge_name != "") or ($bridge_database_name != "") or ($bridge_db_table_prefix != ""))
-	{
-		$ret_value = test_bridge_connection($bridge_name, $bridge_database_name, $bridge_db_table_prefix);
-	}
-	else 
-	{
-		header("Location: ".$filename_bridge."step=epbrgstep1&values=0");
-		exit;
-	}
-	//all ok
-	if ($ret_value == 0)
-	{
-		header("Location: ".$filename_bridge."step=2");
-		exit;
-	}
-
-	//problem: connection fail
-	if ($ret_value == 1)
-	{
-		header("Location: ".$filename_bridge."step=epbrgstep1&fail_con=1");
-		exit;
-	}
-	
-	//problem: wrong bridge type
-	if ($ret_value == 2)
-	{
-		header("Location: ".$filename_bridge."step=epbrgstep1&fail_bridge=1");
-		exit;
-	}
-}
 
 //set group and alternative group
 //witch have full acces to wrm
@@ -293,10 +341,11 @@ else if ($step == 2)
 {
 	$bridge_name = $_POST['bridge_name'];
 	$bridge_db_table_prefix = $_POST['bridge_db_table_prefix'];
+	$bridge_database_name = $_POST['bridge_database_name'];
+
 	$bridge_admin_id = $_POST['bridge_admin_id'];
 	$bridge_admin_password = $_POST['bridge_admin_password'];
-	$bridge_database_name = $_POST['bridge_database_name'];
-	
+
 	include_once("auth/install_".$bridge_name.".php");
 	$bridge_setting = $bridge_setting_value;
 
@@ -422,7 +471,7 @@ else if($step == 3)
 else if($step == 4)
 {
 	$bridge_name = $_POST['bridge_name'];
-	$bridge_db_table_prefix = $_POST['$bridge_db_table_prefix'];
+	$bridge_db_table_prefix = $_POST['bridge_db_table_prefix'];
 	$bridge_admin_id = $_POST['bridge_admin_id'];
 	$bridge_database_name = $_POST['bridge_database_name'];
 	$bridge_admin_password = $_POST['bridge_admin_password'];
@@ -495,6 +544,15 @@ else if($step == 4)
 		$bridge_auth_user_alt_group_value = $wrm_install_lang['step5sub3noaddus'];
 	}
 
+	$sql = sprintf(	"SELECT " . $bridge_setting['db_user_name'].
+					" FROM " . 	$bridge_database_name  ."." . $bridge_db_table_prefix . $bridge_setting['db_table_user_name'] .
+					" WHERE `".$bridge_setting['db_user_id']."` = %s",quote_smart($bridge_admin_id)
+			);
+	$result_admin = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data_admin = $wrm_install->sql_fetchrow($result_admin,true);
+	$bridge_admin_name = $data_admin[$bridge_setting['db_user_name']];
+
+	
 	$wrm_install->sql_close();
 
 	include_once ("includes/page_header.php");
@@ -510,7 +568,7 @@ else if($step == 4)
 			"bridge_database_name_value" => $bridge_database_name,
 			"bridge_database_name_text" => $wrm_install_lang['database_text'],
 			"bridge_admin_id_text" => $wrm_install_lang['txtusername'],
-			"bridge_admin_id_value" => $bridge_admin_id,
+			"bridge_admin_id_value" => $bridge_admin_name,
 			"bridge_admin_password_text" => $wrm_install_lang['txtpassword'],
 			"bridge_admin_password_value" => $bridge_admin_password,
 			"bridge_auth_user_text" => $wrm_install_lang['txt_group'],
@@ -627,7 +685,7 @@ else if($step === "bridge_done")
 	 */
 	$sql = 	sprintf("SELECT * "  .
 					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name)
+					" WHERE  `%s` = %s", "config_name", quote_smart("auth_type")
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	if ($wrm_install->sql_numrows() != 0 )
@@ -655,13 +713,13 @@ else if($step === "bridge_done")
 	if ($wrm_install->sql_numrows() != 0 )
 	{
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_table_prefix), quote_smart($bridge_name . "_table_prefix"));
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_db_table_prefix), quote_smart($bridge_name . "_table_prefix"));
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}		
 	else
 	{	
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-						" VALUES(%s,%s)", quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_table_prefix)
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_table_prefix"), quote_smart($bridge_db_table_prefix)
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
@@ -678,13 +736,13 @@ else if($step === "bridge_done")
 	if ($wrm_install->sql_numrows() != 0 )
 	{
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
-						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_db_name), quote_smart($bridge_name . "_db_name"));
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_database_name), quote_smart($bridge_name . "_db_name"));
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else
 	{
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
-						" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_db_name)
+						" VALUES(%s,%s)", quote_smart($bridge_name . "_db_name"), quote_smart($bridge_database_name)
 				);
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);	
 	}
@@ -697,7 +755,7 @@ else if($step === "bridge_done")
 					" WHERE  `%s` = %s", ("config_name"), quote_smart($bridge_name."_auth_user_group")
 			);
 	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	if ($wrm_install->sql_numrows() == 0)
+	if ($wrm_install->sql_numrows() != 0)
 	{
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($bridge_auth_user_group), quote_smart($bridge_name . "_auth_user_group"));

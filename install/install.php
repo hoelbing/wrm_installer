@@ -35,9 +35,11 @@
 
 /*
  * todo
- * install_bridge - bridge_done untestet 
  * function - test_bridge_connection (epbrgstep2)untestet
- * add info text epbrgstep1
+ * übergabe der werte geht noch nicht
+ * add $phpraid_config['wrm_created_on'] and update $phpraid_config['wrm_updated_on']
+ * updateat
+ * add error text in epbrgstep1
  */
 
 if (!isset($_GET['step']))
