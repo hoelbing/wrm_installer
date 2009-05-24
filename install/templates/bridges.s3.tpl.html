@@ -32,12 +32,11 @@
     <td><table width="100%" border="0" cellspacing="0" cellpadding="2">
       <tr>
         <td width="33%">&nbsp;</td>
-        <td width="67%" class="row1"><input type="radio" name="importUser" value="no" checked>{$no}</td>
+        <td width="67%" class="row1"><input type="radio" name="importUser" value="no" checked>{$text_no}</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
-        <td class="row2"><input type="radio" name="importUser" value="yes" />
-          {$yes}</td>
+        <td class="row2"><input type="radio" name="importUser" value="yes" />{$text_yes}</td>
       </tr>
     </table></td>
   </tr>
@@ -55,7 +54,6 @@
 		<input type="hidden" name="bridge_database_name" value="{$bridge_database_name}" />
 		<input type="hidden" name="bridge_db_table_prefix" value="{$bridge_db_table_prefix}" />
 		<input type="hidden" name="bridge_admin_id" value="{$bridge_admin_id}" />
-		<input type="hidden" name="bridge_admin_password" value="{$bridge_admin_password}" />
 		<input type="hidden" name="bridge_auth_user_group" value="{$bridge_auth_user_group}" />
 		<input type="hidden" name="bridge_auth_user_alt_group" value="{$bridge_auth_user_alt_group}" />
       </div>    </td>

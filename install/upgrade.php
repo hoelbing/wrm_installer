@@ -32,7 +32,6 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *
 ****************************************************************************/
-$wrm_install_lang['wrm_up_to_date'] = "your wrm is up to date";
 /*
 *
 * load file "database_schema/upgrade/update_files_conf.php"
@@ -41,29 +40,18 @@ $wrm_install_lang['wrm_up_to_date'] = "your wrm is up to date";
 */
 
 if (!isset($_GET['step']))
-$step = "0";
+	$step = "0";
 else
-$step = $_GET['step'];
+	$step = $_GET['step'];
 
-/*----------------------------------------------------------------*/
-/*
- * include Files
- */
 
 //set Lang. Format
 if (!isset($_GET['lang']))
 	$lang = "english";
 else
 	$lang = $_GET['lang'];
-include_once('language/locale-'.$lang.'.php');
 
-include_once ("includes/db/db.php");
-include_once ("includes/function.php");
-
-include_once("../version.php");
-include_once("../config.php");
 /*----------------------------------------------------------------*/
-
 
 /**
  * Name from this File
@@ -79,8 +67,27 @@ $versions_nr_install = $version;
  * default wrm Table prefix
  * used: database_schema/upgrade/x.x.x.sql
  */
-$default_wrmtable_prefix = "wrm_";
+$default_file_sql_table_prefix = "wrm_";
 
+/*
+ * dir. upgrade
+ */
+$sql_dir_upgrade = "database_schema/upgrade/";
+
+//var, if table "version" exist in wrm db
+$table_version_available = FALSE;
+
+/*----------------------------------------------------------------*/
+
+include_once('language/locale-'.$lang.'.php');
+
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
+
+include_once("../version.php");
+include_once("../config.php");
+
+/*----------------------------------------------------------------*/
 
 //connect 2 wrm server
 $wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
@@ -89,7 +96,6 @@ if($wrm_install->db_connect_id == FALSE)
 	header("Location: install.php");
 }
 
-$table_version_available = FALSE;
 
 //check if table "version" available
 //result ($table_version_available)
@@ -117,7 +123,6 @@ if ($table_version_available != FALSE)
 	$data = $wrm_install->sql_fetchrow($result, true);
 	
 	$wrm_versions_nr_current_value = $data['version_number'];
-	$wrm_install->sql_close();
 }
 else
 {
@@ -126,7 +131,7 @@ else
 
 
 /* 
- * * check version nr
+ * check version nr
  *
 */
 if ($step === "0")
@@ -135,13 +140,10 @@ if ($step === "0")
 	//older 3.5.0 and older 3.6.1 not support 
 	if (($table_version_available == FALSE) or ((str_replace(".","",$wrm_versions_nr_current_value)) < "361"))
 	{
-		//hinweiss: es werden alle tabellen gelöscht und danach neu installiert
-		$wrm_install_lang['error_install_version_to_old_text'] = "install version is to old for Upgrade";
 		include_once ("includes/page_header.php");
 		schow_online_versionnr();
 		$smarty->assign(
 			array(
-			//	"version_info" => checking_onlineversion(),
 				"install_version_info_header" =>$wrm_install_lang['install_version_info_header'],
 				"error_install_version_to_old_titel" => $wrm_install_lang['error_install_version_to_old_text'],
 				"form_action" => "install.php?lang=".$lang."&step=6",
@@ -208,7 +210,7 @@ if ($step == 1)
 	include_once("database_schema/upgrade/update_files_conf.php");
 	
 	//connect to wrm server
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	//$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 
 	$wrm_update_array_y = 0;
 
@@ -228,7 +230,8 @@ if ($step == 1)
 	//open sql file; do sql; close file;
 	for ($wrm_update_array_y; $wrm_update_array_y < count($wrm_update_array); $wrm_update_array_y++)
 	{
-		if(!$fd = fopen('database_schema/upgrade/' . $wrm_update_array[$wrm_update_array_y]["file_name"], 'r'))
+
+		if(!$fd = fopen($sql_dir_upgrade . $wrm_update_array[$wrm_update_array_y]["file_name"], 'r'))
 				die('<font color=red>'.$localstr['step3errorschema'].'.</font>');
 			
 		if ($fd) {
@@ -239,7 +242,7 @@ if ($step == 1)
 	
 				if($line == ';')
 				{
-					$sql = substr(str_replace('`'.$default_wrmtable_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+					$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 					$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 					$sql = '';
 				}
@@ -256,16 +259,19 @@ if ($step == 1)
 	
 	// write/replace the "../config.php" file
 	write_wrm_configfile($phpraid_config['db_name'], $phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_prefix'],$phpraid_config['db_type']);
+	
+	//close wrm con.
 	$wrm_install->sql_close();
 	
 	header("Location: ".$filename_upgrade."step=2");
 }
 
-//dynamic changes at bridge settings
-//
+/*
+ * dynamic changes at bridge settings
+ */
 if ($step == 2)
 {
-	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
+	//$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
 	// update bridge setting only if not exist
 	
@@ -288,7 +294,6 @@ if ($step == 2)
 					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 					" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name."_table_prefix")
 			);
-	//echo $sql;
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	$data = $wrm_install->sql_fetchrow($result, true);
 	if ($wrm_install->sql_numrows() == 0 or $data['config_value'] == "")
@@ -376,7 +381,6 @@ if ($step == 2)
 						" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 						" WHERE  `%s` = %s", "config_name", quote_smart($bridge_name . "_utf8_support")
 				);
-		echo $sql."2<br>";
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$data = $wrm_install->sql_fetchrow($result, true);
 		if ($wrm_install->sql_numrows() == 0)
@@ -424,14 +428,58 @@ if ($step == 2)
 	}
 	//--------------------------------------------------------------------------------------------------------
 
+	//close wrm con.
 	$wrm_install->sql_close();
 		
+	header("Location: ".$filename_upgrade."step=3");
+}
+
+/*
+ * dynamic changes at wrm
+ */
+if ($step == 3)
+{
+	//$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
+	
+	$sql = 	sprintf("SELECT * "  .
+					" FROM " . 	$phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+					" WHERE  `%s` = %s", "config_name", quote_smart("wrm_created_on")
+			);
+	$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	$data = $wrm_install->sql_fetchrow($result, true);
+	if ($wrm_install->sql_numrows() == 0)
+	{
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_created_on"), quote_smart(time())
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_updated_on"), quote_smart(time())
+				);
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	else
+	{
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_updated_on"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+	}
+	
+	//close wrm con.
+	$wrm_install->sql_close();
+	
 	header("Location: ".$filename_upgrade."step=update_done");
 }
 
 //show page
 if ($step == "update_done")
 {
+	write_wrm_configfile($phpraid_config['db_name'], $phpraid_config['db_host'], $phpraid_config['db_user'],
+						 $phpraid_config['db_pass'], $phpraid_config['db_prefix'], $phpraid_config['db_type'],
+						 $phpraid_config['eqdkp_db_name'], $phpraid_config['eqdkp_db_host'] , $phpraid_config['eqdkp_db_user'] ,
+						 $phpraid_config['eqdkp_db_pass'] , $phpraid_config['eqdkp_db_prefix']
+	);
+	
 	include_once ("includes/page_header.php");
 	$smarty->assign(
 		array(
@@ -447,4 +495,5 @@ if ($step == "update_done")
 	$smarty->display("update.tpl.html");
 	include_once ("includes/page_footer.php");
 }
+
 ?>

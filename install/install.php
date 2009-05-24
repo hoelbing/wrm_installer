@@ -35,10 +35,6 @@
 
 /*
  * todo
- * function - test_bridge_connection (epbrgstep2)untestet
- * übergabe der werte geht noch nicht
- * add $phpraid_config['wrm_created_on'] and update $phpraid_config['wrm_updated_on']
- * updateat
  * add error text in epbrgstep1
  */
 
@@ -48,7 +44,7 @@ else
 $step = $_GET['step'];
 
 
-//set Lang. Format
+//set Lang. Format (default english)
 if (!isset($_GET['lang']))
 	$lang = "english";
 else
@@ -63,18 +59,38 @@ if ($step == 2)
 	}
 }
 
+/*----------------------------------------------------------------*/
+
+/*
+ * name of this file
+ */
 $filename_install = "install.php?lang=".$lang."&";
-
-include_once('language/locale-'.$lang.'.php');
-
-include_once ("includes/db/db.php");
-include_once ("includes/function.php");
 
 
 /**
  * This is the path to the WRM Config File
  */
 $wrm_config_file = "../config.php";
+
+/**
+ * default wrm Table prefix
+ */
+$default_file_sql_table_prefix = "wrm_";
+
+/*
+ * sql files
+ */
+$file_sql_install_schema = "database_schema/install/install_schema.sql";
+$file_sql_insert_values = "database_schema/install/insert_values.sql";
+
+/*----------------------------------------------------------------*/
+
+include_once('language/locale-'.$lang.'.php');
+
+include_once ("includes/db/db.php");
+include_once ("includes/function.php");
+
+/*----------------------------------------------------------------*/
 
 /**
  * --------------------
@@ -132,7 +148,7 @@ else if($step == "1")
 
 	$phpversion = (int)(str_replace(".", "", phpversion()));
 
-	//fileperm: Returns TRUE on success or FALSE on failure
+	//fileperm: Returns TRUE = success or FALSE = failure
 	if (!($dir_cache_fp = chmod("./cache/",0775)))
 	{
 		$FoundProblem_dir_fp = TRUE;
@@ -239,7 +255,7 @@ else if($step == 2) {
 
 	if ( isset($_GET['erro_con']) )
 	{
-		$error_msg .= '<div class="errorHeader">Error connecting to Server (Servername or Username or Password incorrect) <br/>';
+		$error_msg .= '<div class="errorHeader">'.$wrm_install_lang['step3errordbcon_titel'].'<br/>';
 		$error_msg .= $wrm_install_lang['step3errordbcon'];
 		$error_msg .= "<br/>".$wrm_install_lang['hittingsubmit']."</div><br/>"."<br/>";
 	}
@@ -291,7 +307,6 @@ else if($step == 2) {
 			"bd_submit" => $wrm_install_lang['bd_submit'],
 		)
 	);
-
 	$smarty->display("step2.tpl.html");
 	include_once ("includes/page_footer.php");
 }
@@ -466,6 +481,7 @@ else if($step == 4)
 
 	$wrm_install->sql_close();
 
+	//no error then write the config file "../config.php"
 	if ($FOUNDERROR_Database == FALSE) 
 	{
 		$wrm_config_writeable = write_wrm_configfile($wrm_db_name, $wrm_db_server_hostname, $wrm_db_username, $wrm_db_password, $wrm_db_tableprefix);
@@ -527,6 +543,7 @@ else if($step == 5)
 			}
 	}
 	
+	//close sql connection
 	$wrm_install->sql_close();
 
 	if($foundtable == TRUE)
@@ -562,6 +579,7 @@ else if($step == 5)
  * --------------------
  * Step 6
  *
+ * del all table and then
  * insert schema(=tables), in wrm db
  * ---------------------
  * */
@@ -572,18 +590,16 @@ else if($step == 6)
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
-	//check
-	//DROP TABLE IF EXISTS
+
+	//DROP all TABLE (array from "install_settings.php")
 	for ($i=0; $i<count($wrm_tables);$i++)
 	{
-		//DROP TABLE IF EXISTS `wrm_chars`;
 		$sql_del_tab = "DROP TABLE IF EXISTS ".$phpraid_config['db_prefix'].$wrm_tables[$i];
 		$wrm_install->sql_query($sql_del_tab) or print_error($sql_del_tab, mysql_error(), 1);
 	}
 
-
-	//install schema
-	if(!$fd = fopen('database_schema/install/install_schema.sql', 'r'))
+	//install schema  (database_schema/install/install_schema.sql)
+	if(!$fd = fopen($file_sql_install_schema, 'r'))
 	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
 
 	if ($fd) {
@@ -593,7 +609,7 @@ else if($step == 6)
 
 			if($line == ';')
 			{
-				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+				$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$sql = '';
 			}
@@ -619,8 +635,8 @@ else if($step == 7)
 
 	$wrm_install = &new sql_db($phpraid_config['db_host'],$phpraid_config['db_user'],$phpraid_config['db_pass'],$phpraid_config['db_name']);
 	
-	//insert (default) values
-	if(!$fd = fopen('database_schema/install/insert_values.sql', 'r'))
+	//insert (default) values (database_schema/install/insert_values.sql)
+	if(!$fd = fopen($file_sql_insert_values, 'r'))
 	die('<font color=red>'.$wrm_install_lang['step3errorschema'].'.</font>');
 
 	if ($fd) {
@@ -630,7 +646,7 @@ else if($step == 7)
 
 			if($line == ';')
 			{
-				$sql = substr(str_replace('`wrm_','`' . $phpraid_config['db_prefix'], $sql), 0, -1);
+				$sql = substr(str_replace('`'.$default_file_sql_table_prefix,'`' . $phpraid_config['db_prefix'], $sql), 0, -1);
 				$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 				$sql = '';
 			}
@@ -687,7 +703,7 @@ else if($step == 8)
  * --------------------
  * Step 9
  *
- * jump 2 bridge installion at/in "install_bridges.php"
+ * jump to bridge install(/config) at/in "install_bridges.php"
  * ---------------------
  * */
 else if($step == 9)
@@ -718,10 +734,14 @@ else if($step === "done")
 {
 	include_once ($wrm_config_file);
 
-	//insert default values
 	$wrmserver = 'http://'.$_SERVER['SERVER_NAME'];
 	$wrmserverfile = str_replace("/install/install.php","",$wrmserver. $_SERVER['PHP_SELF']);
 	
+	$eqdkp_url_link = $wrmserverfile."/eqdkp";
+	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
+	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
+	
+	//init con. to wrm
 	$wrm_install = &new sql_db($phpraid_config['db_host'], $phpraid_config['db_user'], $phpraid_config['db_pass'], $phpraid_config['db_name']);
 	
 	$sql = 	sprintf("SELECT * "  .
@@ -729,11 +749,7 @@ else if($step === "done")
 					" WHERE  `config_name` = %s ", quote_smart("header_link")
 			);
 	$result = $wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
-	
-	$eqdkp_url_link = $wrmserverfile."/eqdkp";
-	$default_armory_language_value = $wrm_install_lang['default_armory_language_value'];
-	$default_armory_link_value = $wrm_install_lang['default_armory_link_value'];
-	
+
 	if($wrm_install->sql_numrows($result) == 0)
 	{
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
@@ -753,6 +769,12 @@ else if($step === "done")
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
 						" VALUES(%s,%s)", quote_smart("armory_link"), quote_smart($default_armory_link_value));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_created_on"), quote_smart(time()));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = sprintf(	"INSERT INTO " . $phpraid_config['db_name'] . "." .$phpraid_config['db_prefix'] . "config".
+						" VALUES(%s,%s)", quote_smart("wrm_updated_on"), quote_smart(time()));
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	else
@@ -775,6 +797,12 @@ else if($step === "done")
 		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
 						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart($default_armory_link_value), quote_smart("armory_link"));
 		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_created_on"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
+		$sql = 	sprintf("UPDATE " . $phpraid_config['db_name'] . "." . $phpraid_config['db_prefix'] . "config" .
+						" SET `config_value` = %s WHERE %s = `config_name`", quote_smart(time()), quote_smart("wrm_updated_on"));
+		$wrm_install->sql_query($sql) or print_error($sql, mysql_error(), 1);
 	}
 	
 	$wrm_install->sql_close();
@@ -784,7 +812,6 @@ else if($step === "done")
 			"headtitle" => $wrm_install_lang['stepdonefinished'],
 			"donesetupcomplete_text" => $wrm_install_lang['stepdonesetupcomplete'],
 			"doneremovedir_text" => $wrm_install_lang['stepdoneremovedir'],
-		
 		)
 	);
 

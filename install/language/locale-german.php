@@ -87,6 +87,7 @@ $wrm_install_lang['hittingsubmit'] = 'Bitte kontrolliere deine Eingabe bevor du 
 $wrm_install_lang['pressbrowserpack'] = 'Bitte benutze, in deinem Browsers, die "zurck" Taste und gebe die Daten erneut ein.';
 $wrm_install_lang['problem'] = 'Problem';
 $wrm_install_lang['txtusername'] = 'Benutzername';
+$wrm_install_lang['txt_admin_username'] = 'Administrator Benutzername';
 $wrm_install_lang['txtpassword'] = 'Password';
 $wrm_install_lang['txtemail'] = 'E-mail';
 $wrm_install_lang['txtconfig'] = 'Konfiguration';
@@ -110,9 +111,12 @@ $wrm_install_lang['print_error_page'] = 'Seite';
 $wrm_install_lang['print_error_query'] = 'Anfrage';
 $wrm_install_lang['print_error_title'] = 'Oh-oh! Da ist ein Fehler passiert';
 
+$wrm_install_lang['step2errordbcon_titel'] = "Fehler beim Herstellen einer Verbindung zum Server (Servername oder Benutzername oder Passwort falsch)";
 //--------------------------
 // Auth.
 //--------------------------
+$wrm_install_lang['expert_modus'] = "Experten-Modus";
+
 $wrm_install_lang['step5failconWRM'] = 'Verbindung zur WRM Datenbank nicht möglich';
 $wrm_install_lang['step5selctusername'] = 'dieser Benutzer bekommt vollen Zugriff auf das WRM';
 $wrm_install_lang['step5sub1follval'] = 'Um die Installation abzuschließen füllen Sie bitte die folgenden Werte aus';
@@ -131,6 +135,8 @@ $wrm_install_lang['step5sub3altgroup02'] = 'mit dieser alternativen Gruppe ist e
 //bridge mode
 $wrm_install_lang['db_name_text'] = 'SQL Datenbank';
 $wrm_install_lang['table_prefix_text'] = 'Tabellen Prefix';
+$wrm_install_lang['bridge_name_text'] = 'Name';
+$wrm_install_lang['bridge_users_found_text'] = 'gefundene Benutzer';
 
 $wrm_install_lang['bridge_step0_unknown_auth'] = '(wenn sie sich nicht sicher sind, wähle bitte "iUMS")';
 $wrm_install_lang['bridge_step0_choose_auth'] = 'Bitte wähle dein Berechtigungssystem aus.';
@@ -148,6 +154,8 @@ $wrm_install_lang['bridge_step1_iumsfilladmindesc'] = 'füllen sie alle Werte f�
 //update
 $wrm_install_lang['wrm_versions_nr_current_text'] = "WRM (@Server) Version Nr";
 $wrm_install_lang['wrm_versions_nr_from_install_text'] = "Installation Version Nr";
+$wrm_install_lang['wrm_up_to_date'] = "Deine WoW Raid Manager Version ist auf dem aktuellsten Stand";
+$wrm_install_lang['error_install_version_to_old_text'] = "Installation (WRM) Version ist ui alt f�r ein Upgrade";
 
 //install_bridges
 $wrm_install_lang['bridge_step0_titel'] = "Scan-Ergebnis (@ dein Server): Gefundene Bridges ";
