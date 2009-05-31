@@ -11,7 +11,6 @@
 -- Safe Execution - These lines are SAFE to run at ANY point.
 -- ----------------------------------------------------------------
 -- Manage Primary and Secondary Spec instead of Role.
-;
 ALTER TABLE `wrm_chars` CHANGE `role` `pri_spec` VARCHAR( 255 ) NOT NULL;
 ALTER TABLE `wrm_chars` ADD `sec_spec` VARCHAR( 255 ) ;
 
@@ -438,9 +437,11 @@ VALUES (NULL , 'raidview2', 'Date', '1', '9', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Time', '1', '10', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
+VALUES (NULL , 'raidview2', 'Role', '1', '11', NULL, 'role', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '12', NULL, 'signup_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
 
 -- Gender Table Creation
 CREATE TABLE IF NOT EXISTS `wrm_gender` (

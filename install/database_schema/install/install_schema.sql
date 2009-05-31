@@ -31,7 +31,8 @@ CREATE TABLE  `wrm_chars` (
 ) ;
 
 -- Class Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_classes` (
+DROP TABLE IF EXISTS `wrm_classes`;
+CREATE TABLE `wrm_classes` (
   `class_id` varchar(100) NOT NULL,
   `class_code` varchar(2) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
@@ -40,14 +41,16 @@ CREATE TABLE IF NOT EXISTS `wrm_classes` (
 );
 
 -- Race/Class Link Table Creation
+DROP TABLE IF EXISTS `wrm_class_race`;
 CREATE TABLE `wrm_class_race` (
-`race_id` VARCHAR( 100 ) NOT NULL ,
-`class_id` VARCHAR( 100 ) NOT NULL ,
+	`race_id` VARCHAR( 100 ) NOT NULL ,
+	`class_id` VARCHAR( 100 ) NOT NULL ,
 PRIMARY KEY ( `race_id` , `class_id` )
 );
 
 -- Class and Role Linking Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_class_role` (
+DROP TABLE IF EXISTS `wrm_class_role`;
+CREATE TABLE `wrm_class_role` (
   `class_id` varchar(100) NOT NULL,
   `subclass` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
@@ -58,15 +61,15 @@ CREATE TABLE IF NOT EXISTS `wrm_class_role` (
 -- Column Header Creation
 DROP TABLE IF EXISTS `wrm_column_headers`;
 CREATE TABLE `wrm_column_headers` (
-`ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-`view_name` VARCHAR( 50 ) NOT NULL ,
-`column_name` VARCHAR( 50 ) NOT NULL ,
-`visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
-`position` TINYINT( 2 ) NOT NULL ,
-`img_url` VARCHAR( 100 ) DEFAULT NULL,
-`lang_idx_hdr` VARCHAR ( 50 ) DEFAULT NULL,
-`format_code` VARCHAR ( 25 ) DEFAULT NULL,
-`default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0',
+	`ID` INT( 10 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+	`view_name` VARCHAR( 50 ) NOT NULL ,
+	`column_name` VARCHAR( 50 ) NOT NULL ,
+	`visible` TINYINT( 1 ) NOT NULL DEFAULT '1',
+	`position` TINYINT( 2 ) NOT NULL ,
+	`img_url` VARCHAR( 100 ) DEFAULT NULL,
+	`lang_idx_hdr` VARCHAR ( 50 ) DEFAULT NULL,
+	`format_code` VARCHAR ( 25 ) DEFAULT NULL,
+	`default_sort` TINYINT( 1 ) NOT NULL DEFAULT '0',
 INDEX ( `view_name` )
 ) ;
 
@@ -111,7 +114,8 @@ CREATE TABLE `wrm_expansion` (
 ) ;
 
 -- Gender Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_gender` (
+DROP TABLE IF EXISTS `wrm_gender`;
+CREATE TABLE `wrm_gender` (
   `gender_id` varchar(10) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   PRIMARY KEY  (`gender_id`)
@@ -119,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `wrm_gender` (
 
 -- Guilds Table Creation
 DROP TABLE IF EXISTS `wrm_guilds`;
-CREATE TABLE  `wrm_guilds` (
+CREATE TABLE `wrm_guilds` (
   `guild_id` int(10) NOT NULL auto_increment,
   `guild_master` varchar(80) NOT NULL default '',
   `guild_name` varchar(30) NOT NULL default '',
@@ -129,7 +133,7 @@ CREATE TABLE  `wrm_guilds` (
 
 -- Locations Table Creation
 DROP TABLE IF EXISTS `wrm_locations`;
-CREATE TABLE  `wrm_locations` (
+CREATE TABLE `wrm_locations` (
   `location_id` int(10) NOT NULL auto_increment,
   `location` varchar(255) NOT NULL default '',
   `min_lvl` int(2) NOT NULL default '0',
@@ -145,7 +149,8 @@ CREATE TABLE  `wrm_locations` (
 -- Locations Data
 
 -- Location / Class Limit Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
+DROP TABLE IF EXISTS `wrm_loc_class_lmt`;
+CREATE TABLE `wrm_loc_class_lmt` (
   `location_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -153,7 +158,8 @@ CREATE TABLE IF NOT EXISTS `wrm_loc_class_lmt` (
 );
 
 -- Location / Role Limit Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
+DROP TABLE IF EXISTS `wrm_loc_role_lmt`;
+CREATE TABLE `wrm_loc_role_lmt` (
   `location_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -162,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `wrm_loc_role_lmt` (
 
 -- Log Create Table Creation
 DROP TABLE IF EXISTS `wrm_logs_create`;
-CREATE TABLE  `wrm_logs_create` (
+CREATE TABLE `wrm_logs_create` (
   `log_id` int(11) NOT NULL auto_increment,
   `create_id` int(11) NOT NULL default '0',
   `profile_id` int(11) NOT NULL default '0',
@@ -175,7 +181,7 @@ CREATE TABLE  `wrm_logs_create` (
 
 -- Log Delete Table Creation
 DROP TABLE IF EXISTS `wrm_logs_delete`;
-CREATE TABLE  `wrm_logs_delete` (
+CREATE TABLE `wrm_logs_delete` (
   `log_id` int(11) NOT NULL auto_increment,
   `profile_id` int(11) NOT NULL default '0',
   `ip` varchar(45) NOT NULL default '',
@@ -187,7 +193,7 @@ CREATE TABLE  `wrm_logs_delete` (
 
 -- Log Hack Table Creation 
 DROP TABLE IF EXISTS `wrm_logs_hack`;
-CREATE TABLE  `wrm_logs_hack` (
+CREATE TABLE `wrm_logs_hack` (
   `log_id` int(10) unsigned NOT NULL auto_increment,
   `ip` varchar(45) NOT NULL default '0',
   `message` text NOT NULL,
@@ -197,7 +203,7 @@ CREATE TABLE  `wrm_logs_hack` (
 
 -- Log Raid Table Creation
 DROP TABLE IF EXISTS `wrm_logs_raid`;
-CREATE TABLE  `wrm_logs_raid` (
+CREATE TABLE `wrm_logs_raid` (
   `log_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -210,7 +216,7 @@ CREATE TABLE  `wrm_logs_raid` (
 
 -- Permissions Table Creation
 DROP TABLE IF EXISTS `wrm_permissions`;
-CREATE TABLE  `wrm_permissions` (
+CREATE TABLE `wrm_permissions` (
   `permission_id` int(10) NOT NULL auto_increment,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
@@ -228,7 +234,7 @@ CREATE TABLE  `wrm_permissions` (
 
 -- Profile Table Creation
 DROP TABLE IF EXISTS `wrm_profile`;
-CREATE TABLE  `wrm_profile` (
+CREATE TABLE `wrm_profile` (
   `profile_id` int(10) NOT NULL auto_increment,
   `email` varchar(255) NOT NULL default '',
   `password` varchar(255) NOT NULL default '',
@@ -239,24 +245,28 @@ CREATE TABLE  `wrm_profile` (
 ) ;
 
 -- Race Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_races` (
+DROP TABLE IF EXISTS `wrm_races`;
+CREATE TABLE `wrm_races` (
   `race_id` varchar(100) NOT NULL,
   `faction` varchar(100) NOT NULL,
   `lang_index` varchar(100) NOT NULL,
   PRIMARY KEY  (`race_id`)
 );
 
+
 -- Race/Gender Link Table Creation
-CREATE TABLE IF NOT EXISTS `wrm_race_gender` (
+DROP TABLE IF EXISTS `wrm_race_gender`;
+CREATE TABLE `wrm_race_gender` (
   `race_id` varchar(100) NOT NULL,
   `gender_id` varchar(10) NOT NULL,
   `image` varchar(100) NOT NULL,
   PRIMARY KEY  (`race_id`,`gender_id`)
 );
 
+
 -- Raid Table Creation
 DROP TABLE IF EXISTS `wrm_raids`;
-CREATE TABLE  `wrm_raids` (
+CREATE TABLE `wrm_raids` (
   `raid_id` int(10) NOT NULL auto_increment,
   `description` text NOT NULL,
   `freeze` int(10) NOT NULL default '0',
@@ -274,7 +284,8 @@ CREATE TABLE  `wrm_raids` (
 ) ;
 
 -- Class Limits per Raid Table
-CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
+DROP TABLE IF EXISTS `wrm_raid_class_lmt`;
+CREATE TABLE `wrm_raid_class_lmt` (
   `raid_id` int(10) NOT NULL,
   `class_id` varchar(100) NOT NULL,
   `lmt` int(2) NOT NULL,
@@ -282,6 +293,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_class_lmt` (
 );
 
 -- Role Limits per Raid Table
+DROP TABLE IF EXISTS `wrm_raid_role_lmt`;
 CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
   `raid_id` int(10) NOT NULL,
   `role_id` varchar(10) NOT NULL,
@@ -290,6 +302,7 @@ CREATE TABLE IF NOT EXISTS `wrm_raid_role_lmt` (
 );
 
 -- Role Table Creation
+DROP TABLE IF EXISTS `wrm_roles`;
 CREATE TABLE IF NOT EXISTS `wrm_roles` (
   `role_id` varchar(10) NOT NULL,
   `role_name` varchar(100) NOT NULL,
@@ -300,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `wrm_roles` (
 
 -- Signup Table Creation
 DROP TABLE IF EXISTS `wrm_signups`;
-CREATE TABLE  `wrm_signups` (
+CREATE TABLE `wrm_signups` (
   `signup_id` int(10) NOT NULL auto_increment,
   `char_id` int(10) NOT NULL default '0',
   `profile_id` int(10) NOT NULL default '0',
@@ -315,7 +328,7 @@ CREATE TABLE  `wrm_signups` (
 
 -- Team Table Creation
 DROP TABLE IF EXISTS `wrm_teams`;
-CREATE TABLE  `wrm_teams` (
+CREATE TABLE `wrm_teams` (
   `team_id` int(10) NOT NULL auto_increment,
   `raid_id` int(10) NOT NULL default '0',
   `team_name` varchar(255) NOT NULL default '',
@@ -326,7 +339,7 @@ CREATE TABLE  `wrm_teams` (
 -- Version Table Creation
 DROP TABLE IF EXISTS `wrm_version`;
 CREATE TABLE `wrm_version` (
-`version_number` VARCHAR( 20 ) NOT NULL ,
-`version_desc` VARCHAR( 255 ) NOT NULL ,
+	`version_number` VARCHAR( 20 ) NOT NULL ,
+	`version_desc` VARCHAR( 255 ) NOT NULL ,
 PRIMARY KEY ( `version_number` )
 ) ;

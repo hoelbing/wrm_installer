@@ -1,3 +1,4 @@
+
 -- Class Data
 INSERT INTO `wrm_classes` VALUES ('Death Knight', 'dk', 'deathknight', 'images/classes/deathknight_icon.gif');
 INSERT INTO `wrm_classes` VALUES ('Druid', 'dr', 'druid', 'images/classes/druid_icon.gif');
@@ -9,6 +10,7 @@ INSERT INTO `wrm_classes` VALUES ('Rogue', 'ro', 'rogue', 'images/classes/rogue_
 INSERT INTO `wrm_classes` VALUES ('Shaman', 'sh', 'shaman', 'images/classes/shaman_icon.gif');
 INSERT INTO `wrm_classes` VALUES ('Warlock', 'wk', 'warlock', 'images/classes/warlock_icon.gif');
 INSERT INTO `wrm_classes` VALUES ('Warrior', 'wa', 'warrior', 'images/classes/warrior_icon.gif');
+
 
 -- Race/Class Linking Data
 INSERT INTO `wrm_class_race` VALUES ('Draenei', 'Priest');
@@ -74,6 +76,7 @@ INSERT INTO `wrm_class_race` VALUES ('Undead', 'Mage');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Warlock');
 INSERT INTO `wrm_class_race` VALUES ('Undead', 'Death Knight');
 
+
 -- Class and Role Link Data
 INSERT INTO `wrm_class_role` VALUES ('Priest', 'Discipline', 'disc', 'role3');
 INSERT INTO `wrm_class_role` VALUES ('Priest', 'Holy', 'holy', 'role3');
@@ -109,6 +112,7 @@ INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Tank)', 'frost_tank
 INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Frost (Melee)', 'frost_melee', 'role2');
 INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Tank)', 'unholy_tank', 'role1');
 INSERT INTO `wrm_class_role` VALUES ('Death Knight', 'Unholy (Melee)', 'unholy_melee', 'role2');
+
 
 -- Column Header Data - Raids1 View
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
@@ -408,9 +412,11 @@ VALUES (NULL , 'raidview2', 'Date', '1', '9', NULL, 'date', 'wrmdate');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
 VALUES (NULL , 'raidview2', 'Time', '1', '10', NULL, 'time', 'wrmtime');
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '11', NULL, 'signup_spec', NULL);
+VALUES (NULL , 'raidview2', 'Role', '1', '11', NULL, 'role', NULL);
 INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
-VALUES (NULL , 'raidview2', 'Buttons', '1', '12', NULL, 'buttons', NULL);
+VALUES (NULL , 'raidview2', 'Signup_Spec', '1', '12', NULL, 'signup_spec', NULL);
+INSERT INTO `wrm_column_headers` ( `ID` , `view_name` , `column_name` , `visible` , `position`, `img_url`, `lang_idx_hdr`, `format_code`)
+VALUES (NULL , 'raidview2', 'Buttons', '1', '13', NULL, 'buttons', NULL);
 -- So as not to have to add a 0 or 1 on to the end of everything above, we'll do this separately.
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raids1' AND `column_name` = 'Date' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='index1' AND `column_name` = 'Date' LIMIT 1 ;
@@ -427,6 +433,7 @@ UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissi
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='permissions2' AND `column_name` = 'Username' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview1' AND `column_name` = 'Name' LIMIT 1 ;
 UPDATE `wrm_column_headers` SET `default_sort` = '1' WHERE `view_name`='raidview2' AND `column_name` = 'Name' LIMIT 1 ;
+
 
 -- Config Table Data
 INSERT INTO `wrm_config` VALUES ('admin_email','webmaster@yourdomain.com');
@@ -448,6 +455,8 @@ INSERT INTO `wrm_config` VALUES ('header_logo','templates/default/images/logo_ph
 INSERT INTO `wrm_config` VALUES ('language','english');
 INSERT INTO `wrm_config` VALUES ('multiple_signups','0');
 INSERT INTO `wrm_config` VALUES ('phpraid_addon_link','http://www.wowraidmanager.net');
+INSERT INTO `wrm_config` VALUES ('armory_link','http://www.wowarmory.com');
+INSERT INTO `wrm_config` VALUES ('armory_language','us');
 INSERT INTO `wrm_config` VALUES ('register_url','register.php');
 INSERT INTO `wrm_config` VALUES ('roster_integration','0');
 INSERT INTO `wrm_config` VALUES ('show_id','0');
@@ -508,6 +517,7 @@ INSERT INTO `wrm_config` VALUES ('ampm', '12');
 INSERT INTO `wrm_config` VALUES ('raid_view_type','by_class');
 INSERT INTO `wrm_config` VALUES ('records_per_page','25');
 INSERT INTO `wrm_config` VALUES ('armory_cache_setting', 'none');
+
 
 -- Event Table Data
 INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_id`, `wow_name`, `icon_path`) VALUES
@@ -632,6 +642,7 @@ INSERT INTO `wrm_events` (`event_id`, `zone_desc`, `max`, `exp_id`, `event_type_
 (122, 'Ulduar', 10, 3, 1, 'Ulduar', 'images/instances/WotLK_Icons/10-Ulduar.jpg'),
 (123, 'Ulduar - Heroic', 25, 3, 1, 'Ulduar (Heroic)', 'images/instances/WotLK_Icons/25-Ulduar.jpg');
 
+
 -- Event Type Table Data
 INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_lang_id`, `def`) VALUES
 (1, 'Raid', 'event_type_raid', 1),
@@ -640,21 +651,23 @@ INSERT INTO `wrm_event_type` (`event_type_id`, `event_type_name`, `event_type_la
 (4, 'Meeting', 'event_type_meeting', 0),
 (5, 'Other', 'event_type_other', 0);
 
+
 -- Expansion Table Data
 INSERT INTO `wrm_expansion` (`exp_id`, `exp_name`, `exp_lang_id`, `def`) VALUES
 (1, 'Generic', 'exp_generic_wow', 0),
 (2, 'BC', 'exp_burning_crusade', 0),
 (3, 'WotLK', 'exp_wrath_lich_king', 1);
 
+
 -- Gender Table Data
 INSERT INTO `wrm_gender` VALUES ('Male', 'male');
 INSERT INTO `wrm_gender` VALUES ('Female', 'female');
 
 
-
 -- Permissions Data
 INSERT INTO `wrm_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('WRM Superadmin','Full Access','1','1','1','1','1','1','1','1','1');
 INSERT INTO `wrm_permissions` (`name`,`description`,`announcements`,`configuration`,`guilds`,`locations`,`permissions`,`profile`,`raids`,`logs`,`users`) VALUES ('WRM Users','Generic Access','0','0','0','0','0','1','0','0','0');
+
 
 -- Race Data
 INSERT INTO `wrm_races` VALUES ('Draenei', 'Alliance', 'draenei');
@@ -667,6 +680,7 @@ INSERT INTO `wrm_races` VALUES ('Orc', 'Horde', 'orc');
 INSERT INTO `wrm_races` VALUES ('Tauren', 'Horde', 'tauren');
 INSERT INTO `wrm_races` VALUES ('Troll', 'Horde', 'troll');
 INSERT INTO `wrm_races` VALUES ('Undead', 'Horde', 'undead');
+
 
 -- Race/Gender Link Table Data
 INSERT INTO `wrm_race_gender` VALUES ('Draenei', 'Male', '/images/faces/dr_male.gif');
@@ -690,6 +704,7 @@ INSERT INTO `wrm_race_gender` VALUES ('Troll', 'Female', '/images/faces/tr_femal
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Male', '/images/faces/un_male.gif');
 INSERT INTO `wrm_race_gender` VALUES ('Undead', 'Female', '/images/faces/un_female.gif');
 
+
 -- Role Table Data
 INSERT INTO `wrm_roles` VALUES ('role1', 'Tank', 'configuration_role1_text','');
 INSERT INTO `wrm_roles` VALUES ('role2', 'Melee', 'configuration_role2_text','');
@@ -698,7 +713,8 @@ INSERT INTO `wrm_roles` VALUES ('role4', 'Ranged', 'configuration_role4_text',''
 INSERT INTO `wrm_roles` VALUES ('role5', 'misc1', 'configuration_role5_text','');
 INSERT INTO `wrm_roles` VALUES ('role6', 'misc2', 'configuration_role6_text','');
 
+
 -- Version Data
 INSERT INTO `wrm_version` VALUES ('4.0.0','Version 4.0.0 of WoW Raid Manager');
 INSERT INTO `wrm_version` VALUES ('4.0.1','Version 4.0.1 of WoW Raid Manager');
-
+INSERT INTO `wrm_version` VALUES ('4.0.2','Version 4.0.2 of WoW Raid Manager');
