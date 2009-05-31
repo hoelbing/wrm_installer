@@ -1,12 +1,11 @@
 <?php
 /***************************************************************************
- *                             auth_phpraid.php
+ *                             auth_iums.php
  *                            -------------------
  *   begin                : Monday, Jan 18, 2005
  *   copyright            : (C) 2007-2008 Douglas Wagner
  *   email                : douglasw@wagnerweb.org
  *
- *   $Id: auth_phpraid.php,v 2.00 2007/11/23 14:25:57 psotfx Exp $
  *
  ***************************************************************************/
 
@@ -38,6 +37,20 @@ if(isset($_GET['phpraid_dir']) || isset($_POST['phpraid_dir']))
 
 $BridgeSupportPWDChange = TRUE;
 
+/*********************************************** 
+ * Table and Column Names - change per CMS.
+ ***********************************************/
+// Column Name for the ID field for the User.
+$db_user_id = "profile_id";
+// Column Name for the UserName field.
+$db_user_name = "username";
+// Column Name for the User's E-Mail Address
+$db_user_email = "email";
+// Column Name for the User's password
+$db_user_password = "password";
+
+$table_prefix = $phpraid_config['db_prefix'];
+	
 //change password in WRM DB
 function db_password_change($profile_id, $dbusernewpassword)
 {
@@ -78,8 +91,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 //return value -> $data['password'] (Password from CMS database) upon success, FALSE upon fail.
 function password_check($oldpassword, $profile_id, $encryptflag)
 {
-	global $db_raid, $phpraid_config;
-	$sql = sprintf("SELECT password FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
+	global $db_raid, $phpraid_config, $db_user_password;
+	$sql = sprintf("SELECT ".$db_user_password." FROM " . $phpraid_config['db_prefix'] . "profile WHERE profile_id = %s",
 					quote_smart($profile_id)
 			);
 	$result = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
@@ -87,32 +100,26 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 	
 	if ($encryptflag)
 	{ // Encrypted Password Sent In.
-		if ($oldpassword == $data['password'])
-			return $data['password'];
+		if ($oldpassword == $data[$db_user_password])
+			return $data[$db_user_password];
 		else
 			return FALSE;
 	}
 	else 
 	{ // Plain text password sent in.
-		if (md5($oldpassword) == $data['password'])
-			return $data['password'];
+		if (md5($oldpassword) == $data[$db_user_password])
+			return $data[$db_user_password];
 		else
 			return FALSE;
 	}
 }
 
-function phpraid_login() {
-	global $groups, $db_raid, $phpraid_config;
+function phpraid_login()
+{
+	global $db_raid, $phpraid_config;
+	global $db_user_id,  $db_user_name, $db_user_email, $db_user_password, $table_prefix; 
+	
 	$username = $password = "";
-
-	$table_prefix = $phpraid_config['db_prefix'];
-
-	//table and column name
-	$db_user_id = "profile_id";
-	$db_user_name = "username";
-	$db_user_password = "password";
-	$db_user_email = "email";
-	$db_table_user_name = "profile";
 
 	if(isset($_POST['username'])) 	{
 		// User is logging in, set encryption flag to 0 to identify login with plain text password.

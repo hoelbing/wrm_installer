@@ -128,7 +128,7 @@ $wrm_install_lang['step5sub2failfindfile'] = 'Failed to find config file:';
 $wrm_install_lang['step5sub2checkdir'] = 'check the directory again';
 $wrm_install_lang['step5sub3group01'] = 'Select the base user group that has access to use WRM';
 $wrm_install_lang['step5sub3group02'] = 'Any user without this group set will not be allowed to log in';
-$wrm_install_lang['step5sub3group03'] = 'Please select "No Restrictios" here if you want all users regardless of group to be able to login to WRM';
+$wrm_install_lang['step5sub3group03'] = 'Please select "No Restrictions" here if you want all users regardless of group to be able to login to WRM';
 $wrm_install_lang['step5sub3altgroup01'] = 'Select an Additional user group/class that can access WRM';
 $wrm_install_lang['step5sub3altgroup02'] = 'Any user tagged with this group will be allowed to log in regardless of whether they are in the above user group or not';
 

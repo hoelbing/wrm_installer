@@ -57,9 +57,17 @@ $db_user_password = "user_password";
 
 $db_table_user_name = "users";
 $db_table_group_name = "user_group";
-$table_prefix = $phpraid_config['phpbb_prefix'];
-$auth_user_class = $phpraid_config['phpBB_auth_user_group'];
-$auth_alt_user_class = $phpraid_config['phpBB_auth_user_alt_group'];
+
+$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+$auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_group'];
+$auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_alt_group'];
+
+// Table Name were save all  Groups/Class Infos
+$db_table_allgroups = "groups";
+// Column Name for the ID field for the Group/Class.
+$db_allgroups_id = "group_id";
+// Column Name for the Groups/Class Name field.
+$db_allgroups_name = "group_name";
 
 //change password in WRM DB
 

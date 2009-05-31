@@ -59,9 +59,17 @@ $db_user_password = "passwd";
 
 $db_table_user_name = "members";
 $db_table_group_name = "members";
-$table_prefix = $phpraid_config['smf2_table_prefix'];
-$auth_user_class = $phpraid_config['smf2_auth_user_group'];
-$auth_alt_user_class = $phpraid_config['smf2_auth_user_alt_group'];
+
+$table_prefix = $phpraid_config[$phpraid_config['auth_type'].'_db_name'] . ".". $phpraid_config[$phpraid_config['auth_type'].'_table_prefix'];
+$auth_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_group'];
+$auth_alt_user_class = $phpraid_config[$phpraid_config['auth_type'].'_auth_user_alt_group'];
+
+// Table Name were save all  Groups/Class Infos
+$db_table_allgroups = "membergroups";
+// Column Name for the ID field for the Group/Class.
+$db_allgroups_id = "id_group";
+// Column Name for the Groups/Class Name field.
+$db_allgroups_name = "group_name";
 
 //change password in WRM DB
 
@@ -70,7 +78,8 @@ function db_password_change($profile_id, $dbusernewpassword)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-
+	global $db_add_group_ids;
+	
 	// SMF Specific Password Mangling
 	/* 
 	 * For SMF, to create a password we use the sha1 hashing algorithm but we pre-pend the username
@@ -134,7 +143,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-	global $pwd_hasher;
+	global $pwd_hasher,	$db_add_group_ids;
 
 	$sql_passchk = sprintf("SELECT " . $db_user_password . " FROM " . $table_prefix . $db_table_user_name . 
 						" WHERE " . $db_user_id . " = %s", quote_smart($profile_id)
@@ -185,7 +194,8 @@ function phpraid_login()
 {
 	global $db_user_id, $db_group_id, $db_user_name, $db_user_email, $db_user_password, $db_table_user_name; 
 	global $db_table_group_name, $auth_user_class, $auth_alt_user_class, $table_prefix, $db_raid, $phpraid_config;
-
+	global $db_add_group_ids;
+	
 	$username = $password = "";
 
 	if(isset($_POST['username'])){
@@ -242,7 +252,7 @@ function phpraid_login()
 			{
 				$FoundUserInGroup = FALSE;
 
-				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id ." FROM " . $table_prefix . $db_table_group_name. 
+				$sql = sprintf( "SELECT " . $db_user_id. "," .$db_group_id . "," .$db_add_group_ids ." FROM " . $table_prefix . $db_table_group_name. 
 								" WHERE ".$db_user_id." = %s", quote_smart($data[$db_user_id])
 						);
 				$resultgroup = $db_raid->sql_query($sql) or print_error($sql, mysql_error(), 1);
