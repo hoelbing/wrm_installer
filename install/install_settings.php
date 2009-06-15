@@ -33,5 +33,6 @@ $wrm_tables = array (
 						"signups",
 						"teams",
 						"version",
+						"boss_kill_type"
 						);
 ?>

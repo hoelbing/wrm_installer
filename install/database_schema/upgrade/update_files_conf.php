@@ -28,6 +28,12 @@ $wrm_update_array[] =
 							'file_name' => "4.0.1_4.0.2.sql",
 							'update_to_version'=> "4.0.2"
 						);
+//4.0.2_4.0.3.sql
+$wrm_update_array[] =
+						array(
+							'file_name' => "4.0.2_4.0.3.sql",
+							'update_to_version'=> "4.0.3"
+						);
 /*
  * Temp
  * 

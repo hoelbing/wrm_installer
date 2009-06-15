@@ -73,7 +73,7 @@ $wrm_install_lang['step2error01'] = 'Failure to do so could cause unforeseen fai
 //step 3
 $wrm_install_lang['step3errordbcon'] = 'Error connecting to database.'; 
 $wrm_install_lang['step3errorschema'] = 'Error opening upgrade schema';
-$wrm_install_lang['step3errorsql'] = 'Error installing<br>Query: $sql<br>Reported: ';
+//$wrm_install_lang['step3errorsql'] = 'Error installing<br>Query: $sql<br>Reported: ';
 $wrm_install_lang['step3installinfo'] = 'If you are seeing this then no errors occurred during table installation!';
 $wrm_install_lang['step3errorversion'] = 'The software version in version.php doesn\'t match database version in version table.';
 
