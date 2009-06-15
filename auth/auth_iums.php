@@ -49,6 +49,10 @@ $db_user_email = "email";
 // Column Name for the User's password
 $db_user_password = "password";
 
+$db_user_password = "password";
+
+$db_table_user_name = "profile";
+
 $table_prefix = $phpraid_config['db_prefix'];
 	
 //change password in WRM DB
@@ -117,7 +121,7 @@ function password_check($oldpassword, $profile_id, $encryptflag)
 function phpraid_login()
 {
 	global $db_raid, $phpraid_config;
-	global $db_user_id,  $db_user_name, $db_user_email, $db_user_password, $table_prefix; 
+	global $db_user_id,  $db_user_name, $db_user_email, $db_user_password, $table_prefix, $db_table_user_name; 
 	
 	$username = $password = "";
 
